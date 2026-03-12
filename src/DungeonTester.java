@@ -38,6 +38,66 @@ public class DungeonTester<T> {
 
 
 
+
+
+
+
+
+        room1.setPlayerCharacter(rob);
+        Node currentDungeonRoom = dungeon.getHead();
+        Node goblinRoomNode = dungeon.getNodeAtIndex(setRooms(dungeon));
+
+
+
+        System.out.println("You have entered the dungeon");
+
+
+        boolean isExit = false;
+        while(rob.getHealth() > 0 && !isExit){
+            currentDungeonRoom = move(currentDungeonRoom, rob, levelCount);
+            Room displayRoom = (Room) currentDungeonRoom.getValue();
+
+            System.out.println("\n\n");
+
+            System.out.println(displayRoom.getName() + ": Level " + levelCount);
+
+            System.out.println("\n\n\n");
+
+            if (displayRoom.getEnemyCharacter() != null) {
+                fight(rob, goblin);
+            }
+
+            if(displayRoom.getItem() != null){
+                System.out.println("You found a chest!");
+                chestOpener(currentDungeonRoom, rob, levelCount);
+            }
+
+            if(displayRoom.getIsExit()){
+                System.out.println("You have found the exit");
+                setRooms(dungeon);
+                levelCount++;
+                isExit = true;
+            }
+
+            Room tempGoblinRoom = (Room) goblinRoomNode.getValue();
+            goblinRoomNode = goblinMove(goblinRoomNode, goblin);
+            tempGoblinRoom.setEnemyCharacter(null);
+
+
+        }
+
+
+
+
+
+
+
+
+    }
+
+    public static int setRooms(CircularlyLinkedList<Room> dungeon){
+        Random chanceNum = new Random();
+
         /* test
         Room tempRoom = dungeon.getValAtIndex(3);
 
@@ -86,56 +146,7 @@ public class DungeonTester<T> {
         //     System.out.println(exitRoom.getName() + " is an exit");
         // }
 
-
-
-        room1.setPlayerCharacter(rob);
-        Node currentDungeonRoom = dungeon.getHead();
-        Node goblinRoomNode = dungeon.getNodeAtIndex(goblinRoomIndex);
-
-
-
-        System.out.println("You have entered the dungeon");
-
-
-        boolean isExit = false;
-        while(rob.getHealth() > 0 && !isExit){
-            currentDungeonRoom = move(currentDungeonRoom, rob, levelCount);
-            Room displayRoom = (Room) currentDungeonRoom.getValue();
-
-            System.out.println("\n\n");
-
-            System.out.println(displayRoom.getName() + ": Level " + levelCount);
-
-            System.out.println("\n\n\n");
-
-            if (displayRoom.getEnemyCharacter() != null) {
-                fight(rob, goblin);
-            }
-
-            if(displayRoom.getItem() != null){
-                System.out.println("You found a chest!");
-                chestOpener(currentDungeonRoom, rob, levelCount);
-            }
-
-            if(displayRoom.getIsExit()){
-                System.out.println("You have found the exit");
-                isExit = true;
-            }
-
-            Room tempGoblinRoom = (Room) goblinRoomNode.getValue();
-            goblinRoomNode = goblinMove(goblinRoomNode, goblin);
-            tempGoblinRoom.setEnemyCharacter(null);
-
-
-        }
-
-
-
-
-
-
-
-
+        return goblinRoomIndex;
     }
 
     public static void fight(Character rob, Character goblin) {
