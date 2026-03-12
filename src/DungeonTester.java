@@ -8,8 +8,6 @@ public class DungeonTester<T> {
     public static void dungeon(){
         Rob rob = new Rob();
         Goblin goblin = new Goblin();
-        Item[] weapons = new Item[4];
-        Item[] potions = new Item[4];
 
         int roomCount = 7;
         int levelCount = 1;
