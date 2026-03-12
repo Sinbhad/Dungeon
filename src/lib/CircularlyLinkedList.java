@@ -9,6 +9,11 @@ public class CircularlyLinkedList<T>{
         return head;
     }
 
+    public void clear(){
+        head = null;
+        tail = null;
+    }
+
     public void add(T value) {
         Node newNode = new Node(value);
         if (head == null) {
@@ -49,6 +54,7 @@ public class CircularlyLinkedList<T>{
         Node tempNode = head;
         for(int i = 0; i < index; i++){
             if(tempNode == null) return null;
+            tempNode = tempNode.getNextNode();
         }
         return tempNode;
     }

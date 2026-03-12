@@ -1,9 +1,5 @@
-public class Sword extends Item{
-    public Sword(){
-        setName("Broadsword");
-        setType("Sword");
-        setDescription("Increases attack by 20 but decreases speed by 5");
-        setAttackValue(20);
-        setSpeedValue(-5);
+public class Sword extends Item {
+    public Sword(String name, String type, String description, int attackVal, int speedVal) {
+        super(name, type, description, 0, attackVal, speedVal);
     }
 }

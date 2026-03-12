@@ -4,6 +4,18 @@ public class Item{
     String description;
     int hpValue, attackValue, speedValue;
 
+    public Item(String name, String type, String description, int hpValue, int attackValue, int speedValue){
+        this.name = name;
+        this.type = type;
+        this.description = description;
+        this.hpValue = hpValue;
+        this.attackValue = attackValue;
+        this.speedValue = speedValue;
+    }
+
+    public Item() {
+    }
+
 
     public void setName(String name){
         this.name = name;
