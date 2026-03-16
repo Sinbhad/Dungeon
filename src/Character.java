@@ -1,9 +1,12 @@
+import lib.Node;
+
 public class Character {
     private String name;
     private int attack;
     private int health;
     private int speed;
     private String equipment;
+    private Node currentRoom;
 
 
     public void setName(String name){
@@ -30,7 +33,6 @@ public class Character {
         return health;
     }
 
-
     public void setSpeedValue(int speed){
         this.speed = speed;
     }
@@ -45,6 +47,14 @@ public class Character {
 
     public String getEquipment(){
         return equipment;
+    }
+
+    public void setCurrentRoom(Node currentRoom){
+        this.currentRoom = currentRoom;
+    }
+
+    public Node getCurrentRoom(){
+        return currentRoom;
     }
 
     public void displayStats(){
