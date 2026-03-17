@@ -2,7 +2,7 @@ import lib.CircularlyLinkedList;
 import java.util.Scanner;
 
 
-public class DungeonTester {
+public class DungeonBrain {
     public static void dungeon(){
         Rob rob = new Rob();
         Enemy enemy = new Enemy();
