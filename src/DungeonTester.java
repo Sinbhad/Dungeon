@@ -1,4 +1,4 @@
-import lib.CircularlyLinkedList;
+import lib.RobertCircularlyLinkedList;
 import java.util.Scanner;
 
 
@@ -13,7 +13,7 @@ public class DungeonTester {
         int roomCount = 7;
         int levelCount = 1;
 
-        CircularlyLinkedList<Room> dungeon = new CircularlyLinkedList<>();
+        RobertCircularlyLinkedList<Room> dungeon = new RobertCircularlyLinkedList<>();
 
 
         createDungeon.create(dungeon, roomCount);

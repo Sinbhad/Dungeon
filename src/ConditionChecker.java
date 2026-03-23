@@ -1,8 +1,8 @@
-import lib.CircularlyLinkedList;
+import lib.RobertCircularlyLinkedList;
 import lib.Node;
 
 public class ConditionChecker {
-    public int conditionCheck(CircularlyLinkedList<Room> dungeon,Character character, Enemy enemy, int levelCount){
+    public int conditionCheck(RobertCircularlyLinkedList<Room> dungeon, Character character, Enemy enemy, int levelCount){
         ChestOpener chestOpener = new ChestOpener();
         CreateDungeon createDungeon = new CreateDungeon();
         Brawl brawl = new Brawl();

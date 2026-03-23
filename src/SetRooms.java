@@ -1,10 +1,10 @@
-import lib.CircularlyLinkedList;
+import lib.RobertCircularlyLinkedList;
 import lib.Node;
 
 import java.util.Random;
 
 public class SetRooms {
-    public void setRooms(CircularlyLinkedList<Room> dungeon, Enemy enemy){
+    public void setRooms(RobertCircularlyLinkedList<Room> dungeon, Enemy enemy){
         Random chanceNum = new Random();
         int size = dungeon.getSize();
 
