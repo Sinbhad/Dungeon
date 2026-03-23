@@ -1,11 +1,10 @@
-import lib.CircularlyLinkedList;
+import lib.RobertCircularlyLinkedList;
 import java.util.Scanner;
 import java.util.Random;
-import lib.CircularlyLinkedList;
 import lib.Node;
 
 public class Brawl {
-    public void fight(CircularlyLinkedList<Room> dungeon,Character character, Enemy enemy){
+    public void fight(RobertCircularlyLinkedList<Room> dungeon,Character character, Enemy enemy){
 
 
         System.out.println("You have encountered a enemy, hit him with all you got\n");
@@ -33,6 +32,7 @@ public class Brawl {
 
         if(enemy.getHealth() <= 0){
             System.out.println("You have defeated the enemy, move along\n\n");
+            removeRoom(dungeon, character, enemy);
 
         }else{
             System.out.println("He ran off, better get him, he has " + enemy.getHealth() + " health remaining\n\n");
@@ -41,7 +41,7 @@ public class Brawl {
 
 
     public void chooseToStart(Character character){
-        CircularlyLinkedList<Room> dungeon = new CircularlyLinkedList<>();
+        RobertCircularlyLinkedList<Room> dungeon = new RobertCircularlyLinkedList<>();
         CreateDungeon dungeonCreate = new CreateDungeon();
         Scanner keyboard = new Scanner(System.in);
         String choice;
@@ -63,7 +63,7 @@ public class Brawl {
         }
     }
 
-    public void removeRoom(CircularlyLinkedList<Room> dungeon, Character character, Enemy enemy){
+    public void removeRoom(RobertCircularlyLinkedList<Room> dungeon, Character character, Enemy enemy){
         int random = new Random().nextInt(2);
 
         if(random == 0){
