@@ -31,13 +31,14 @@ public class ConditionChecker {
         }
 
         if (currentRoom.getEnemyCharacter() != null) {
-            brawl.fight(character, enemy);
+            brawl.fight(dungeon, character, enemy);
         }
 
         if(currentRoom.getItem() != null){
             System.out.println("You found a chest!");
             chestOpener.openChest(character.getCurrentRoom(), character, levelCount);
         }
+
         return levelCount;
     }
 }
