@@ -29,7 +29,7 @@ public class SetRooms {
         
         int swordRoomIndex = chanceNum.nextInt(size);
         Room swordRoom = dungeon.getValAtIndex(swordRoomIndex);
-        swordRoom.setItem(ItemLibrary.SWORDS[chanceNum.nextInt(ItemLibrary.SWORDS.length)]);
+        swordRoom.setItem(ItemLibrary.WEAPONS[chanceNum.nextInt(ItemLibrary.WEAPONS.length)]);
 
         int healthPotionRoomIndex = chanceNum.nextInt(size);
         Room healthPotionRoom = dungeon.getValAtIndex(healthPotionRoomIndex);

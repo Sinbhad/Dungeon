@@ -18,7 +18,7 @@ public class Enemy extends Character implements Attack{
       return super.getAttack();
    }
 
-   public int getHealthValue(){
+   public double getHealthValue(){
       return super.getHealth();
    }
 

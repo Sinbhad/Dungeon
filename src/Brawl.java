@@ -6,22 +6,22 @@ import lib.Node;
 public class Brawl {
     public static void fight(RobertCircularlyLinkedList<Room> dungeon,Character character, Enemy enemy){
 
-
-
+        double trueAttack = enemy.getAttack() - (character.getDefense() * enemy.getAttack());
         System.out.println("You have encountered " + enemy.getName() + ", hit him with all you got\n");
         if(character.getSpeed() >= enemy.getSpeed()){
             enemy.setHealthValue(enemy.getHealthValue() - character.getAttack());
             System.out.println("You have hit " + enemy.getName() + " and did " + character.getAttack() + " damage\n");
-            character.setHealthValue(character.getHealth() - enemy.getAttack());
-            System.out.println(enemy.getName() + " managed to get a hit in and did " + enemy.getAttack() + " damage\n\n");
+
+            character.setHealthValue(character.getHealth() - trueAttack);
+            System.out.println(enemy.getName() + " managed to get a hit in and did " + trueAttack + " damage\n\n");
 
             if(character.getHealth() <= 0){
                 chooseToStart(character);
             }
 
         }else{
-            character.setHealthValue(character.getHealth() - enemy.getAttack());
-            System.out.println(enemy.getName() + " hit you, he did " + enemy.getAttack() + " damage\n");
+            character.setHealthValue(character.getHealth() - trueAttack);
+            System.out.println(enemy.getName() + " hit you, he did " + trueAttack + " damage\n");
             enemy.setHealthValue(enemy.getHealthValue() - character.getAttack());
 
             if(character.getHealth() <= 0){
@@ -50,7 +50,7 @@ public class Brawl {
         System.out.println("You are dead...");
         System.out.print("\nWould you like to play again? (y/n): ");
         choice = keyboard.nextLine();
-        if(choice.equalsIgnoreCase("y")){
+        if(choice.trim().equalsIgnoreCase("y")){
             CreateDungeon.create(dungeon, 7);
             keyboard.close();
         }

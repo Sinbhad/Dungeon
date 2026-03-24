@@ -3,10 +3,10 @@ import lib.Node;
 public class Character {
     private String name;
     private int attack;
-    private int health;
+    private double health;
     private int speed;
-    private String weapon;
-    private String armor;
+    private double defense;
+    private Item weapon, armor;
     private Node currentRoom;
 
 
@@ -26,11 +26,11 @@ public class Character {
         return attack;
     }
 
-    public void setHealthValue(int health){
+    public void setHealthValue(double health){
         this.health = health;
     }
 
-    public int getHealth(){
+    public double getHealth(){
         return health;
     }
 
@@ -42,11 +42,11 @@ public class Character {
         return speed;
     }
 
-    public void setWeapon(String equipment){
-        this.weapon = equipment;
+    public void setWeapon(Item weapon){
+        this.weapon = weapon;
     }
 
-    public String getWeapon(){
+    public Item getWeapon(){
         return weapon;
     }
 
@@ -58,19 +58,27 @@ public class Character {
         return currentRoom;
     }
 
-    public void setArmor(String armor){
+    public void setArmor(Item armor){
         this.armor = armor;
     }
 
-    public String getArmor(){
+    public Item getArmor(){
         return armor;
+    }
+
+    public void setDefenseValue(double defense){
+        this.defense = defense;
+    }
+
+    public double getDefense(){
+        return defense;
     }
 
     public void displayStats(){
         System.out.println(name);
         System.out.println("Health Points " + health);
         System.out.println("Attack Points " + attack);
-        System.out.println("Weapon: " + weapon);
-        System.out.println("Armor: " + armor);
+        System.out.println("Weapon: " + weapon.getName());
+        System.out.println("Armor: " + armor.getName());
     }
 }

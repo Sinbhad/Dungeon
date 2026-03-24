@@ -5,7 +5,7 @@ import lib.Node;
 
 @SuppressWarnings("rawtypes")
 public class Move {
-    public static void movePlayer(Character character, int levelCount, Scanner keyboard){
+    public static void movePlayer(Character character, int levelCount, Scanner keyboard) {
         Node currentDungeonRoom = character.getCurrentRoom();
         Room currentRoom = (Room) currentDungeonRoom.getValue();
 
@@ -15,45 +15,38 @@ public class Move {
         System.out.print("\n\nWould you like to move left or right? (l/r) : ");
         String choice = keyboard.nextLine();
 
-        if(choice.equals("l")){
+        if (choice.trim().equalsIgnoreCase("l")) {
             System.out.println("You have moved left\n");
             character.setCurrentRoom(currentDungeonRoom.getLastNode());
 
-        }else if(choice.equals("r")){
+        } else if (choice.trim().equalsIgnoreCase("r")) {
             System.out.println("You have moved right\n");
             character.setCurrentRoom(currentDungeonRoom.getNextNode());
 
-        }else{
+        } else {
             System.out.println("Invalid choice\n");
         }
 
     }
 
-    public static void moveEnemy(){
-        Enemy activeEnemy = null;
+    public static void moveEnemy() {
         for (Enemy enemy : EnemyLibrary.ENEMIES) {
-            if (enemy.getCurrentRoom() != null) {
-                activeEnemy = enemy;
-            }
+            Node enemyRoomNode = enemy.getCurrentRoom();
 
-            Node enemyRoomNode = null;
-            if (activeEnemy != null) {
-                enemyRoomNode = activeEnemy.getCurrentRoom();
-            }
-            Room currentEnemyRoom = (Room) enemyRoomNode.getValue();
-            currentEnemyRoom.setEnemyCharacter(null);
+            if (enemyRoomNode != null) {
+                Room currentEnemyRoom = (Room) enemyRoomNode.getValue();
+                currentEnemyRoom.setEnemyCharacter(null);
 
-            int enemyChoice = new Random().nextInt(2);
-            if (enemyChoice == 0) {
-                enemyRoomNode = enemyRoomNode.getLastNode();
-            } else {
-                enemyRoomNode = enemyRoomNode.getNextNode();
-            }
+                int enemyChoice = new Random().nextInt(2);
+                if (enemyChoice == 0) {
+                    enemyRoomNode = enemyRoomNode.getLastNode();
+                } else {
+                    enemyRoomNode = enemyRoomNode.getNextNode();
+                }
 
-            if (activeEnemy != null) {
-                activeEnemy.setCurrentRoom(enemyRoomNode);
+                enemy.setCurrentRoom(enemyRoomNode);
+                ((Room) enemyRoomNode.getValue()).setEnemyCharacter(enemy);
             }
-            ((Room) enemyRoomNode.getValue()).setEnemyCharacter(activeEnemy);
         }
     }
 }
