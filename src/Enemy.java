@@ -1,8 +1,28 @@
 public class Enemy extends Character implements Attack{
+   public Enemy(String name, int attackValue, int healthValue, int speedValue){
+      setName(name);
+      setAttackValue(attackValue);
+      setHealthValue(healthValue);
+      setSpeedValue(speedValue);
+   }
+
    public Enemy(){
-      setName("Enemy");
-      setAttackValue(10);
-      setHealthValue(50);
-      setSpeedValue(40);
+      super();
+   }
+
+   public String getName(){
+      return super.getName();
+   }
+
+   public int getAttackValue(){
+      return super.getAttack();
+   }
+
+   public int getHealthValue(){
+      return super.getHealth();
+   }
+
+   public int getSpeedValue(){
+      return super.getSpeed();
    }
 }

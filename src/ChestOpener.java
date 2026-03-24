@@ -3,7 +3,7 @@ import lib.Node;
 import java.util.Scanner;
 
 public class ChestOpener {
-    public void openChest(Node currentDungeonRoom, Character character, int levelCount){
+    public static void openChest(Node currentDungeonRoom, Character character, int levelCount){
         Room currentRoom = (Room) currentDungeonRoom.getValue();
         Scanner keyboard = new Scanner(System.in);
         System.out.print("\n\nWould you like to open the chest? (y/n) : ");
@@ -31,7 +31,11 @@ public class ChestOpener {
                 character.setSpeedValue(speed + itemSpeed);
             }
             if(currentRoom.getItem().getType() != null && currentRoom.getItem().getType().equals("Sword")){
-                character.setEquipment(currentRoom.getItem().getName());
+                character.setWeapon(currentRoom.getItem().getName());
+            }
+
+            if(currentRoom.getItem().getType() != null && currentRoom.getItem().getType().equals("Armor")){
+                character.setArmor(currentRoom.getItem().getName());
             }
 
             currentRoom.setItem(null);

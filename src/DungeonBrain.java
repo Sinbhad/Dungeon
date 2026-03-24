@@ -5,35 +5,21 @@ import java.util.Scanner;
 public class DungeonBrain {
     public static void dungeon(){
         Rob rob = new Rob();
-        Enemy enemy = new Enemy();
         Scanner keyboard = new Scanner(System.in);
-        CreateDungeon createDungeon = new CreateDungeon();
-        SetRooms setRooms = new SetRooms();
-
+        RobertCircularlyLinkedList<Room> dungeon = new RobertCircularlyLinkedList<>();
         int roomCount = 7;
         int levelCount = 1;
 
-        RobertCircularlyLinkedList<Room> dungeon = new RobertCircularlyLinkedList<>();
-
-
-        createDungeon.create(dungeon, roomCount);
-        setRooms.setRooms(dungeon, enemy);
-
+        CreateDungeon.create(dungeon, roomCount);
+        SetRooms.setRooms(dungeon);
         rob.setCurrentRoom(dungeon.getHead());
 
         System.out.println("You have entered the dungeon");
 
-
-
         while(rob.getHealth() > 0){
-            Move move = new Move();
-            ConditionChecker conditionChecker = new ConditionChecker();
-
-            move.movePlayer(rob, levelCount, keyboard);
-
-            levelCount = conditionChecker.conditionCheck(dungeon, rob, enemy, levelCount);
-
-            move.moveEnemy(enemy);
+            Move.movePlayer(rob, levelCount, keyboard);
+            levelCount = ConditionChecker.conditionCheck(dungeon, rob, levelCount);
+            Move.moveEnemy();
         }
     }
 

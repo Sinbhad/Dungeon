@@ -5,7 +5,8 @@ public class Character {
     private int attack;
     private int health;
     private int speed;
-    private String equipment;
+    private String weapon;
+    private String armor;
     private Node currentRoom;
 
 
@@ -41,12 +42,12 @@ public class Character {
         return speed;
     }
 
-    public void setEquipment(String equipment){
-        this.equipment = equipment;
+    public void setWeapon(String equipment){
+        this.weapon = equipment;
     }
 
-    public String getEquipment(){
-        return equipment;
+    public String getWeapon(){
+        return weapon;
     }
 
     public void setCurrentRoom(Node currentRoom){
@@ -57,10 +58,19 @@ public class Character {
         return currentRoom;
     }
 
+    public void setArmor(String armor){
+        this.armor = armor;
+    }
+
+    public String getArmor(){
+        return armor;
+    }
+
     public void displayStats(){
         System.out.println(name);
         System.out.println("Health Points " + health);
         System.out.println("Attack Points " + attack);
-        System.out.println("Equipment " + equipment);
+        System.out.println("Weapon: " + weapon);
+        System.out.println("Armor: " + armor);
     }
 }

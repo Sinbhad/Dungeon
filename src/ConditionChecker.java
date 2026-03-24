@@ -2,12 +2,7 @@ import lib.RobertCircularlyLinkedList;
 import lib.Node;
 
 public class ConditionChecker {
-    public int conditionCheck(RobertCircularlyLinkedList<Room> dungeon, Character character, Enemy enemy, int levelCount){
-        ChestOpener chestOpener = new ChestOpener();
-        CreateDungeon createDungeon = new CreateDungeon();
-        Brawl brawl = new Brawl();
-        SetRooms setRooms = new SetRooms();
-
+    public static int conditionCheck(RobertCircularlyLinkedList<Room> dungeon, Character character, int levelCount){
         Node currentRoomNode = character.getCurrentRoom();
         Room currentRoom = (Room) currentRoomNode.getValue();
 
@@ -17,26 +12,32 @@ public class ConditionChecker {
             System.out.println("You have gained nothing and your opponents are now stronger!");
             levelCount++;
 
-            enemy.setHealthValue(new Enemy().getHealth() + 10 * levelCount);
+
+            for(int i = EnemyLibrary.ENEMIES.length - 1; i > 0; i--){
+                EnemyLibrary.ENEMIES[i].setHealthValue(EnemyLibrary.ENEMIES[i].getHealthValue() + (10 * levelCount));
+            }
             System.out.println("The enemy has gained " + (10 * levelCount) + " health points");
-            enemy.setAttackValue(enemy.getAttack() + 10 * levelCount);
-            System.out.println("...and " + (10 * levelCount)+ " attack points!");
+
+            for(int i = EnemyLibrary.ENEMIES.length - 1; i > 0; i--){
+                EnemyLibrary.ENEMIES[i].setAttackValue(EnemyLibrary.ENEMIES[i].getAttackValue() + (10 * levelCount));
+            }
+            System.out.println("...and " + (10 * levelCount)+ " attack points!\n");
 
 
-            createDungeon.create(dungeon, 7 * levelCount);
-            setRooms.setRooms(dungeon, enemy);
+            CreateDungeon.create(dungeon, 7 * levelCount);
+            SetRooms.setRooms(dungeon);
             character.setCurrentRoom(dungeon.getHead());
 
-            currentRoom = (Room) character.getCurrentRoom().getValue();
+            return levelCount;
         }
 
         if (currentRoom.getEnemyCharacter() != null) {
-            brawl.fight(dungeon, character, enemy);
+            Brawl.fight(dungeon, character, (Enemy) currentRoom.getEnemyCharacter());
         }
 
         if(currentRoom.getItem() != null){
             System.out.println("You found a chest!");
-            chestOpener.openChest(character.getCurrentRoom(), character, levelCount);
+            ChestOpener.openChest(character.getCurrentRoom(), character, levelCount);
         }
 
         return levelCount;

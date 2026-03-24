@@ -2,15 +2,16 @@ public class Item{
     String name;
     String type;
     String description;
-    int hpValue, attackValue, speedValue;
+    int hpValue, attackValue, speedValue, defenseValue;
 
-    public Item(String name, String type, String description, int hpValue, int attackValue, int speedValue){
+    public Item(String name, String type, String description, int hpValue, int attackValue, int speedValue, int defenseValue){
         this.name = name;
         this.type = type;
         this.description = description;
         this.hpValue = hpValue;
         this.attackValue = attackValue;
         this.speedValue = speedValue;
+        this.defenseValue = defenseValue;
     }
 
     public Item() {
@@ -63,5 +64,13 @@ public class Item{
 
     public int getSpeedValue(){
         return speedValue;
+    }
+
+    public void setDefenseValue(int defenseValue){
+        this.defenseValue = defenseValue;
+    }
+
+    public int getDefenseValue(){
+        return defenseValue;
     }
 }

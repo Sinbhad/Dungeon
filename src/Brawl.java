@@ -4,15 +4,16 @@ import java.util.Random;
 import lib.Node;
 
 public class Brawl {
-    public void fight(RobertCircularlyLinkedList<Room> dungeon,Character character, Enemy enemy){
+    public static void fight(RobertCircularlyLinkedList<Room> dungeon,Character character, Enemy enemy){
 
 
-        System.out.println("You have encountered a enemy, hit him with all you got\n");
+
+        System.out.println("You have encountered " + enemy.getName() + ", hit him with all you got\n");
         if(character.getSpeed() >= enemy.getSpeed()){
-            enemy.setHealthValue(enemy.getHealth() - character.getAttack());
-            System.out.println("You have hit the enemy and did " + character.getAttack() + " damage\n");
+            enemy.setHealthValue(enemy.getHealthValue() - character.getAttack());
+            System.out.println("You have hit " + enemy.getName() + " and did " + character.getAttack() + " damage\n");
             character.setHealthValue(character.getHealth() - enemy.getAttack());
-            System.out.println("He managed to get a hit in and did " + enemy.getAttack() + " damage\n\n");
+            System.out.println(enemy.getName() + " managed to get a hit in and did " + enemy.getAttack() + " damage\n\n");
 
             if(character.getHealth() <= 0){
                 chooseToStart(character);
@@ -20,8 +21,8 @@ public class Brawl {
 
         }else{
             character.setHealthValue(character.getHealth() - enemy.getAttack());
-            System.out.println("The enemy hit you, he did " + enemy.getAttack() + " damage\n");
-            enemy.setHealthValue(enemy.getHealth() - character.getAttack());
+            System.out.println(enemy.getName() + " hit you, he did " + enemy.getAttack() + " damage\n");
+            enemy.setHealthValue(enemy.getHealthValue() - character.getAttack());
 
             if(character.getHealth() <= 0){
                 chooseToStart(character);
@@ -30,19 +31,18 @@ public class Brawl {
             System.out.println("Luckily you swiped back, dealing " + character.getAttack() + " damage\n\n");
         }
 
-        if(enemy.getHealth() <= 0){
-            System.out.println("You have defeated the enemy, move along\n\n");
+        if(enemy.getHealthValue() <= 0){
+            System.out.println("You have defeated " + enemy.getName() + ", move along\n\n");
             removeRoom(dungeon, character, enemy);
 
         }else{
-            System.out.println("He ran off, better get him, he has " + enemy.getHealth() + " health remaining\n\n");
+            System.out.println("He ran off, better get them, " + enemy.getName() + " has " + enemy.getHealthValue() + " health remaining\n\n");
         }
     }
 
 
-    public void chooseToStart(Character character){
+    public static void chooseToStart(Character character){
         RobertCircularlyLinkedList<Room> dungeon = new RobertCircularlyLinkedList<>();
-        CreateDungeon dungeonCreate = new CreateDungeon();
         Scanner keyboard = new Scanner(System.in);
         String choice;
 
@@ -51,7 +51,7 @@ public class Brawl {
         System.out.print("\nWould you like to play again? (y/n): ");
         choice = keyboard.nextLine();
         if(choice.equalsIgnoreCase("y")){
-            dungeonCreate.create(dungeon, 7);
+            CreateDungeon.create(dungeon, 7);
             keyboard.close();
         }
         else if(choice.equalsIgnoreCase("n")){
@@ -63,7 +63,7 @@ public class Brawl {
         }
     }
 
-    public void removeRoom(RobertCircularlyLinkedList<Room> dungeon, Character character, Enemy enemy){
+    public static void removeRoom(RobertCircularlyLinkedList<Room> dungeon, Character character, Enemy enemy){
         int random = new Random().nextInt(2);
 
         if(random == 0){

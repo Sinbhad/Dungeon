@@ -4,6 +4,7 @@ public class Rob extends Character implements Attack{
         setAttackValue(40);
         setHealthValue(100);
         setSpeedValue(20);
-        setEquipment("Fists");
+        setWeapon("Fists");
+        setArmor("Naked");
     }
 }
