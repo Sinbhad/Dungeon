@@ -3,7 +3,7 @@ import lib.Node;
 import java.util.Scanner;
 
 public class ChestOpener {
-    public static void openChest(Node currentDungeonRoom, Character character, int levelCount){
+    public static void openChest(Node currentDungeonRoom, Character character){
         Room currentRoom = (Room) currentDungeonRoom.getValue();
         Scanner keyboard = new Scanner(System.in);
         System.out.print("\n\nWould you like to open the chest? (y/n) : ");
@@ -53,7 +53,7 @@ public class ChestOpener {
             System.out.println("You have not opened the chest");
         }else{
             System.out.println("Invalid choice");
-            openChest(currentDungeonRoom, character, levelCount);
+            openChest(currentDungeonRoom, character);
         }
     }
 }

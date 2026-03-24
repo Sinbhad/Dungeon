@@ -37,7 +37,7 @@ public class ConditionChecker {
 
         if(currentRoom.getItem() != null){
             System.out.println("You found a chest!");
-            ChestOpener.openChest(character.getCurrentRoom(), character, levelCount);
+            ChestOpener.openChest(character.getCurrentRoom(), character);
         }
 
         return levelCount;
