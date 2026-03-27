@@ -1,4 +1,5 @@
 import lib.Node;
+import java.util.Scanner;
 
 public class Character {
     private String name;
@@ -80,5 +81,28 @@ public class Character {
         System.out.println("Attack Points " + attack);
         System.out.println("Weapon: " + weapon.getName());
         System.out.println("Armor: " + armor.getName());
+    }
+
+    public void move(int levelCount, Scanner keyboard) {
+        Node currentDungeonRoom = this.getCurrentRoom();
+        Room currentRoom = (Room) currentDungeonRoom.getValue();
+
+        System.out.println(currentRoom.getName() + ": Level " + levelCount);
+        this.displayStats();
+
+        System.out.print("\n\nWould you like to move left or right? (l/r) : ");
+        String choice = keyboard.nextLine();
+
+        if (choice.trim().equalsIgnoreCase("l")) {
+            System.out.println("You have moved left\n");
+            this.setCurrentRoom(currentDungeonRoom.getLastNode());
+
+        } else if (choice.trim().equalsIgnoreCase("r")) {
+            System.out.println("You have moved right\n");
+            this.setCurrentRoom(currentDungeonRoom.getNextNode());
+
+        } else {
+            System.out.println("Invalid choice\n");
+        }
     }
 }
