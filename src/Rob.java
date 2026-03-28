@@ -1,4 +1,5 @@
-public class Rob extends Character implements Attack{
+
+public class Rob extends Character {
     public Rob(){
         setName("Rob");
         setAttackValue(40);

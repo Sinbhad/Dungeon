@@ -1,5 +1,4 @@
 package lib;
-
 @SuppressWarnings({"unchecked", "rawtypes"})
 public class Node<T> {
     private Node prev;

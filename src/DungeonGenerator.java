@@ -55,6 +55,8 @@ public class DungeonGenerator {
         enemyRoster.add(new Patrick());
         enemyRoster.add(new Andrew());
         enemyRoster.add(new Byron());
+        enemyRoster.add(new Jenna());
+        enemyRoster.add(new Joe());
         return enemyRoster;
     }
 

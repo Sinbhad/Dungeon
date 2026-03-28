@@ -1,5 +1,5 @@
-import lib.Node;
 import lib.RobertCircularlyLinkedList;
+import lib.Node;
 
 import java.util.ArrayList;
 import java.util.Random;

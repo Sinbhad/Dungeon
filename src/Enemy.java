@@ -1,7 +1,7 @@
 import lib.Node;
 import java.util.Random;
 
-public class Enemy extends Character implements Attack{
+public class Enemy extends Character {
    public Enemy(String name, int attackValue, int healthValue, int speedValue){
       setName(name);
       setAttackValue(attackValue);
