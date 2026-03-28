@@ -128,10 +128,11 @@ public class Character {
             if(currentRoom.getItem().getHpValue() != 0){
                 int itemHp = currentRoom.getItem().getHpValue();
                 if(this.getHealth() < 500){
-                    this.setHealthValue(hp + itemHp);
                     if(this.getHealth() > 500){
                         this.setHealthValue(500);
                     }
+                }else if(this.getHealth() == 500 && itemHp < 0){
+                    this.setHealthValue(hp + itemHp);
                 }else{
                     System.out.println("You have already reached maximum health, no effect\n");
                 }
@@ -140,7 +141,7 @@ public class Character {
                 int itemSpeed = currentRoom.getItem().getSpeedValue();
                 this.setSpeedValue(speed + itemSpeed);
             }
-            if(currentRoom.getItem().getType() != null && currentRoom.getItem().getType().equals("Sword")){
+            if(currentRoom.getItem().getType() != null && currentRoom.getItem().getType().equals("Weapon")){
                 this.setWeapon(currentRoom.getItem());
                 this.setAttackValue(40 + currentRoom.getItem().getAttackValue());
             }
