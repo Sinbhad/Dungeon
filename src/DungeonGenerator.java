@@ -1,6 +1,8 @@
 import lib.Node;
 import lib.RobertCircularlyLinkedList;
+
 import java.util.Random;
+import java.util.ArrayList;
 
 public class DungeonGenerator {
 
@@ -12,52 +14,90 @@ public class DungeonGenerator {
     }
 
 
-    public void setRooms(RobertCircularlyLinkedList<Room> dungeon) {
+    void setRooms(RobertCircularlyLinkedList<Room> dungeon) {
+        ArrayList<Enemy> enemyRoster = enemyRosterGenerator();
+
         Random chanceNum = new Random();
         int size = dungeon.getSize();
 
+        Node tempNode = dungeon.getHead();
+        Room tempRoom = (Room)tempNode.getValue();
         for (int i = 0; i < size; i++) {
-            Room tempRoom = dungeon.getValAtIndex(i);
             tempRoom.setCertain(null, null, null, false);
+            tempRoom = (Room)tempNode.getNextNode().getValue();
         }
 
         int levelCount = size / 7;
         if (levelCount == 1) {
-            setEnemies(chanceNum, size, dungeon);
+            setEnemies(chanceNum, size, dungeon, enemyRoster);
         } else if (levelCount > 1 && levelCount < 4) {
-            setEnemies(chanceNum, size, dungeon);
+            for (int i = 0; i < 2; i++) {
+                setEnemies(chanceNum, size, dungeon, enemyRoster);
+            }
         } else {
-            for (int i = 0; i < EnemyLibrary.ENEMIES.length; i++) {
-                setEnemies(chanceNum, size, dungeon);
+            for (int i = 0; i < enemyRoster.size(); i++) {
+                setEnemies(chanceNum, size, dungeon, enemyRoster);
             }
         }
 
-        int swordRoomIndex = chanceNum.nextInt(size);
-        Room swordRoom = dungeon.getValAtIndex(swordRoomIndex);
-        swordRoom.setItem(ItemLibrary.WEAPONS[chanceNum.nextInt(ItemLibrary.WEAPONS.length)]);
+        setWeapon(chanceNum, size, dungeon);
+        setHealthPotion(chanceNum, size, dungeon);
+        setTrap(chanceNum, size, dungeon);
+        setArmor(chanceNum, size, dungeon);
+        setExit(chanceNum, size, dungeon);
+    }
 
+    ArrayList<Enemy> enemyRosterGenerator() {
+        ArrayList<Enemy> enemyRoster = new ArrayList<>();
+        enemyRoster.add(new Slime());
+        enemyRoster.add(new Daniel());
+        enemyRoster.add(new Jared());
+        enemyRoster.add(new Patrick());
+        enemyRoster.add(new Andrew());
+        enemyRoster.add(new Byron());
+        return enemyRoster;
+    }
+
+
+    void setWeapon(Random chanceNum, int size, RobertCircularlyLinkedList<Room> dungeon) {
+        ItemLibrary itemLibrary = new ItemLibrary();
+        int weaponRoomIndex = chanceNum.nextInt(size);
+        Room weaponRoom = dungeon.getValAtIndex(weaponRoomIndex);
+        weaponRoom.setItem(itemLibrary.WEAPONS[chanceNum.nextInt(itemLibrary.WEAPONS.length)]);
+    }
+
+    void setHealthPotion(Random chanceNum, int size, RobertCircularlyLinkedList<Room> dungeon) {
+        ItemLibrary itemLibrary = new ItemLibrary();
         int healthPotionRoomIndex = chanceNum.nextInt(size);
         Room healthPotionRoom = dungeon.getValAtIndex(healthPotionRoomIndex);
-        healthPotionRoom.setItem(ItemLibrary.HEALTH_POTIONS[chanceNum.nextInt(ItemLibrary.HEALTH_POTIONS.length)]);
+        healthPotionRoom.setItem(itemLibrary.HEALTH_POTIONS[chanceNum.nextInt(itemLibrary.HEALTH_POTIONS.length)]);
+    }
 
+    void setTrap(Random chanceNum, int size, RobertCircularlyLinkedList<Room> dungeon) {
+        ItemLibrary itemLibrary = new ItemLibrary();
         int trapRoomIndex = chanceNum.nextInt(size);
         Room trapRoom = dungeon.getValAtIndex(trapRoomIndex);
-        trapRoom.setItem(ItemLibrary.TRAPS[chanceNum.nextInt(ItemLibrary.TRAPS.length)]);
+        trapRoom.setItem(itemLibrary.TRAPS[chanceNum.nextInt(itemLibrary.TRAPS.length)]);
+    }
 
+    void setArmor(Random chanceNum, int size, RobertCircularlyLinkedList<Room> dungeon) {
+        ItemLibrary itemLibrary = new ItemLibrary();
         int armorRoomIndex = chanceNum.nextInt(size);
         Room armorRoom = dungeon.getValAtIndex(armorRoomIndex);
-        armorRoom.setItem(ItemLibrary.ARMOR_PIECES[chanceNum.nextInt(ItemLibrary.ARMOR_PIECES.length)]);
+        armorRoom.setItem(itemLibrary.ARMOR_PIECES[chanceNum.nextInt(itemLibrary.ARMOR_PIECES.length)]);
+    }
 
+    void setExit(Random chanceNum, int size, RobertCircularlyLinkedList<Room> dungeon) {
         int exitRoomIndex = chanceNum.nextInt(size);
         Room exitRoom = dungeon.getValAtIndex(exitRoomIndex);
         exitRoom.setIsExit(true);
     }
 
-    public static void setEnemies(Random chanceNum, int size, RobertCircularlyLinkedList<Room> dungeon) {
+    void setEnemies(Random chanceNum, int size, RobertCircularlyLinkedList<Room> dungeon, ArrayList<Enemy> enemyRoster) {
         int enemyRoomIndex = chanceNum.nextInt(size);
         Node enemyRoomNode = dungeon.getNodeAtIndex(enemyRoomIndex);
         Room enemyRoom = (Room) enemyRoomNode.getValue();
-        Enemy enemy = EnemyLibrary.ENEMIES[chanceNum.nextInt(EnemyLibrary.ENEMIES.length)];
+        Enemy enemy = enemyRoster.get(chanceNum.nextInt(enemyRoster.size()));
         enemyRoom.setEnemyCharacter(enemy);
         enemy.setCurrentRoom(enemyRoomNode);
     }

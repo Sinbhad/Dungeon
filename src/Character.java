@@ -83,7 +83,7 @@ public class Character {
         System.out.println("Armor: " + armor.getName());
     }
 
-    public void move(int levelCount, Scanner keyboard) {
+    void move(int levelCount, Scanner keyboard) {
         Node currentDungeonRoom = this.getCurrentRoom();
         Room currentRoom = (Room) currentDungeonRoom.getValue();
 
@@ -103,6 +103,60 @@ public class Character {
 
         } else {
             System.out.println("Invalid choice\n");
+        }
+    }
+
+    void openChest(Scanner keyboard){
+        Node currentDungeonRoom = this.getCurrentRoom();
+        Room currentRoom = (Room) currentDungeonRoom.getValue();
+        System.out.print("\n\nWould you like to open the chest? (y/n) : ");
+        String choice = keyboard.nextLine();
+
+        if(choice.trim().equals("y")){
+            double hp = this.getHealth();
+            int speed = this.getSpeed();
+            int attack = this.getAttack();
+
+            System.out.println("\nYou have opened the chest");
+            System.out.println("You have found a " + currentRoom.getItem().getName());
+            System.out.println("this " + currentRoom.getItem().getDescription() + "\n\n");
+
+            if(currentRoom.getItem().getAttackValue() != 0){
+                int itemAttack = currentRoom.getItem().getAttackValue();
+                this.setAttackValue(attack + itemAttack);
+            }
+            if(currentRoom.getItem().getHpValue() != 0){
+                int itemHp = currentRoom.getItem().getHpValue();
+                if(this.getHealth() < 500){
+                    this.setHealthValue(hp + itemHp);
+                    if(this.getHealth() > 500){
+                        this.setHealthValue(500);
+                    }
+                }else{
+                    System.out.println("You have already reached maximum health, no effect\n");
+                }
+            }
+            if(currentRoom.getItem().getSpeedValue() != 0){
+                int itemSpeed = currentRoom.getItem().getSpeedValue();
+                this.setSpeedValue(speed + itemSpeed);
+            }
+            if(currentRoom.getItem().getType() != null && currentRoom.getItem().getType().equals("Sword")){
+                this.setWeapon(currentRoom.getItem());
+                this.setAttackValue(40 + currentRoom.getItem().getAttackValue());
+            }
+
+            if(currentRoom.getItem().getType() != null && currentRoom.getItem().getType().equals("Armor")){
+                this.setArmor(currentRoom.getItem());
+                this.setDefenseValue(currentRoom.getItem().getDefenseValue());
+            }
+
+            currentRoom.setItem(null);
+
+        }else if(choice.trim().equalsIgnoreCase("n")){
+            System.out.println("You have not opened the chest");
+        }else{
+            System.out.println("Invalid choice");
+            openChest(keyboard);
         }
     }
 }
