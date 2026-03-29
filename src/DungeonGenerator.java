@@ -27,19 +27,8 @@ public class DungeonGenerator {
             tempRoom = (Room)tempNode.getNextNode().getValue();
         }
 
-        int levelCount = size / 7;
-        if (levelCount == 1) {
-            setEnemies(chanceNum, size, dungeon, enemyRoster);
-        } else if (levelCount > 1 && levelCount < 4) {
-            for (int i = 0; i < 2; i++) {
-                setEnemies(chanceNum, size, dungeon, enemyRoster);
-            }
-        } else {
-            for (int i = 0; i < enemyRoster.size(); i++) {
-                setEnemies(chanceNum, size, dungeon, enemyRoster);
-            }
-        }
-
+        
+        enemyLevelCheck(chanceNum, size, dungeon, enemyRoster);
         setWeapon(chanceNum, size, dungeon);
         setHealthPotion(chanceNum, size, dungeon);
         setTrap(chanceNum, size, dungeon);
@@ -57,6 +46,7 @@ public class DungeonGenerator {
         enemyRoster.add(new Byron());
         enemyRoster.add(new Jenna());
         enemyRoster.add(new Joe());
+        enemyRoster.add(new Marc());
         return enemyRoster;
     }
 
@@ -102,5 +92,24 @@ public class DungeonGenerator {
         Enemy enemy = enemyRoster.get(chanceNum.nextInt(enemyRoster.size()));
         enemyRoom.setEnemyCharacter(enemy);
         enemy.setCurrentRoom(enemyRoomNode);
+    }
+
+    void enemyLevelCheck(Random chanceNum, int size, RobertCircularlyLinkedList<Room> dungeon, ArrayList<Enemy> enemyRoster){
+        int levelCount = size / 7;
+        if (levelCount == 1) {
+            setEnemies(chanceNum, size, dungeon, enemyRoster);
+        } else if (levelCount > 1 && levelCount < 4) {
+            for (int i = 0; i < 2; i++) {
+                setEnemies(chanceNum, size, dungeon, enemyRoster);
+            }
+        } else if(levelCount >= 4 && levelCount <= 6){
+            for(int i = 0; i < 4; i++){
+                setEnemies(chanceNum, size, dungeon, enemyRoster);
+            }
+        }else {
+            for (int i = 0; i < enemyRoster.size(); i++) {
+                setEnemies(chanceNum, size, dungeon, enemyRoster);
+            }
+        }
     }
 }
