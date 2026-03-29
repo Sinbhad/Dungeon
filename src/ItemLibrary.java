@@ -1,13 +1,26 @@
 
 public class ItemLibrary {
 
-    //Health Potions
+    //Potions
     public final Potion[] HEALTH_POTIONS = {
+            //Healing
             new Potion("Health Potion", "Healing Item", "restores 10 health points", 10, 0),
             new Potion("High Potion", "Healing Item", "restores 50 health points", 20, 0),
             new Potion("Mega Potion", "Healing Item", "restores 100 health points", 100, 0),
             new Potion("Ultimate Potion", "Healing Item", "restores 200 health points", 200, 0),
             new Potion("Ho Lee Faq Potion", "Healing Item", "restores 500 health points", 500, 0),
+
+            //Speed
+            new Potion("Mini Speed Potion","Speed Up Item","increases speed by 15 points",0,15),
+            new Potion("Moderate Speed Potion", "Speed Up Item", "increases speed by 30 points", 0, 30),
+            new Potion("Great Speed Potion", "Speed Up Item", "increases speed by 50 ponts", 0, 50),
+            new Potion("Mega Speed Potion", "Speed Up Item", "increases speed by 75 points", 0, 75),
+
+            //Healing and Speed
+            new Potion("Swift Life Potion", "Extended Healing Item", "increases speed and health by 20 points each", 20, 20),
+            new Potion("Fast Life Potion", "Extended Healing Item", "increases speed and health by 40 points each", 40, 40),
+            new Potion("Breakneck Life Potion", "Extended Healing Item", "increases speed and health by 100 points each", 100,100)
+
     };
 
     //Traps
