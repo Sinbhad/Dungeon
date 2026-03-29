@@ -2,12 +2,12 @@
 public class ItemLibrary {
 
     //Health Potions
-    public final HealthPotion[] HEALTH_POTIONS = {
-            new HealthPotion("Health Potion", "Healing Item", "restores 10 health points", 10),
-            new HealthPotion("High Potion", "Healing Item", "restores 50 health points", 20),
-            new HealthPotion("Mega Potion", "Healing Item", "restores 100 health points", 100),
-            new HealthPotion("Ultimate Potion", "Healing Item", "restores 200 health points", 200),
-            new HealthPotion("Ho Lee Faq Potion", "Healing Item", "restores 500 health points", 500),
+    public final Potion[] HEALTH_POTIONS = {
+            new Potion("Health Potion", "Healing Item", "restores 10 health points", 10, 0),
+            new Potion("High Potion", "Healing Item", "restores 50 health points", 20, 0),
+            new Potion("Mega Potion", "Healing Item", "restores 100 health points", 100, 0),
+            new Potion("Ultimate Potion", "Healing Item", "restores 200 health points", 200, 0),
+            new Potion("Ho Lee Faq Potion", "Healing Item", "restores 500 health points", 500, 0),
     };
 
     //Traps

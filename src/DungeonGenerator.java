@@ -30,7 +30,7 @@ public class DungeonGenerator {
         
         enemyLevelCheck(chanceNum, size, dungeon, enemyRoster);
         setWeapon(chanceNum, size, dungeon);
-        setHealthPotion(chanceNum, size, dungeon);
+        setPotion(chanceNum, size, dungeon);
         setTrap(chanceNum, size, dungeon);
         setArmor(chanceNum, size, dungeon);
         setExit(chanceNum, size, dungeon);
@@ -58,7 +58,7 @@ public class DungeonGenerator {
         weaponRoom.setItem(itemLibrary.WEAPONS[chanceNum.nextInt(itemLibrary.WEAPONS.length)]);
     }
 
-    void setHealthPotion(Random chanceNum, int size, RobertCircularlyLinkedList<Room> dungeon) {
+    void setPotion(Random chanceNum, int size, RobertCircularlyLinkedList<Room> dungeon) {
         ItemLibrary itemLibrary = new ItemLibrary();
         int healthPotionRoomIndex = chanceNum.nextInt(size);
         Room healthPotionRoom = dungeon.getValAtIndex(healthPotionRoomIndex);
