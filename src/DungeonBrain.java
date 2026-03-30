@@ -92,7 +92,7 @@ public class DungeonBrain {
             System.out.println("...and " + (5 * levelCount) + " attack points!\n");
 
 
-            generator.create(dungeon, (5 * levelCount));
+            generator.create(dungeon, (7 + (5 * levelCount)));
             generator.setRooms(dungeon);
             character.setCurrentRoom(dungeon.getHead());
         }

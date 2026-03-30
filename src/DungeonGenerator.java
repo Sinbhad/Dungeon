@@ -47,6 +47,7 @@ public class DungeonGenerator {
         enemyRoster.add(new Jenna());
         enemyRoster.add(new Joe());
         enemyRoster.add(new Marc());
+        enemyRoster.add(new Samir());
         return enemyRoster;
     }
 
@@ -102,7 +103,7 @@ public class DungeonGenerator {
             for (int i = 0; i < 2; i++) {
                 setEnemies(chanceNum, size, dungeon, enemyRoster);
             }
-        } else if(levelCount >= 4 && levelCount <= 6){
+        } else if(levelCount >= 4 && levelCount <= 7){
             for(int i = 0; i < 4; i++){
                 setEnemies(chanceNum, size, dungeon, enemyRoster);
             }
