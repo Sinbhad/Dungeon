@@ -63,7 +63,7 @@ public class DungeonBrain {
 
         currentRoomNode = character.getCurrentRoom();
         currentRoom = (Room) currentRoomNode.getValue();
-        if(currentRoom.getItem() != null && character.getHealth() != 0){
+        if(currentRoom.getItem() != null && character.getHealth() > 0){
             System.out.println("You found a chest!");
             character.openChest(keyboard);
         }
