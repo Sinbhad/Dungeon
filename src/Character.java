@@ -3,10 +3,8 @@ import java.util.Scanner;
 
 public class Character {
     private String name;
-    private int attack;
-    private double health;
-    private int speed;
-    private double defense;
+    private int attack, speed, roomsTraversed, enemiesDefeated;
+    private double health, defense;
     private Item weapon, armor;
     private Node currentRoom;
 
@@ -75,10 +73,26 @@ public class Character {
         return defense;
     }
 
+    public void setEnemiesDefeated(int enemiesDefeated){
+        this.enemiesDefeated = enemiesDefeated;
+    }
+
+    public int getEnemiesDefeated(){
+        return enemiesDefeated;
+    }
+
+    public void setRoomsTraversed(int roomsTraversed){
+        this.roomsTraversed = roomsTraversed;
+    }
+
+    public int getRoomsTraversed(){
+        return roomsTraversed;
+    }
+
     public void displayStats(){
         System.out.println(name);
-        System.out.println("Health Points " + health);
-        System.out.println("Attack Points " + attack);
+        System.out.println("Health Points: " + health);
+        System.out.println("Attack Points: " + attack);
         System.out.println("Weapon: " + weapon.getName());
         System.out.println("Armor: " + armor.getName());
     }
@@ -104,6 +118,8 @@ public class Character {
         } else {
             System.out.println("Invalid choice\n");
         }
+
+        this.setRoomsTraversed(this.getRoomsTraversed() + 1);
     }
 
     void openChest(Scanner keyboard){

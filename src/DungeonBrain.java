@@ -31,6 +31,12 @@ public class DungeonBrain {
                 enemy.move();
             }
         }
+
+        System.out.println("You have died...");
+        System.out.println("You have defeated " + rob.getEnemiesDefeated() + " enemies");
+        System.out.println("You have survived for " + levelCount + " levels");
+        System.out.println("You have traveled " + rob.getRoomsTraversed() + " rooms");
+        System.out.println("Better luck next time!");
     }
 
 
@@ -98,21 +104,19 @@ public class DungeonBrain {
         if(character.getSpeed() >= enemy.getSpeed()){
             enemy.setHealthValue(enemy.getHealthValue() - character.getAttack());
             System.out.println("You have hit " + enemy.getName() + " and did " + character.getAttack() + " damage\n");
-
-            character.setHealthValue(character.getHealth() - trueAttack);
-            System.out.println(enemy.getName() + " managed to get a hit in and did " + trueAttack + " damage\n\n");
-
-            if(character.getHealth() <= 0){
-                System.out.println("You have died...");
+            if(enemy.getHealthValue() <= 0){
+                System.out.println("Good job!");
+            }else{
+                character.setHealthValue(character.getHealth() - trueAttack);
+                System.out.println(enemy.getName() + " managed to get a hit in and did " + trueAttack + " damage\n\n");
             }
-
         }else{
             character.setHealthValue(character.getHealth() - trueAttack);
             System.out.println(enemy.getName() + " hit you, he did " + trueAttack + " damage\n");
             enemy.setHealthValue(enemy.getHealthValue() - character.getAttack());
 
             if(character.getHealth() <= 0){
-                System.out.println("You have died...");
+                System.out.println("oh no...");
             }else{
                 System.out.println("Luckily you swiped back, dealing " + character.getAttack() + " damage\n\n");
             }
@@ -121,6 +125,7 @@ public class DungeonBrain {
         if(enemy.getHealthValue() <= 0){
             System.out.println("You have defeated " + enemy.getName() + ", move along\n\n");
             removeRoom(dungeon, character, enemy);
+            character.setEnemiesDefeated(character.getEnemiesDefeated() + 1);
 
         }else{
             System.out.println("He ran off, better get them, " + enemy.getName() + " has " + enemy.getHealthValue() + " health remaining\n\n");
