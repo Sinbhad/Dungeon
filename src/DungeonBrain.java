@@ -34,7 +34,7 @@ public class DungeonBrain {
             }
         }
 
-        System.out.println("You have died...");
+        System.out.println("You have died...\n");
         System.out.println("You have defeated " + player.getEnemiesDefeated() + " enemies");
         System.out.println("You have survived for " + levelCount + " levels");
         System.out.println("You have traveled " + player.getRoomsTraversed() + " rooms");
@@ -129,7 +129,7 @@ public class DungeonBrain {
             removeRoom(dungeon, character, enemy);
             character.setEnemiesDefeated(character.getEnemiesDefeated() + 1);
 
-        }else{
+        }else if(character.getHealth() > 0){
             System.out.println("He ran off, better get them, " + enemy.getName() + " has " + enemy.getHealthValue() + " health remaining\n\n");
         }
     }
