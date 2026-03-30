@@ -8,7 +8,7 @@ public class ItemLibrary {
             new Potion("High Potion", "Healing Item", "restores 50 health points", 20, 0),
             new Potion("Mega Potion", "Healing Item", "restores 100 health points", 100, 0),
             new Potion("Ultimate Potion", "Healing Item", "restores 200 health points", 200, 0),
-            new Potion("Ho Lee Faq Potion", "Healing Item", "restores 500 health points", 500, 0),
+            new Potion("Ho Lee Phuq Potion", "Healing Item", "restores 500 health points", 500, 0),
 
             //Speed
             new Potion("Mini Speed Potion","Speed Up Item","increases speed by 15 points",0,15),
@@ -44,7 +44,7 @@ public class ItemLibrary {
 
     //Armor
     public final Armor[] ARMOR_PIECES = {
-            new Armor("Scraps Armor", "Armor", "increases defense by 5, does not decrease speed", 0, 5, 0),
+            new Armor("Scraps of Cloth", "Armor", "increases defense by 5, does not decrease speed", 0, 5, 0),
             new Armor("Leather Armor", "Armor", "increases defense by 10 and reduces speed by 5", 0, -5, .1),
             new Armor("Chain Mail", "Armor", "increases defense by 20 and reduces speed by 10", 0, -10, .2),
             new Armor("Knight's Armor", "Armor", "increases defense by 30 and reduces speed by 20", 0, -20, .3),
