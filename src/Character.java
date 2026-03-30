@@ -134,7 +134,7 @@ public class Character {
             int attack = this.getAttack();
 
             System.out.println("\nYou have opened the chest");
-            System.out.println("You have found a " + currentRoom.getItem().getName());
+            System.out.print("You have found a " + currentRoom.getItem().getName() + ", ");
             System.out.println("this " + currentRoom.getItem().getDescription() + "\n\n");
 
             if(currentRoom.getItem().getAttackValue() != 0){
@@ -144,6 +144,7 @@ public class Character {
             if(currentRoom.getItem().getHpValue() != 0){
                 int itemHp = currentRoom.getItem().getHpValue();
                 if(this.getHealth() < 500){
+                    this.setHealthValue(hp + itemHp);
                     if(this.getHealth() > 500){
                         this.setHealthValue(500);
                     }

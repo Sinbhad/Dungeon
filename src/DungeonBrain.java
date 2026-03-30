@@ -14,28 +14,30 @@ public class DungeonBrain {
         int roomCount = 7;
         int levelCount = 1;
 
-        Rob rob = new Rob();
+        Player player = new Player();
 
         ArrayList<Enemy> enemyRoster = generator.enemyRosterGenerator();
 
         generator.create(dungeon, roomCount);
         generator.setRooms(dungeon);
-        rob.setCurrentRoom(dungeon.getHead());
+        player.setCurrentRoom(dungeon.getHead());
 
         System.out.println("You have entered the dungeon");
+        System.out.print("Enter your name challenger :");
+        player.setName(keyboard.nextLine());
 
-        while(rob.getHealth() > 0){
-            rob.move(levelCount, keyboard);
-            levelCount = conditionCheck(dungeon, rob, levelCount, keyboard, enemyRoster);
+        while(player.getHealth() > 0){
+            player.move(levelCount, keyboard);
+            levelCount = conditionCheck(dungeon, player, levelCount, keyboard, enemyRoster);
             for (Enemy enemy : enemyRoster) {
                 enemy.move();
             }
         }
 
         System.out.println("You have died...");
-        System.out.println("You have defeated " + rob.getEnemiesDefeated() + " enemies");
+        System.out.println("You have defeated " + player.getEnemiesDefeated() + " enemies");
         System.out.println("You have survived for " + levelCount + " levels");
-        System.out.println("You have traveled " + rob.getRoomsTraversed() + " rooms");
+        System.out.println("You have traveled " + player.getRoomsTraversed() + " rooms");
         System.out.println("Better luck next time!");
     }
 
@@ -137,10 +139,10 @@ public class DungeonBrain {
 
         if(random == 0){
             character.setCurrentRoom(character.getCurrentRoom().getNextNode());
-            System.out.println("The room you once knew has disappeared!\nYou have been moved to the right.");
+            System.out.println("The room you once knew has disappeared!\nYou have been moved to the right.\n");
         }else{
             character.setCurrentRoom(character.getCurrentRoom().getLastNode());
-            System.out.println("The room you once knew has disappeared!\nYou have been moved to the left.");
+            System.out.println("The room you once knew has disappeared!\nYou have been moved to the left.\n");
         }
 
         Node enemyRoomNode = enemy.getCurrentRoom();

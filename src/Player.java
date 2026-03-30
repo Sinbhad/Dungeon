@@ -1,6 +1,6 @@
 
-public class Rob extends Character {
-    public Rob(){
+public class Player extends Character {
+    public Player(){
         setName("Rob");
         setAttackValue(40);
         setHealthValue(100);
