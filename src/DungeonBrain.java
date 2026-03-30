@@ -89,10 +89,10 @@ public class DungeonBrain {
             for(int i = enemyRoster.size() - 1; i > 0; i--){
                 enemyRoster.get(i).setAttackValue(enemyRoster.get(i).getAttackValue() + (5 * levelCount));
             }
-            System.out.println("...and " + (5 * levelCount)+ " attack points!\n");
+            System.out.println("...and " + (5 * levelCount) + " attack points!\n");
 
 
-            generator.create(dungeon, + (5 * levelCount));
+            generator.create(dungeon, (5 * levelCount));
             generator.setRooms(dungeon);
             character.setCurrentRoom(dungeon.getHead());
         }
