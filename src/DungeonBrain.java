@@ -17,13 +17,11 @@ public class DungeonBrain {
         int levelCount = 1;
 
         Player player = new Player();
-
         ArrayList<Enemy> enemyRoster = generator.enemyRosterGenerator();
 
         generator.create(dungeon, roomCount);
         generator.setRooms(dungeon);
         player.setCurrentRoom(dungeon.getHead());
-
 
 
         System.out.println("You have entered the dungeon");
@@ -204,22 +202,20 @@ public class DungeonBrain {
 
         if(choice == 1 && checkBread(character, speedPerk)){
             character.setSpeedValue((int) (character.getSpeed() + speedPerk.getValue()));
-        }
-        if(choice == 2 && checkBread(character, defensePerk)){
+        }else if(choice == 2 && checkBread(character, defensePerk)){
             character.setDefenseValue((character.getDefense() + defensePerk.getValue()));
-        }
-        if(choice == 3 && checkBread(character, healthPerk)){
+        }else if(choice == 3 && checkBread(character, healthPerk)){
             character.setHealthValue((int) (character.getHealth() + healthPerk.getValue()));
-        }
-        if(choice == 4 && checkBread(character, damagePerk)){
+        }else if(choice == 4 && checkBread(character, damagePerk)){
             character.setAttackValue((int) (character.getAttack() + damagePerk.getValue()));
-        }
-        if(choice == 5 && character.getCoins() >= 100){
+        }else if(choice == 5 && character.getCoins() >= 100){
             character.setCoins(character.getCoins() - 100);
             choosePerk(character);
-        }
-        if(choice == 0){
+        }else if(choice == 0){
             System.out.println("Moving on then, good luck!\n\n");
+        }else{
+            System.out.println("Invalid choice");
+            choosePerk(character);
         }
 
     }
