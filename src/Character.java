@@ -3,7 +3,7 @@ import java.util.Scanner;
 
 public class Character {
     private String name;
-    private int attack, speed, roomsTraversed, enemiesDefeated;
+    private int attack, speed, roomsTraversed, enemiesDefeated, coins;
     private double health, defense;
     private Item weapon, armor;
     private Node currentRoom;
@@ -89,12 +89,21 @@ public class Character {
         return roomsTraversed;
     }
 
+    public void setCoins(int coins){
+        this.coins = coins;
+    }
+
+    public int getCoins(){
+        return coins;
+    }
+
     public void displayStats(){
         System.out.println(name);
         System.out.println("Health Points: " + health);
         System.out.println("Attack Points: " + attack);
         System.out.println("Weapon: " + weapon.getName());
         System.out.println("Armor: " + armor.getName());
+        System.out.println("Coins: " + coins);
     }
 
     void move(int levelCount, Scanner keyboard) {

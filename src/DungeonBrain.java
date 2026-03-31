@@ -11,6 +11,8 @@ public class DungeonBrain {
         DungeonGenerator generator = new DungeonGenerator();
         Scanner keyboard = new Scanner(System.in);
         RobertCircularlyLinkedList<Room> dungeon = new RobertCircularlyLinkedList<>();
+        HighScoreDB highScoreDB = new HighScoreDB();
+        highScoreDB.initializeDatabase();
         int roomCount = 7;
         int levelCount = 1;
 
@@ -21,6 +23,8 @@ public class DungeonBrain {
         generator.create(dungeon, roomCount);
         generator.setRooms(dungeon);
         player.setCurrentRoom(dungeon.getHead());
+
+
 
         System.out.println("You have entered the dungeon");
         System.out.print("Enter your name challenger :");
@@ -39,6 +43,14 @@ public class DungeonBrain {
         System.out.println("You have survived for " + levelCount + " levels");
         System.out.println("You have traveled " + player.getRoomsTraversed() + " rooms");
         System.out.println("Better luck next time!");
+
+        int finalPoints = pointsCount(levelCount, player);
+        System.out.println("You have earned " + finalPoints + " points\n\n");
+
+        highScoreDB.saveStats(player.getName(), finalPoints);
+        highScoreDB.printHighScores();
+
+        playAgain(keyboard);
     }
 
 
@@ -78,8 +90,9 @@ public class DungeonBrain {
         if(currentRoom.getIsExit()){
             System.out.println("You have found the exit");
             System.out.println("welcome to the next level.\n");
-            System.out.println("You have gained nothing and your opponents are now stronger!");
+            System.out.println("You have gained 100 coins and your opponents are now stronger!");
             levelCount++;
+            character.setCoins(character.getCoins() + 100);
 
             for(int i = enemyRoster.size() - 1; i > 0; i--){
                 enemyRoster.get(i).setHealthValue(enemyRoster.get(i).getHealthValue() + (5 * levelCount));
@@ -95,6 +108,10 @@ public class DungeonBrain {
             generator.create(dungeon, (7 + (5 * levelCount)));
             generator.setRooms(dungeon);
             character.setCurrentRoom(dungeon.getHead());
+        }
+
+        if(levelCount % 5 == 0){
+            choosePerk(character);
         }
         return levelCount;
     }
@@ -147,6 +164,74 @@ public class DungeonBrain {
 
         Node enemyRoomNode = enemy.getCurrentRoom();
         dungeon.remove((Room)enemyRoomNode.getValue());
+    }
+
+    int pointsCount(int levelCount, Character character){
+        int points = 0;
+        points += levelCount * 100;
+        points += character.getEnemiesDefeated() * 1000;
+        points += character.getRoomsTraversed() * 50;
+        return points;
+    }
+
+    void playAgain(Scanner keyboard){
+        System.out.print("Would you like to play again? (y/n) :");
+        String playAgain = keyboard.nextLine();
+        if(playAgain.trim().equals("y")){
+            System.out.println("Let's play again!");
+            dungeonOperator();
+        }else{
+            System.out.println("Thanks for playing!");
+        }
+    }
+
+    void choosePerk(Character character){
+        int random = new Random().nextInt(2);
+        PerkLibrary perkLibrary = new PerkLibrary();
+        Perks speedPerk = perkLibrary.SPEED_PERKS[random];
+        Perks defensePerk = perkLibrary.DEFENSE_PERKS[random];
+        Perks healthPerk = perkLibrary.HEALTH_PERKS[random];
+        Perks damagePerk = perkLibrary.DAMAGE_PERKS[random];
+        System.out.println("Choose a perk");
+        System.out.println("1. :" + speedPerk.getPerkName() + " - " + speedPerk.getDescription());
+        System.out.println("2. :" + defensePerk.getPerkName() + " - " + defensePerk.getDescription());
+        System.out.println("3. :" + healthPerk.getPerkName() + " - " + healthPerk.getDescription());
+        System.out.println("4. :" + damagePerk.getPerkName() + " - " + damagePerk.getDescription());
+        System.out.println("5. :Reroll for 100 coins");
+        System.out.print("Enter your choice: (1-5) '0 to exit':");
+        Scanner keyboard = new Scanner(System.in);
+        int choice = keyboard.nextInt();
+
+        if(choice == 1 && checkBread(character, speedPerk)){
+            character.setSpeedValue((int) (character.getSpeed() + speedPerk.getValue()));
+        }
+        if(choice == 2 && checkBread(character, defensePerk)){
+            character.setDefenseValue((character.getDefense() + defensePerk.getValue()));
+        }
+        if(choice == 3 && checkBread(character, healthPerk)){
+            character.setHealthValue((int) (character.getHealth() + healthPerk.getValue()));
+        }
+        if(choice == 4 && checkBread(character, damagePerk)){
+            character.setAttackValue((int) (character.getAttack() + damagePerk.getValue()));
+        }
+        if(choice == 5 && character.getCoins() >= 100){
+            character.setCoins(character.getCoins() - 100);
+            choosePerk(character);
+        }
+        if(choice == 0){
+            System.out.println("Moving on then, good luck!\n\n");
+        }
+
+    }
+
+    boolean checkBread(Character character, Perks perk){
+        if(character.getCoins() >= perk.getCost()){
+            character.setCoins(character.getCoins() - perk.getCost());
+            return true;
+        }else{
+            System.out.println("You do not have enough coins to buy this perk");
+            return false;
+        }
     }
 
 }
