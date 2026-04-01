@@ -2,11 +2,12 @@ import lib.Node;
 import java.util.Random;
 
 public class Enemy extends Character {
-   public Enemy(String name, int attackValue, int healthValue, int speedValue){
+   public Enemy(String name, int attackValue, int healthValue, int speedValue, int coinsHad){
       setName(name);
       setAttackValue(attackValue);
       setHealthValue(healthValue);
       setSpeedValue(speedValue);
+      setCoins(coinsHad);
    }
 
    public Enemy(){
@@ -27,6 +28,10 @@ public class Enemy extends Character {
 
    public int getSpeedValue(){
       return super.getSpeed();
+   }
+
+   public int getCoins(){
+      return super.getCoins();
    }
 
    public void move() {

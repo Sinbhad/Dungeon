@@ -1,5 +1,5 @@
 public class Andrew extends Enemy{
     public Andrew(){
-        super("Andrew the Great", 100, 100, 100);
+        super("Andrew the Great", 100, 100, 100, 100);
     }
 }

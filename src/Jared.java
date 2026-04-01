@@ -1,6 +1,6 @@
 
 public class Jared extends Enemy{
     public Jared(){
-        super("Jared the Goblin", 10, 50, 40);
+        super("Jared the Goblin", 10, 50, 40, 25);
     }
 }

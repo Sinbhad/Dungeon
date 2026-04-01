@@ -140,9 +140,10 @@ public class DungeonBrain {
         }
 
         if(enemy.getHealthValue() <= 0){
-            System.out.println("You have defeated " + enemy.getName() + ", move along\n\n");
+            System.out.println("You have defeated " + enemy.getName() + " and gained " + enemy.getCoins() + " coins, move along\n\n");
             removeRoom(dungeon, character, enemy);
             character.setEnemiesDefeated(character.getEnemiesDefeated() + 1);
+            character.setCoins(character.getCoins() + enemy.getCoins());
 
         }else if(character.getHealth() > 0){
             System.out.println("He ran off, better get them, " + enemy.getName() + " has " + enemy.getHealthValue() + " health remaining\n\n");
