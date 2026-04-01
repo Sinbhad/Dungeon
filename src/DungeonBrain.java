@@ -185,12 +185,16 @@ public class DungeonBrain {
     }
 
     void choosePerk(Character character){
-        int random = new Random().nextInt(2);
+        Random random = new Random();
         PerkLibrary perkLibrary = new PerkLibrary();
-        Perks speedPerk = perkLibrary.SPEED_PERKS[random];
-        Perks defensePerk = perkLibrary.DEFENSE_PERKS[random];
-        Perks healthPerk = perkLibrary.HEALTH_PERKS[random];
-        Perks damagePerk = perkLibrary.DAMAGE_PERKS[random];
+        int speedIndex = random.nextInt(perkLibrary.SPEED_PERKS.length);
+        Perks speedPerk = perkLibrary.SPEED_PERKS[speedIndex];
+        int defenseIndex = random.nextInt(perkLibrary.DEFENSE_PERKS.length);
+        Perks defensePerk = perkLibrary.DEFENSE_PERKS[defenseIndex];
+        int healthIndex = random.nextInt(perkLibrary.HEALTH_PERKS.length);
+        Perks healthPerk = perkLibrary.HEALTH_PERKS[healthIndex];
+        int damageIndex = random.nextInt(perkLibrary.DAMAGE_PERKS.length);
+        Perks damagePerk = perkLibrary.DAMAGE_PERKS[damageIndex];
         System.out.println("Choose a perk");
         System.out.println("1. :" + speedPerk.getPerkName() + " - " + speedPerk.getDescription());
         System.out.println("2. :" + defensePerk.getPerkName() + " - " + defensePerk.getDescription());
