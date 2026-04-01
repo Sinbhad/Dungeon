@@ -25,8 +25,8 @@ public class DungeonBrain {
 
 
         System.out.println("You have entered the dungeon");
-        System.out.print("Enter your name challenger :");
-        player.setName(keyboard.nextLine());
+        System.out.print("Enter your name challenger : ");
+        player.setName(keyboard.nextLine().trim());
 
         while(player.getHealth() > 0){
             player.move(levelCount, keyboard);
@@ -59,7 +59,7 @@ public class DungeonBrain {
     int conditionCheck(RobertCircularlyLinkedList<Room> dungeon, Character character, int levelCount, Scanner keyboard, ArrayList<Enemy> enemyRoster){
         Node currentRoomNode = character.getCurrentRoom();
         Room currentRoom = (Room) currentRoomNode.getValue();
-        DungeonBrain dungeonBrain = new DungeonBrain();
+        Fight fight = new Fight();
 
 
         if(currentRoom.getIsExit()){
@@ -68,7 +68,7 @@ public class DungeonBrain {
         }
 
         if (currentRoom.getEnemyCharacter() != null) {
-            dungeonBrain.fight(dungeon, character, (Enemy) currentRoom.getEnemyCharacter());
+            fight.battle(dungeon, character, (Enemy) currentRoom.getEnemyCharacter(), levelCount);
         }
 
         currentRoomNode = character.getCurrentRoom();
@@ -114,57 +114,6 @@ public class DungeonBrain {
         return levelCount;
     }
 
-    void fight(RobertCircularlyLinkedList<Room> dungeon,Character character, Enemy enemy){
-
-        double trueAttack = enemy.getAttack() - (character.getDefense() * enemy.getAttack());
-        System.out.println("You have encountered " + enemy.getName() + ", hit him with all you got\n");
-        if(character.getSpeed() >= enemy.getSpeed()){
-            enemy.setHealthValue(enemy.getHealthValue() - character.getAttack());
-            System.out.println("You have hit " + enemy.getName() + " and did " + character.getAttack() + " damage\n");
-            if(enemy.getHealthValue() <= 0){
-                System.out.println("Good job!");
-            }else{
-                character.setHealthValue(character.getHealth() - trueAttack);
-                System.out.println(enemy.getName() + " managed to get a hit in and did " + trueAttack + " damage\n\n");
-            }
-        }else{
-            character.setHealthValue(character.getHealth() - trueAttack);
-            System.out.println(enemy.getName() + " hit you, he did " + trueAttack + " damage\n");
-            enemy.setHealthValue(enemy.getHealthValue() - character.getAttack());
-
-            if(character.getHealth() <= 0){
-                System.out.println("oh no...");
-            }else{
-                System.out.println("Luckily you swiped back, dealing " + character.getAttack() + " damage\n\n");
-            }
-        }
-
-        if(enemy.getHealthValue() <= 0){
-            System.out.println("You have defeated " + enemy.getName() + " and gained " + enemy.getCoins() + " coins, move along\n\n");
-            removeRoom(dungeon, character, enemy);
-            character.setEnemiesDefeated(character.getEnemiesDefeated() + 1);
-            character.setCoins(character.getCoins() + enemy.getCoins());
-
-        }else if(character.getHealth() > 0){
-            System.out.println("He ran off, better get them, " + enemy.getName() + " has " + enemy.getHealthValue() + " health remaining\n\n");
-        }
-    }
-
-    void removeRoom(RobertCircularlyLinkedList<Room> dungeon, Character character, Enemy enemy){
-        int random = new Random().nextInt(2);
-
-        if(random == 0){
-            character.setCurrentRoom(character.getCurrentRoom().getNextNode());
-            System.out.println("The room you once knew has disappeared!\nYou have been moved to the right.\n");
-        }else{
-            character.setCurrentRoom(character.getCurrentRoom().getLastNode());
-            System.out.println("The room you once knew has disappeared!\nYou have been moved to the left.\n");
-        }
-
-        Node enemyRoomNode = enemy.getCurrentRoom();
-        dungeon.remove((Room)enemyRoomNode.getValue());
-    }
-
     int pointsCount(int levelCount, Character character){
         int points = 0;
         points += levelCount * 100;
@@ -200,15 +149,24 @@ public class DungeonBrain {
         System.out.println("2. :" + defensePerk.getPerkName() + " - " + defensePerk.getDescription());
         System.out.println("3. :" + healthPerk.getPerkName() + " - " + healthPerk.getDescription());
         System.out.println("4. :" + damagePerk.getPerkName() + " - " + damagePerk.getDescription());
-        System.out.println("5. :Reroll for 100 coins");
-        System.out.print("Enter your choice: (1-5) '0 to exit':");
+        System.out.println("5. :Reroll for 100 coins\n\n");
+        System.out.println("You have " + character.getCoins() + " coins");
+        System.out.print("Enter your choice: (1-5) '0 to exit': ");
         Scanner keyboard = new Scanner(System.in);
         int choice = keyboard.nextInt();
 
         if(choice == 1 && checkBread(character, speedPerk)){
             character.setSpeedValue((int) (character.getSpeed() + speedPerk.getValue()));
         }else if(choice == 2 && checkBread(character, defensePerk)){
-            character.setDefenseValue((character.getDefense() + defensePerk.getValue()));
+            if(character.getArmorDefense() == 0.8){
+                System.out.println("You have already reached maximum defense, choose a different perk or move on");
+                choosePerk(character);
+            }
+            character.setArmorDefenseValue((character.getPerkDefense() + defensePerk.getValue()));
+            if(character.getTotalDefense() > 0.8){
+                character.setArmorDefenseValue(0.8);
+                System.out.println("Your defense value would exceed 80%, you have been set to 80% :(");
+            }
         }else if(choice == 3 && checkBread(character, healthPerk)){
             character.setHealthValue((int) (character.getHealth() + healthPerk.getValue()));
         }else if(choice == 4 && checkBread(character, damagePerk)){

@@ -4,7 +4,7 @@ import java.util.Scanner;
 public class Character {
     private String name;
     private int attack, speed, roomsTraversed, enemiesDefeated, coins;
-    private double health, defense;
+    private double health, armorDefense, perkDefense, totalDefense;
     private Item weapon, armor;
     private Node currentRoom;
 
@@ -65,12 +65,28 @@ public class Character {
         return armor;
     }
 
-    public void setDefenseValue(double defense){
-        this.defense = defense;
+    public void setArmorDefenseValue(double defense){
+        this.armorDefense = defense;
     }
 
-    public double getDefense(){
-        return defense;
+    public double getArmorDefense(){
+        return armorDefense;
+    }
+
+    public void setPerkDefenseValue(double defense){
+        this.perkDefense = defense;
+    }
+
+    public double getPerkDefense(){
+        return perkDefense;
+    }
+
+    public void setTotalDefense(double totalDefense){
+        this.totalDefense = totalDefense;
+    }
+
+    public double getTotalDefense(){
+        return totalDefense;
     }
 
     public void setEnemiesDefeated(int enemiesDefeated){
@@ -174,7 +190,10 @@ public class Character {
 
             if(currentRoom.getItem().getType() != null && currentRoom.getItem().getType().equals("Armor")){
                 this.setArmor(currentRoom.getItem());
-                this.setDefenseValue(currentRoom.getItem().getDefenseValue());
+                this.setArmorDefenseValue(currentRoom.getItem().getDefenseValue() + this.getPerkDefense());
+                if(this.getTotalDefense() > 0.8){
+                    this.setTotalDefense(0.8);
+                }
             }
 
             currentRoom.setItem(null);
