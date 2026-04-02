@@ -11,22 +11,23 @@ public class Fight {
         Scanner keyboard = new Scanner(System.in);
         System.out.println("You have encountered " + enemy.getName() + ", hit them with all you got\n");
         System.out.print("Would you like to attack or flee? (1/2): ");
-        int choice = 1;
-        while(enemy.getHealth() > 0 && choice != 2){
-            choice = attackSelect(dungeon, keyboard, character, enemy, levelCount);
-        }
+        attackSelect(dungeon, keyboard, character, enemy, levelCount);
     }
 
-    int attackSelect(RobertCircularlyLinkedList<Room> dungeon, Scanner keyboard, Character character, Enemy enemy, int levelCount){
-        int choice = keyboard.nextInt();
-        if (choice == 1) {
-            speedCheck(dungeon, character, enemy, keyboard);
-        } else if (choice == 2) {
-            System.out.println("Get out of here!");
-            enemy.move();
-            character.move(levelCount, keyboard);
+    void attackSelect(RobertCircularlyLinkedList<Room> dungeon, Scanner keyboard, Character character, Enemy enemy, int levelCount){
+        int choice = 1;
+        while (enemy.getHealth() > 0 && choice != 2) {
+            System.out.print("Would you like to attack or flee? (1/2): ");
+            choice = keyboard.nextInt();
+
+            if (choice == 1) {
+                speedCheck(dungeon, character, enemy, keyboard);
+            } else if (choice == 2) {
+                System.out.println("Get out of here!");
+                enemy.move();
+                character.move(levelCount, keyboard);
+            }
         }
-        return choice;
     }
 
     void speedCheck(RobertCircularlyLinkedList<Room> dungeon, Character character, Enemy enemy, Scanner keyboard){
@@ -46,7 +47,6 @@ public class Fight {
                     character.openChest(keyboard);
                 }
                 removeRoom(dungeon, character, enemy);
-                return;
             }
 
             System.out.println(enemy.getName() + " hit you back dealing " + enemy.getAttackValue() + " damage\n");
