@@ -47,6 +47,7 @@ public class Fight {
                     character.openChest(keyboard);
                 }
                 removeRoom(dungeon, character, enemy);
+                return;
             }
 
             System.out.println(enemy.getName() + " hit you back dealing " + enemy.getAttackValue() + " damage\n");
