@@ -16,7 +16,7 @@ public class Fight {
 
     void attackSelect(RobertCircularlyLinkedList<Room> dungeon, Scanner keyboard, Character character, Enemy enemy, int levelCount){
         int choice = 1;
-        while (enemy.getHealth() > 0 && choice != 2) {
+        while ((enemy.getHealth() > 0 && character.getHealth() > 0) && choice != 2 ) {
             System.out.print("Would you like to attack or flee? (1/2): ");
             choice = keyboard.nextInt();
 
