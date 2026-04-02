@@ -123,7 +123,7 @@ public class DungeonBrain {
     }
 
     void playAgain(Scanner keyboard){
-        System.out.print("Would you like to play again? (y/n) :");
+        System.out.print("Would you like to play again? (y/n) : ");
         String playAgain = keyboard.nextLine();
         if(playAgain.trim().equals("y")){
             System.out.println("Let's play again!");
