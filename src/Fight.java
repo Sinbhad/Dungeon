@@ -11,10 +11,13 @@ public class Fight {
         Scanner keyboard = new Scanner(System.in);
         System.out.println("You have encountered " + enemy.getName() + ", hit them with all you got\n");
         System.out.print("Would you like to attack or flee? (1/2): ");
-        attackSelect(dungeon, keyboard, character, enemy, levelCount);
+        int choice = 1;
+        while(enemy.getHealth() > 0 && choice != 2){
+            choice = attackSelect(dungeon, keyboard, character, enemy, levelCount);
+        }
     }
 
-    void attackSelect(RobertCircularlyLinkedList<Room> dungeon, Scanner keyboard, Character character, Enemy enemy, int levelCount){
+    int attackSelect(RobertCircularlyLinkedList<Room> dungeon, Scanner keyboard, Character character, Enemy enemy, int levelCount){
         int choice = keyboard.nextInt();
         if (choice == 1) {
             speedCheck(dungeon, character, enemy, keyboard);
@@ -23,6 +26,7 @@ public class Fight {
             enemy.move();
             character.move(levelCount, keyboard);
         }
+        return choice;
     }
 
     void speedCheck(RobertCircularlyLinkedList<Room> dungeon, Character character, Enemy enemy, Scanner keyboard){
@@ -33,6 +37,7 @@ public class Fight {
             enemy.setHealthValue(enemy.getHealth() - character.getAttack());
 
             if(enemy.getHealth() <= 0){
+                System.out.println("Success! You have beaten " + enemy.getName());
                 System.out.println("For defeating " + enemy.getName() + " you have gained " + enemy.getCoins() + " coins\n");
                 character.setCoins(character.getCoins() + enemy.getCoins());
                 character.setEnemiesDefeated(character.getEnemiesDefeated() + 1);
