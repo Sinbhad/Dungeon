@@ -37,7 +37,7 @@ public class Fight {
         double trueAttack = enemy.getAttack() - (character.getTotalDefense() * enemy.getAttack());
 
         if(character.getSpeed() > enemy.getSpeed()){
-            System.out.println("You hit " + enemy.getName() + " dealing " + character.getAttack() + " damage\n");
+            System.out.println("\nYou hit " + enemy.getName() + " dealing " + character.getAttack() + " damage\n");
             enemy.setHealthValue(enemy.getHealth() - character.getAttack());
 
             if(enemy.getHealth() <= 0){
@@ -55,11 +55,15 @@ public class Fight {
 
             System.out.println(enemy.getName() + " hit you back dealing " + enemy.getAttackValue() + " damage\n");
             character.setHealthValue(character.getHealth() - trueAttack);
+            System.out.println("You have " + character.getHealth() + " remaining");
+            System.out.println(enemy.getName() + "has " + enemy.getHealth() + " remaining");
+
             if(character.getHealth() <= 0){
                 System.out.println("oh no...");
             }
+
         } else {
-            System.out.println(enemy.getName() + " is faster than you and attacks first\n");
+            System.out.println("\n" + enemy.getName() + " is faster than you and attacks first\n");
             System.out.println(enemy.getName() + " hit you dealing " + enemy.getAttackValue() + " damage\n");
             character.setHealthValue(character.getHealth() - trueAttack);
 
@@ -70,6 +74,10 @@ public class Fight {
 
             System.out.println("You hit " + enemy.getName() + " dealing " + character.getAttack() + " damage\n");
             enemy.setHealthValue(enemy.getHealth() - character.getAttack());
+            System.out.println("You have " + character.getHealth() + " remaining");
+            System.out.println(enemy.getName() + "has " + enemy.getHealth() + " remaining");
+
+
             if(enemy.getHealth() <= 0){
                 System.out.println("For defeating " + enemy.getName() + " you have gained " + enemy.getCoins() + " coins\n");
                 character.setCoins(character.getCoins() + enemy.getCoins());
