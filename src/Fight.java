@@ -26,6 +26,9 @@ public class Fight {
                 System.out.println("Get out of here!");
                 enemy.move();
                 character.move(levelCount, keyboard);
+            }else{
+                System.out.println("Invalid choice!");
+                attackSelect(dungeon, keyboard,  character, enemy, levelCount);
             }
         }
     }
