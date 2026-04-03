@@ -15,16 +15,21 @@ public class Fight {
     }
 
     void attackSelect(RobertCircularlyLinkedList<Room> dungeon, Scanner keyboard, Character character, Enemy enemy, int levelCount){
-        String choice = keyboard.nextLine();
-        if (Integer.parseInt(choice) == 1) {
-            speedCheck(dungeon, character, enemy, keyboard);
-        } else if (Integer.parseInt(choice) == 2) {
-            System.out.println("Get out of here!");
-            enemy.move();
-            character.move(levelCount, keyboard);
-        }else{
-            System.out.println("Wrong choice!");
-            speedCheck(dungeon,character,enemy, keyboard);
+        String choice = "A";
+        while ((enemy.getHealth() > 0 && character.getHealth() > 0) && !choice.equalsIgnoreCase("F")) {
+            System.out.print("Would you like to attack or flee? (A/F): ");
+            choice = keyboard.nextLine();
+
+            if (choice.trim().equalsIgnoreCase("A")) {
+                speedCheck(dungeon, character, enemy, keyboard);
+            } else if (choice.trim().equalsIgnoreCase("F")) {
+                System.out.println("Get out of here!");
+                enemy.move();
+                character.move(levelCount, keyboard);
+            }else{
+                System.out.println("Invalid choice!");
+                attackSelect(dungeon, keyboard,  character, enemy, levelCount);
+            }
         }
     }
 
@@ -32,10 +37,11 @@ public class Fight {
         double trueAttack = enemy.getAttack() - (character.getTotalDefense() * enemy.getAttack());
 
         if(character.getSpeed() > enemy.getSpeed()){
-            System.out.println("You hit " + enemy.getName() + " dealing " + character.getAttack() + " damage\n");
+            System.out.println("\nYou hit " + enemy.getName() + " dealing " + character.getAttack() + " damage\n");
             enemy.setHealthValue(enemy.getHealth() - character.getAttack());
 
             if(enemy.getHealth() <= 0){
+                System.out.println("Success! You have beaten " + enemy.getName());
                 System.out.println("For defeating " + enemy.getName() + " you have gained " + enemy.getCoins() + " coins\n");
                 character.setCoins(character.getCoins() + enemy.getCoins());
                 character.setEnemiesDefeated(character.getEnemiesDefeated() + 1);
@@ -49,11 +55,17 @@ public class Fight {
 
             System.out.println(enemy.getName() + " hit you back dealing " + enemy.getAttackValue() + " damage\n");
             character.setHealthValue(character.getHealth() - trueAttack);
+
+
             if(character.getHealth() <= 0){
                 System.out.println("oh no...");
+                return;
             }
+            System.out.println("You have " + character.getHealth() + " health remaining");
+            System.out.println(enemy.getName() + " has " + enemy.getHealth() + " remaining");
+
         } else {
-            System.out.println(enemy.getName() + " is faster than you and attacks first\n");
+            System.out.println("\n" + enemy.getName() + " is faster than you and attacks first\n");
             System.out.println(enemy.getName() + " hit you dealing " + enemy.getAttackValue() + " damage\n");
             character.setHealthValue(character.getHealth() - trueAttack);
 
@@ -64,11 +76,16 @@ public class Fight {
 
             System.out.println("You hit " + enemy.getName() + " dealing " + character.getAttack() + " damage\n");
             enemy.setHealthValue(enemy.getHealth() - character.getAttack());
+
             if(enemy.getHealth() <= 0){
                 System.out.println("For defeating " + enemy.getName() + " you have gained " + enemy.getCoins() + " coins\n");
                 character.setCoins(character.getCoins() + enemy.getCoins());
                 removeRoom(dungeon, character, enemy);
+                return;
             }
+
+            System.out.println("You have " + character.getHealth() + " health remaining");
+            System.out.println(enemy.getName() + " has " + enemy.getHealth() + " remaining");
         }
     }
 
