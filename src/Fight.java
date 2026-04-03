@@ -61,7 +61,7 @@ public class Fight {
                 return;
             }
             System.out.println("You have " + character.getHealth() + " health remaining");
-            System.out.println(enemy.getName() + " has " + enemy.getHealth() + " remaining");
+            System.out.println(enemy.getName() + " has " + enemy.getHealth() + " remaining\n");
 
         } else {
             System.out.println("\n" + enemy.getName() + " is faster than you and attacks first\n");
@@ -79,6 +79,7 @@ public class Fight {
             if(enemy.getHealth() <= 0){
                 System.out.println("For defeating " + enemy.getName() + " you have gained " + enemy.getCoins() + " coins\n");
                 character.setCoins(character.getCoins() + enemy.getCoins());
+                character.setEnemiesDefeated(character.getEnemiesDefeated() + 1);
                 removeRoom(dungeon, character, enemy);
                 return;
             }
