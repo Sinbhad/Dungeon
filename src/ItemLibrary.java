@@ -19,6 +19,7 @@ public class ItemLibrary {
             //Healing and Speed
             new Potion("Swift Life Potion", "Extended Healing Item", "increases speed and health by 20 points each", 20, 20),
             new Potion("Fast Life Potion", "Extended Healing Item", "increases speed and health by 40 points each", 40, 40),
+            new Potion("Cheesebureger Deluxe", "Extended Healing Item", "increases health by 60 points but reduces speed by 10", 60, -10),
             new Potion("Breakneck Life Potion", "Extended Healing Item", "increases speed and health by 100 points each", 100,100)
 
     };
@@ -39,6 +40,7 @@ public class ItemLibrary {
             new Weapon("Mace", "Weapon", "increases damage by 10 but decreases speed by 5", 10, -5),
             new Weapon("Hammer", "Weapon", "increases damage by 20 but decreases speed by 10", 20, -10),
             new Weapon("Two Handed Hammer", "Weapon", "increases damage by 60 but decreases speed by 15", 60, -15),
+            new Weapon("15 in 1 Tactical Walking Stick", "Weapon", "increases damage by 150 and increases speed by 30", 150, 30),
             new Weapon("Mage's Staff", "Weapon", "increases damage by 300, does not decrease speed", 300, 0),
     };
 
