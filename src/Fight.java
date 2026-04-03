@@ -15,14 +15,14 @@ public class Fight {
     }
 
     void attackSelect(RobertCircularlyLinkedList<Room> dungeon, Scanner keyboard, Character character, Enemy enemy, int levelCount){
-        String choice = "1";
-        while ((enemy.getHealth() > 0 && character.getHealth() > 0) && Integer.parseInt(choice) != 2 ) {
-            System.out.print("Would you like to attack or flee? (1/2): ");
+        String choice = "A";
+        while ((enemy.getHealth() > 0 && character.getHealth() > 0) && !choice.equalsIgnoreCase("F")) {
+            System.out.print("Would you like to attack or flee? (A/F): ");
             choice = keyboard.nextLine();
 
-            if (Integer.parseInt(choice) == 1) {
+            if (choice.trim().equalsIgnoreCase("A")) {
                 speedCheck(dungeon, character, enemy, keyboard);
-            } else if (Integer.parseInt(choice) == 2) {
+            } else if (choice.trim().equalsIgnoreCase("F")) {
                 System.out.println("Get out of here!");
                 enemy.move();
                 character.move(levelCount, keyboard);
