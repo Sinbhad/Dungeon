@@ -59,7 +59,7 @@ public class DungeonBrain {
         Fight fight = new Fight();
 
         if(character.getRoomsTraversed() % 15 == 0 && character.getRoomsTraversed() != 0){
-            tinkleBreak(character);
+            tinkleBreak(character, enemyRoster);
         }
 
         if(currentRoom.getIsExit()){
@@ -86,7 +86,7 @@ public class DungeonBrain {
         }
     }
 
-    void tinkleBreak(Character character){
+    void tinkleBreak(Character character, ArrayList<Enemy> enemyRoster){
         System.out.println(character.getName() + " had to tinkle, stopping for a break...\n");
         moveEnemies(enemyRoster);
         if(character.getPotionsConsumed() > 3){

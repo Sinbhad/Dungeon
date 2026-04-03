@@ -8,7 +8,7 @@ public class Character {
     private Item weapon, armor;
     private Node currentRoom;
 
-    public character(){
+    public Character(){
         this.name = "";
         this.attack = 0;
         this.health = 0;
@@ -107,7 +107,7 @@ public class Character {
     }
 
     public double getTotalDefense(){
-        return totalDefense;
+        return armorDefense + perkDefense;
     }
 
     public void setEnemiesDefeated(int enemiesDefeated){
@@ -134,20 +134,20 @@ public class Character {
         return coins;
     }
 
-    public void setWeaponAttack(weaponAttack){
+    public void setWeaponAttack(int weaponAttack){
         this.weaponAttack = this.weapon.getAttackValue();
     }
 
-    public int getWeaponAttackValue(){
+    public int getWeaponAttack(){
         return weaponAttack;
     }
 
-    public void setTotalAttack(int toatalDefense){
-        this.totalDefense = totalDefense;
+    public void setTotalAttack(int totalAttack){
+        this.totalAttack = totalAttack;
     }
 
     public int getTotalAttack(){
-        return totalAttack;
+        return weaponAttack + attack;
     }    
 
     public void setPotionsConsumed(int potionsConsumed){
@@ -232,8 +232,8 @@ public class Character {
             }
             if(currentRoom.getItem().getType() != null && currentRoom.getItem().getType().equals("Weapon")){
                 this.setWeapon(currentRoom.getItem());
-                this.setWeaponAttack(currenRoom.getItem.getAttackValue());
-                this.setTotalAttack(attackValue + weaponAttack);
+                this.setWeaponAttack(currentRoom.getItem().getAttackValue());
+                this.setTotalAttack(this.getAttack() + this.getWeaponAttack());
             }
 
             if(currentRoom.getItem().getType() != null && currentRoom.getItem().getType().equals("Armor")){
