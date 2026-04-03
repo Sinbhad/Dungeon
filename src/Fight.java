@@ -37,7 +37,7 @@ public class Fight {
 
         if(character.getSpeed() > enemy.getSpeed()){
             System.out.println("\nYou hit " + enemy.getName() + " dealing " + character.getAttack() + " damage\n");
-            enemy.setHealthValue(enemy.getHealth() - character.getAttack());
+            enemy.setHealthValue(enemy.getHealth() - trueAttack);
 
             if(enemy.getHealth() <= 0){
                 System.out.println("Success! You have beaten " + enemy.getName());
