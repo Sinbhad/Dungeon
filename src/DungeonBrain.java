@@ -30,8 +30,10 @@ public class DungeonBrain {
 
         while(player.getHealth() > 0){
             levelCount = conditionCheck(dungeon, player, levelCount, keyboard, enemyRoster);
-            player.move(levelCount, keyboard);
-            moveEnemies(enemyRoster);
+            if(player.getHealth() > 0){
+                player.move(levelCount, keyboard);
+                moveEnemies(enemyRoster);
+            }
         }
 
         System.out.println("You have died...\n");
