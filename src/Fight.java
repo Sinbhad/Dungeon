@@ -10,7 +10,6 @@ public class Fight {
     void battle(RobertCircularlyLinkedList<Room> dungeon, Character character, Enemy enemy, int levelCount){
         Scanner keyboard = new Scanner(System.in);
         System.out.println("You have encountered " + enemy.getName() + ", hit them with all you got\n");
-        System.out.print("Would you like to attack or flee? (1/2): ");
         attackSelect(dungeon, keyboard, character, enemy, levelCount);
     }
 
