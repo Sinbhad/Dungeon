@@ -29,8 +29,8 @@ public class DungeonBrain {
         player.setName(keyboard.nextLine().trim());
 
         while(player.getHealth() > 0){
-            player.move(levelCount, keyboard);
             levelCount = conditionCheck(dungeon, player, levelCount, keyboard, enemyRoster);
+            player.move(levelCount, keyboard);
             for (Enemy enemy : enemyRoster) {
                 enemy.move();
             }
