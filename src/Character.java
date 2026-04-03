@@ -3,7 +3,7 @@ import java.util.Scanner;
 
 public class Character {
     private String name;
-    private int attack, speed, roomsTraversed, enemiesDefeated, coins;
+    private int attack, weaponAttack, totalAttack, speed, roomsTraversed, enemiesDefeated, coins;
     private double health, armorDefense, perkDefense, totalDefense;
     private Item weapon, armor;
     private Node currentRoom;
@@ -113,6 +113,22 @@ public class Character {
         return coins;
     }
 
+    public void setWeaponAttack(weaponAttack){
+        this.weaponAttack = this.weapon.getAttackValue();
+    }
+
+    public int getWeaponAttackValue(){
+        return weaponAttack;
+    }
+
+    public void setTotalAttack(int toatalDefense){
+        this.totalDefense = totalDefense;
+    }
+
+    public int getTotalAttack(){
+        return totalAttack;
+    }    
+
     public void displayStats(){
         System.out.println(name);
         System.out.println("Health Points: " + health);
@@ -185,7 +201,8 @@ public class Character {
             }
             if(currentRoom.getItem().getType() != null && currentRoom.getItem().getType().equals("Weapon")){
                 this.setWeapon(currentRoom.getItem());
-                this.setAttackValue(40 + currentRoom.getItem().getAttackValue());
+                this.setWeaponAttack(currenRoom.getItem.getAttackValue());
+                this.setTotalAttack(attackValue + weaponAttack);
             }
 
             if(currentRoom.getItem().getType() != null && currentRoom.getItem().getType().equals("Armor")){

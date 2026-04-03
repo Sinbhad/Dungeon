@@ -33,11 +33,11 @@ public class Fight {
     }
 
     void speedCheck(RobertCircularlyLinkedList<Room> dungeon, Character character, Enemy enemy, Scanner keyboard){
-        double trueAttack = enemy.getAttack() - (character.getTotalDefense() * enemy.getAttack());
+        double trueEnemyAttack = enemy.getAttack() - (character.getTotalDefense() * enemy.getAttack());
 
         if(character.getSpeed() > enemy.getSpeed()){
-            System.out.println("\nYou hit " + enemy.getName() + " dealing " + character.getAttack() + " damage\n");
-            enemy.setHealthValue(enemy.getHealth() - trueAttack);
+            System.out.println("\nYou hit " + enemy.getName() + " dealing " + character.getTotalAttack() + " damage\n");
+            enemy.setHealthValue(enemy.getHealth() - character.getTotalAttack());
 
             if(enemy.getHealth() <= 0){
                 System.out.println("Success! You have beaten " + enemy.getName());
@@ -53,7 +53,7 @@ public class Fight {
             }
 
             System.out.println(enemy.getName() + " hit you back dealing " + enemy.getAttackValue() + " damage\n");
-            character.setHealthValue(character.getHealth() - trueAttack);
+            character.setHealthValue(character.getHealth() - trueEnemyAttack);
 
 
             if(character.getHealth() <= 0){
@@ -66,15 +66,15 @@ public class Fight {
         } else {
             System.out.println("\n" + enemy.getName() + " is faster than you and attacks first\n");
             System.out.println(enemy.getName() + " hit you dealing " + enemy.getAttackValue() + " damage\n");
-            character.setHealthValue(character.getHealth() - trueAttack);
+            character.setHealthValue(character.getHealth() - trueEnemyAttack);
 
             if(character.getHealth() <= 0){
                 System.out.println("oh no...");
                 return;
             }
 
-            System.out.println("You hit " + enemy.getName() + " dealing " + character.getAttack() + " damage\n");
-            enemy.setHealthValue(enemy.getHealth() - character.getAttack());
+            System.out.println("You hit " + enemy.getName() + " dealing " + character.getTotalAttack() + " damage\n");
+            enemy.setHealthValue(enemy.getHealth() - character.getTotalAttack());
 
             if(enemy.getHealth() <= 0){
                 System.out.println("For defeating " + enemy.getName() + " you have gained " + enemy.getCoins() + " coins\n");
