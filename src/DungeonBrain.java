@@ -31,9 +31,7 @@ public class DungeonBrain {
         while(player.getHealth() > 0){
             levelCount = conditionCheck(dungeon, player, levelCount, keyboard, enemyRoster);
             player.move(levelCount, keyboard);
-            for (Enemy enemy : enemyRoster) {
-                enemy.move();
-            }
+            moveEnemies(enemyRoster);
         }
 
         System.out.println("You have died...\n");
@@ -54,13 +52,15 @@ public class DungeonBrain {
 
 
 
-
-
+    
     int conditionCheck(RobertCircularlyLinkedList<Room> dungeon, Character character, int levelCount, Scanner keyboard, ArrayList<Enemy> enemyRoster){
         Node currentRoomNode = character.getCurrentRoom();
         Room currentRoom = (Room) currentRoomNode.getValue();
         Fight fight = new Fight();
 
+        if(character.getRoomsTraversed() % 15 == 0 && character.getRoomsTraversed() != 0){
+            tinkleBreak(character);
+        }
 
         if(currentRoom.getIsExit()){
             levelCount = exitRoom(dungeon, character, levelCount, enemyRoster);
@@ -78,6 +78,22 @@ public class DungeonBrain {
             character.openChest(keyboard);
         }
         return levelCount;
+    }
+
+    void moveEnemies(ArrayList<Enemy> enemyRoster){
+        for (Enemy enemy : enemyRoster) {
+            enemy.move();
+        }
+    }
+
+    void tinkleBreak(Character character){
+        System.out.println(character.getName() + " had to tinkle, stopping for a break...\n");
+        moveEnemies(enemyRoster);
+        if(character.getPotionsConsumed() > 3){
+            character.setPotionsConsumed(0);
+            System.out.println("Wow, that hurt! You just passed a kidney stone, you have lost 10 health points :(\n");
+            character.setHealthValue(character.getHealth() - 10);
+        }
     }
 
     int exitRoom(RobertCircularlyLinkedList<Room> dungeon, Character character, int levelCount, ArrayList<Enemy> enemyRoster){
@@ -192,6 +208,8 @@ public class DungeonBrain {
             return false;
         }
     }
+
+    
 
 }
 

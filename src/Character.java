@@ -3,11 +3,32 @@ import java.util.Scanner;
 
 public class Character {
     private String name;
-    private int attack, weaponAttack, totalAttack, speed, roomsTraversed, enemiesDefeated, coins;
+    private int attack, weaponAttack, totalAttack, speed, roomsTraversed, enemiesDefeated, coins, potionsConsumed;
     private double health, armorDefense, perkDefense, totalDefense;
     private Item weapon, armor;
     private Node currentRoom;
 
+    public character(){
+        this.name = "";
+        this.attack = 0;
+        this.health = 0;
+        this.speed = 0;
+        this.coins = 0;
+        this.weapon = null;
+        this.armor = null;
+        this.currentRoom = null;
+    }
+
+    public Character(String name, int attack, double health, int speed, int coinsHad){
+        this.name = name;
+        this.attack = attack;
+        this.health = health;
+        this.speed = speed;
+        this.coins = coinsHad;
+        this.weapon = null;
+        this.armor = null;
+        this.currentRoom = null;
+    }
 
     public void setName(String name){
         this.name = name;
@@ -129,6 +150,14 @@ public class Character {
         return totalAttack;
     }    
 
+    public void setPotionsConsumed(int potionsConsumed){
+        this.potionsConsumed = potionsConsumed;
+    }
+
+    public int getPotionsConsumed(){
+        return potionsConsumed;
+    }
+
     public void displayStats(){
         System.out.println(name);
         System.out.println("Health Points: " + health);
@@ -189,8 +218,10 @@ public class Character {
                     if(this.getHealth() > 500){
                         this.setHealthValue(500);
                     }
+                    this.setPotionsConsumed(this.getPotionsConsumed() + 1);
                 }else if(this.getHealth() == 500 && itemHp < 0){
                     this.setHealthValue(hp + itemHp);
+                    this.setPotionsConsumed(this.getPotionsConsumed() + 1);
                 }else{
                     System.out.println("You have already reached maximum health, no effect\n");
                 }
