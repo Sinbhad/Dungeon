@@ -109,20 +109,16 @@ public class DungeonBrain {
             System.out.println("You have gained 100 coins and your opponents are now stronger!");
             levelCount++;
             character.setCoins(character.getCoins() + 100);
-
-            for(int i = enemyRoster.size() - 1; i > 0; i--){
-                enemyRoster.get(i).setHealthValue(enemyRoster.get(i).getHealthValue() + (5 * levelCount));
-            }
             System.out.println("The enemy has gained " + (5 * levelCount) + " health points");
-
-            for(int i = enemyRoster.size() - 1; i > 0; i--){
-                enemyRoster.get(i).setAttackValue(enemyRoster.get(i).getAttackValue() + (5 * levelCount));
-            }
             System.out.println("...and " + (5 * levelCount) + " attack points!\n");
-
-
             generator.create(dungeon, (7 + (5 * levelCount)));
             generator.setRooms(dungeon);
+            for(Enemy enemy : enemyRoster){
+                enemy.setHealthValue(enemy.getHealthValue() + (5 * levelCount));
+            }
+            for(Enemy enemy: enemyRoster){
+                enemy.setAttackValue(enemy.getAttackValue() + (5 * levelCount));
+            }
             character.setCurrentRoom(dungeon.getHead());
         }
 
@@ -176,13 +172,13 @@ public class DungeonBrain {
         if(choice == 1 && checkBread(character, speedPerk)){
             character.setSpeedValue((int) (character.getSpeed() + speedPerk.getValue()));
         }else if(choice == 2 && checkBread(character, defensePerk)){
-            if(character.getArmorDefense() == 0.8){
+            if(character.getTotalDefense() == 0.8){
                 System.out.println("You have already reached maximum defense, choose a different perk or move on");
                 choosePerk(character);
             }
-            character.setArmorDefenseValue((character.getPerkDefense() + defensePerk.getValue()));
+            character.setTotalDefense(character.getArmorDefense() , (character.getPerkDefense() + defensePerk.getValue()));
             if(character.getTotalDefense() > 0.8){
-                character.setArmorDefenseValue(0.8);
+                character.setTotalDefense(0.8, 0);
                 System.out.println("Your defense value would exceed 80%, you have been set to 80% :(");
             }
         }else if(choice == 3 && checkBread(character, healthPerk)){

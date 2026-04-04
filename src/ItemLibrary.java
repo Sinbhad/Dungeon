@@ -19,7 +19,7 @@ public class ItemLibrary {
             //Healing and Speed
             new Potion("Swift Life Potion", "Extended Healing Item", "increases speed and health by 20 points each", 20, 20),
             new Potion("Fast Life Potion", "Extended Healing Item", "increases speed and health by 40 points each", 40, 40),
-            new Potion("Cheesebureger Deluxe", "Extended Healing Item", "increases health by 60 points but reduces speed by 10", 60, -10),
+            new Potion("Cheeseburger Deluxe", "Extended Healing Item", "increases health by 60 points but reduces speed by 10", 60, -10),
             new Potion("Breakneck Life Potion", "Extended Healing Item", "increases speed and health by 100 points each", 100,100)
 
     };

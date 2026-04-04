@@ -1,4 +1,5 @@
 import lib.Node;
+import lib.RobertHolder;
 import java.util.Scanner;
 
 public class Character {
@@ -6,6 +7,7 @@ public class Character {
     private int attack, weaponAttack, totalAttack, speed, roomsTraversed, enemiesDefeated, coins, potionsConsumed;
     private double health, armorDefense, perkDefense, totalDefense;
     private Item weapon, armor;
+    private RobertHolder<Item> inventory;
     private Node currentRoom;
 
     public Character(){
@@ -17,9 +19,10 @@ public class Character {
         this.weapon = null;
         this.armor = null;
         this.currentRoom = null;
+        this.inventory = null;
     }
 
-    public Character(String name, int attack, double health, int speed, int coinsHad){
+    public Character(String name, int attack, double health, int speed, int coinsHad, RobertHolder<Item> inventory){
         this.name = name;
         this.attack = attack;
         this.health = health;
@@ -28,6 +31,7 @@ public class Character {
         this.weapon = null;
         this.armor = null;
         this.currentRoom = null;
+        this.inventory = inventory;
     }
 
     public void setName(String name){
@@ -102,8 +106,8 @@ public class Character {
         return perkDefense;
     }
 
-    public void setTotalDefense(double totalDefense){
-        this.totalDefense = totalDefense;
+    public void setTotalDefense(double armorDefense, double perkDefense){
+        this.totalDefense = armorDefense + perkDefense;
     }
 
     public double getTotalDefense(){
@@ -139,15 +143,15 @@ public class Character {
     }
 
     public int getWeaponAttack(){
-        return weaponAttack;
+        return this.weapon.getAttackValue();
     }
 
-    public void setTotalAttack(int totalAttack){
-        this.totalAttack = totalAttack;
+    public void setTotalAttack(int attack, int weaponAttack){
+        this.totalAttack = attack + weaponAttack;
     }
 
     public int getTotalAttack(){
-        return weaponAttack + attack;
+        return attack + weaponAttack;
     }    
 
     public void setPotionsConsumed(int potionsConsumed){
@@ -158,7 +162,8 @@ public class Character {
         return potionsConsumed;
     }
 
-    public void displayStats(){
+
+    void displayStats(){
         System.out.println(name);
         System.out.println("Health Points: " + health);
         System.out.println("Attack Points: " + attack);
@@ -174,7 +179,8 @@ public class Character {
         System.out.println(currentRoom.getName() + ": Level " + levelCount);
         this.displayStats();
 
-        System.out.print("\n\nWould you like to move left or right? (l/r) : ");
+        System.out.println("\n\nEnter I to display inventory");
+        System.out.print("Would you like to move left or right? (L/R) : ");
         String choice = keyboard.nextLine();
 
         if (choice.trim().equalsIgnoreCase("l")) {
@@ -187,6 +193,9 @@ public class Character {
             this.setCurrentRoom(currentDungeonRoom.getNextNode());
             this.setRoomsTraversed(this.getRoomsTraversed() + 1);
 
+        }else if(choice.trim().equalsIgnoreCase("i")){
+            System.out.println("-=Inventory=-\n");
+            displayInventory(keyboard);
         } else {
             System.out.println("Invalid choice\n");
         }
@@ -195,7 +204,7 @@ public class Character {
     void openChest(Scanner keyboard){
         Node currentDungeonRoom = this.getCurrentRoom();
         Room currentRoom = (Room) currentDungeonRoom.getValue();
-        System.out.print("\n\nWould you like to open the chest? (y/n) : ");
+        System.out.print("\n\nWould you like to open the chest? (Y/N) : ");
         String choice = keyboard.nextLine();
 
         if(choice.trim().equals("y")){
@@ -207,11 +216,23 @@ public class Character {
             System.out.print("You have found a " + currentRoom.getItem().getName() + ", ");
             System.out.println("this " + currentRoom.getItem().getDescription() + "\n\n");
 
+
             if(currentRoom.getItem().getAttackValue() != 0){
                 int itemAttack = currentRoom.getItem().getAttackValue();
                 this.setAttackValue(attack + itemAttack);
             }
             if(currentRoom.getItem().getHpValue() != 0){
+                if(currentRoom.getItem().getHpValue() > 0){
+                    System.out.print("Would you like to add this to your inventory? (y/n) : ");
+                    String choice2 = keyboard.nextLine();
+                    if(choice2.trim().equalsIgnoreCase("y")){
+                        inventory.addToBucket(currentRoom.getItem());
+                    }else if(!choice2.trim().equalsIgnoreCase("n")){
+                        System.out.println("Invalid choice\n");
+                    }else{
+                        System.out.println("You chose to drink the potion now\n");
+                    }
+                }
                 int itemHp = currentRoom.getItem().getHpValue();
                 if(this.getHealth() < 500){
                     this.setHealthValue(hp + itemHp);
@@ -233,14 +254,16 @@ public class Character {
             if(currentRoom.getItem().getType() != null && currentRoom.getItem().getType().equals("Weapon")){
                 this.setWeapon(currentRoom.getItem());
                 this.setWeaponAttack(currentRoom.getItem().getAttackValue());
-                this.setTotalAttack(this.getAttack() + this.getWeaponAttack());
+                this.setTotalAttack(this.getAttack() , this.getWeaponAttack());
             }
 
             if(currentRoom.getItem().getType() != null && currentRoom.getItem().getType().equals("Armor")){
                 this.setArmor(currentRoom.getItem());
                 this.setArmorDefenseValue(currentRoom.getItem().getDefenseValue() + this.getPerkDefense());
                 if(this.getTotalDefense() > 0.8){
-                    this.setTotalDefense(0.8);
+                    this.setTotalDefense(0.8 , 0.0);
+                    System.out.println("\nTotal defense value has reached or exceeded the maximum value\n");
+                    System.out.println("Total defense value has been reduced to max (80%)\n");
                 }
             }
 
@@ -252,5 +275,28 @@ public class Character {
             System.out.println("Invalid choice");
             openChest(keyboard);
         }
+    }
+
+    void displayInventory(Scanner keyboard){
+        for(int i = 0; i < inventory.size(); i++){
+            System.out.println((i + 1) + ": "+ inventory.getValueAtIndex(i).getName());
+        }
+        System.out.print("Would you like to use any of your items? (1/" + inventory.size() + ") : ");
+        int choice = keyboard.nextInt();
+        if(choice >= 1 && choice <= inventory.size()){
+            useInventory(choice);
+        }else{
+            System.out.println("Invalid choice\n");
+            displayInventory(keyboard);
+        }
+    }
+
+    void useInventory(int choice){
+        Item itemUsed = inventory.getValueAtIndex(choice - 1);
+        System.out.println("\n\n" + itemUsed.getName() + " was used");
+        this.setHealthValue(this.getHealth() + itemUsed.getHpValue());
+        this.setPotionsConsumed(this.getPotionsConsumed() + 1);
+        System.out.println(itemUsed.getHpValue() + " health restored\n\n");
+        inventory.removeAtIndex(choice);
     }
 }

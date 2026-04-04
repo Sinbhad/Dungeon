@@ -16,6 +16,7 @@ public class Fight {
     void attackSelect(RobertCircularlyLinkedList<Room> dungeon, Scanner keyboard, Character character, Enemy enemy, int levelCount){
         String choice = "A";
         while ((enemy.getHealth() > 0 && character.getHealth() > 0) && !choice.equalsIgnoreCase("F")) {
+            System.out.println("Enter I to display inventory");
             System.out.print("Would you like to attack or flee? (A/F): ");
             choice = keyboard.nextLine();
 
@@ -25,6 +26,8 @@ public class Fight {
                 System.out.println("Get out of here!");
                 enemy.move();
                 character.move(levelCount, keyboard);
+            }else if(choice.trim().equalsIgnoreCase("I")){
+                character.displayInventory(keyboard);
             }else{
                 System.out.println("Invalid choice!");
                 attackSelect(dungeon, keyboard,  character, enemy, levelCount);
@@ -52,7 +55,7 @@ public class Fight {
                 return;
             }
 
-            System.out.println(enemy.getName() + " hit you back dealing " + enemy.getAttackValue() + " damage\n");
+            System.out.println(enemy.getName() + " hit you back dealing " + trueEnemyAttack + " damage\n");
             character.setHealthValue(character.getHealth() - trueEnemyAttack);
 
 
@@ -65,7 +68,7 @@ public class Fight {
 
         } else {
             System.out.println("\n" + enemy.getName() + " is faster than you and attacks first\n");
-            System.out.println(enemy.getName() + " hit you dealing " + enemy.getAttackValue() + " damage\n");
+            System.out.println(enemy.getName() + " hit you dealing " + trueEnemyAttack + " damage\n");
             character.setHealthValue(character.getHealth() - trueEnemyAttack);
 
             if(character.getHealth() <= 0){
@@ -85,7 +88,7 @@ public class Fight {
             }
 
             System.out.println("You have " + character.getHealth() + " health remaining");
-            System.out.println(enemy.getName() + " has " + enemy.getHealth() + " remaining");
+            System.out.println(enemy.getName() + " has " + enemy.getHealth() + " remaining\n");
         }
     }
 
