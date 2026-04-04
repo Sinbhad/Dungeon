@@ -223,7 +223,7 @@ public class Character {
             }
             if(currentRoom.getItem().getHpValue() != 0){
                 if(currentRoom.getItem().getHpValue() > 0){
-                    System.out.print("Would you like to add this to your inventory? (y/n) : ");
+                    System.out.print("Would you like to add this to your inventory? (Y/N) : ");
                     String choice2 = keyboard.nextLine();
                     if(choice2.trim().equalsIgnoreCase("y")){
                         inventory.addToBucket(currentRoom.getItem());
