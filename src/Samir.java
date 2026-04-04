@@ -1,5 +1,6 @@
 public class Samir extends Enemy{
     public Samir(){
         super("Samir the Cheat", 5, 5, 0, 10);
+        setMove(new Move("Cheap Trick", this.getName() + " only dealt 10 damage but at least it was easy", 10));
     }
 }
