@@ -180,16 +180,16 @@ public class Character {
         if (choice.trim().equalsIgnoreCase("l")) {
             System.out.println("You have moved left\n");
             this.setCurrentRoom(currentDungeonRoom.getLastNode());
+            this.setRoomsTraversed(this.getRoomsTraversed() + 1);
 
         } else if (choice.trim().equalsIgnoreCase("r")) {
             System.out.println("You have moved right\n");
             this.setCurrentRoom(currentDungeonRoom.getNextNode());
+            this.setRoomsTraversed(this.getRoomsTraversed() + 1);
 
         } else {
             System.out.println("Invalid choice\n");
         }
-
-        this.setRoomsTraversed(this.getRoomsTraversed() + 1);
     }
 
     void openChest(Scanner keyboard){
