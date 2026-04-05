@@ -19,8 +19,8 @@ public class Enemy extends Character {
       super();
    }
 
-   public setMoves(Move move){
-      this.moves.add(move);
+   public void setMoves(Move move){
+      this.moves.addToBucket(move);
    }
 
    public RobertHolder getMoves(){

@@ -9,7 +9,7 @@ public class Move{
     }
 
 
-    public Move(String moveName, int description, int damage){
+    public Move(String moveName, String description, int damage){
         this.moveName = moveName;
         this.description = description;
         this.damage = damage;
