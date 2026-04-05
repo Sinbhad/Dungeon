@@ -69,7 +69,7 @@ public class DungeonBrain {
             return levelCount;
         }
 
-        if (currentRoom.getEnemyCharacter() != null) {
+        if (currentRoom.getEnemyCharacter() != null && !currentRoom.getIsExit()) {
             fight.battle(dungeon, character, (Enemy) currentRoom.getEnemyCharacter(), levelCount);
         }
 
@@ -125,6 +125,7 @@ public class DungeonBrain {
         if(levelCount % 5 == 0){
             choosePerk(character);
         }
+
         return levelCount;
     }
 

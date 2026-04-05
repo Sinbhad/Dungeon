@@ -1,5 +1,6 @@
 import lib.Node;
 import lib.RobertCircularlyLinkedList;
+import lib.RobertHolder;
 
 import java.util.Random;
 import java.util.Scanner;
@@ -36,8 +37,6 @@ public class Fight {
     }
 
     void speedCheck(RobertCircularlyLinkedList<Room> dungeon, Character character, Enemy enemy, Scanner keyboard){
-        double trueEnemyAttack = enemy.getAttack() - (character.getTotalDefense() * enemy.getAttack());
-
         if(character.getSpeed() > enemy.getSpeed()){
             System.out.println("\nYou hit " + enemy.getName() + " dealing " + character.getTotalAttack() + " damage\n");
             enemy.setHealthValue(enemy.getHealth() - character.getTotalAttack());
@@ -55,8 +54,9 @@ public class Fight {
                 return;
             }
 
-            System.out.println(enemy.getName() + " hit you back dealing " + trueEnemyAttack + " damage\n");
-            character.setHealthValue(character.getHealth() - trueEnemyAttack);
+            //System.out.println(enemy.getName() + " hit you back\n");
+            //character.setHealthValue(character.getHealth() - trueEnemyAttack);
+            enemyAttackOutput(enemy, character);
 
 
             if(character.getHealth() <= 0){
@@ -68,8 +68,9 @@ public class Fight {
 
         } else {
             System.out.println("\n" + enemy.getName() + " is faster than you and attacks first\n");
-            System.out.println(enemy.getName() + " hit you dealing " + trueEnemyAttack + " damage\n");
-            character.setHealthValue(character.getHealth() - trueEnemyAttack);
+            //System.out.println(enemy.getName() + " hit you dealing " + trueEnemyAttack + " damage\n");
+            //character.setHealthValue(character.getHealth() - trueEnemyAttack);
+            enemyAttackOutput(enemy, character);
 
             if(character.getHealth() <= 0){
                 System.out.println("oh no...");
@@ -90,6 +91,26 @@ public class Fight {
             System.out.println("You have " + character.getHealth() + " health remaining");
             System.out.println(enemy.getName() + " has " + enemy.getHealth() + " remaining\n");
         }
+    }
+
+    Move enemyAttackChoice(Enemy enemy){
+        RobertHolder currentMoves = enemy.getMoves();
+        Random moveIndex = new Random();
+        int i = moveIndex.nextInt(currentMoves.size());
+        return (Move) currentMoves.getValueAtIndex(i);
+    }
+
+    void enemyAttackOutput(Enemy enemy, Character character){
+        Move currentMove = enemyAttackChoice(enemy);
+        System.out.println(enemy.getName() + " used " + currentMove.getMoveName());
+        System.out.println(currentMove.getDescription());
+        double damage = damageCalc(currentMove.getDamage(), character);
+        System.out.println(enemy.getName() + " dealt " + damage + " damage\n\n");
+        character.setHealthValue(character.getHealth() - damage);
+    }
+
+    double damageCalc(int damage, Character character){
+        return damage - (damage * character.getTotalDefense());
     }
 
     void removeRoom(RobertCircularlyLinkedList<Room> dungeon, Character character, Enemy enemy){

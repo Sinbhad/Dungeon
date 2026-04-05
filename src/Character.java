@@ -164,8 +164,9 @@ public class Character {
 
 
     void displayStats(){
+        int healthInt = (int)this.health;
         System.out.println(name);
-        System.out.println("Health Points: " + health);
+        System.out.println("Health Points: " + healthInt);
         System.out.println("Attack Points: " + attack);
         System.out.println("Weapon: " + weapon.getName());
         System.out.println("Armor: " + armor.getName());
@@ -227,6 +228,8 @@ public class Character {
                     String choice2 = keyboard.nextLine();
                     if(choice2.trim().equalsIgnoreCase("y")){
                         inventory.addToBucket(currentRoom.getItem());
+                        currentRoom.setItem(null);
+                        return;
                     }else if(!choice2.trim().equalsIgnoreCase("n")){
                         System.out.println("Invalid choice\n");
                     }else{
@@ -281,10 +284,14 @@ public class Character {
         for(int i = 0; i < inventory.size(); i++){
             System.out.println((i + 1) + ": "+ inventory.getValueAtIndex(i).getName());
         }
-        System.out.print("Would you like to use any of your items? (1/" + inventory.size() + ") : ");
+        System.out.println("Use 0 to exit inventory");
+        System.out.print("Which item would you like to use? (0/" + inventory.size() + ") : ");
         int choice = keyboard.nextInt();
+        keyboard.nextLine();
         if(choice >= 1 && choice <= inventory.size()){
             useInventory(choice);
+        }else if(choice == 0){
+            System.out.println("If you didn't want to use an item, why did you open this menu??\n\n");
         }else{
             System.out.println("Invalid choice\n");
             displayInventory(keyboard);

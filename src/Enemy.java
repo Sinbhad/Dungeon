@@ -3,16 +3,10 @@ import java.util.Random;
 import lib.RobertHolder;
 
 public class Enemy extends Character {
-   private String name;
-   private int attackValue, healthValue, speedValue, coinsHad;
    private RobertHolder<Move> moves = new RobertHolder();
 
    public Enemy(String name, int attackValue, int healthValue, int speedValue, int coinsHad){
-      this.name = name;
-      this.attackValue = attackValue;
-      this.healthValue = healthValue;
-      this.speedValue = speedValue;
-      this.coinsHad = coinsHad;
+       super(name, attackValue, healthValue, speedValue, coinsHad, new RobertHolder<Item>());
    }
 
    public Enemy(){
