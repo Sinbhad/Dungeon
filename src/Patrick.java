@@ -1,7 +1,7 @@
 
 public class Patrick extends Enemy{
     public Patrick(){
-        super("Patrick the Whale", 20, 150, 1, 80);
+        super("Patrick the Whale", 0, 150, 1, 80);
         setMoves(new Move("Alright I'll Bite", this.getName() + " bit you?!\n", 80));
         setMoves(new Move("Facebook Post", this.getName() + " made you look at his latest Facebook post \nhis post was so illiterate that you got confused and hit yourself \nshame on his school system\n", 30));
         setMoves(new Move("Belly Flop", this.getName() + " slammed down on you with all his weight dealing massive damage! \nHow does anyone survive this?\n", 150));

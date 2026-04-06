@@ -208,68 +208,24 @@ public class Character {
         System.out.print("\n\nWould you like to open the chest? (Y/N) : ");
         String choice = keyboard.nextLine();
 
-        if(choice.trim().equals("y")){
-            double hp = this.getHealth();
-            int speed = this.getSpeed();
-            int attack = this.getAttack();
-
+        if(choice.trim().equalsIgnoreCase("y")){
             System.out.println("\nYou have opened the chest");
             System.out.print("You have found a " + currentRoom.getItem().getName() + ", ");
             System.out.println("this " + currentRoom.getItem().getDescription() + "\n\n");
 
-
-            if(currentRoom.getItem().getAttackValue() != 0){
-                int itemAttack = currentRoom.getItem().getAttackValue();
-                this.setAttackValue(attack + itemAttack);
-            }
             if(currentRoom.getItem().getHpValue() != 0){
-                if(currentRoom.getItem().getHpValue() > 0){
-                    System.out.print("Would you like to add this to your inventory? (Y/N) : ");
-                    String choice2 = keyboard.nextLine();
-                    if(choice2.trim().equalsIgnoreCase("y")){
-                        inventory.addToBucket(currentRoom.getItem());
-                        currentRoom.setItem(null);
-                        return;
-                    }else if(!choice2.trim().equalsIgnoreCase("n")){
-                        System.out.println("Invalid choice\n");
-                    }else{
-                        System.out.println("You chose to drink the potion now\n");
-                    }
-                }
-                int itemHp = currentRoom.getItem().getHpValue();
-                if(this.getHealth() < 500){
-                    this.setHealthValue(hp + itemHp);
-                    if(this.getHealth() > 500){
-                        this.setHealthValue(500);
-                    }
-                    this.setPotionsConsumed(this.getPotionsConsumed() + 1);
-                }else if(this.getHealth() == 500 && itemHp < 0){
-                    this.setHealthValue(hp + itemHp);
-                    this.setPotionsConsumed(this.getPotionsConsumed() + 1);
-                }else{
-                    System.out.println("You have already reached maximum health, no effect\n");
-                }
+                healingItemHandler(currentRoom, keyboard);
             }
+
             if(currentRoom.getItem().getSpeedValue() != 0){
-                int itemSpeed = currentRoom.getItem().getSpeedValue();
-                this.setSpeedValue(speed + itemSpeed);
+                speedItemHandler(currentRoom);
             }
             if(currentRoom.getItem().getType() != null && currentRoom.getItem().getType().equals("Weapon")){
-                this.setWeapon(currentRoom.getItem());
-                this.setWeaponAttack(currentRoom.getItem().getAttackValue());
-                this.setTotalAttack(this.getAttack() , this.getWeaponAttack());
+                weaponItemHandler(currentRoom);
             }
-
             if(currentRoom.getItem().getType() != null && currentRoom.getItem().getType().equals("Armor")){
-                this.setArmor(currentRoom.getItem());
-                this.setArmorDefenseValue(currentRoom.getItem().getDefenseValue() + this.getPerkDefense());
-                if(this.getTotalDefense() > 0.8){
-                    this.setTotalDefense(0.8 , 0.0);
-                    System.out.println("\nTotal defense value has reached or exceeded the maximum value\n");
-                    System.out.println("Total defense value has been reduced to max (80%)\n");
-                }
+                armorItemHandler(currentRoom);
             }
-
             currentRoom.setItem(null);
 
         }else if(choice.trim().equalsIgnoreCase("n")){
@@ -280,17 +236,69 @@ public class Character {
         }
     }
 
+    void healingItemHandler(Room currentRoom, Scanner keyboard){
+        double hp = this.getHealth();
+        if(currentRoom.getItem().getHpValue() > 0){
+            System.out.print("Would you like to add this to your inventory? (Y/N) : ");
+            String choice2 = keyboard.nextLine();
+            if(choice2.trim().equalsIgnoreCase("y")){
+                inventory.addToBucket(currentRoom.getItem());
+                currentRoom.setItem(null);
+                return;
+            }else if(!choice2.trim().equalsIgnoreCase("n")){
+                System.out.println("Invalid choice\n");
+            }else{
+                System.out.println("You chose to drink the potion now\n");
+            }
+        }
+        int itemHp = currentRoom.getItem().getHpValue();
+        if(this.getHealth() < 500){
+            this.setHealthValue(hp + itemHp);
+            if(this.getHealth() > 500){
+                this.setHealthValue(500);
+            }
+            this.setPotionsConsumed(this.getPotionsConsumed() + 1);
+        }else if(this.getHealth() == 500 && itemHp < 0){
+            this.setHealthValue(hp + itemHp);
+            this.setPotionsConsumed(this.getPotionsConsumed() + 1);
+        }else{
+            System.out.println("You have already reached maximum health, no effect\n");
+        }
+    }
+
+    void speedItemHandler(Room currentRoom){
+        int itemSpeed = currentRoom.getItem().getSpeedValue();
+        this.setSpeedValue(this.getSpeed() + itemSpeed);
+    }
+
+    void weaponItemHandler(Room currentRoom){
+        this.setWeapon(currentRoom.getItem());
+        this.setWeaponAttack(currentRoom.getItem().getAttackValue());
+        this.setTotalAttack(this.getAttack() , this.getWeaponAttack());
+    }
+
+    void armorItemHandler(Room currentRoom){
+        this.setArmor(currentRoom.getItem());
+        this.setArmorDefenseValue(currentRoom.getItem().getDefenseValue() + this.getPerkDefense());
+        if(this.getTotalDefense() > 0.8){
+            this.setTotalDefense(0.8 , 0.0);
+            System.out.println("\nTotal defense value has reached or exceeded the maximum value\n");
+            System.out.println("Total defense value has been reduced to max (80%)\n");
+        }
+
+    }
+
     void displayInventory(Scanner keyboard){
         for(int i = 0; i < inventory.size(); i++){
             System.out.println((i + 1) + ": "+ inventory.getValueAtIndex(i).getName());
         }
         System.out.println("Use 0 to exit inventory");
         System.out.print("Which item would you like to use? (0/" + inventory.size() + ") : ");
-        int choice = keyboard.nextInt();
-        keyboard.nextLine();
-        if(choice >= 1 && choice <= inventory.size()){
-            useInventory(choice);
-        }else if(choice == 0){
+        String choice = keyboard.nextLine();
+        int c = Integer.parseInt(choice.trim());
+        if(c >= 1 && c <= inventory.size()){
+            useInventory(c);
+        }else if(c == 0){
             System.out.println("If you didn't want to use an item, why did you open this menu??\n\n");
         }else{
             System.out.println("Invalid choice\n");

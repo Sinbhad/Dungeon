@@ -33,7 +33,7 @@ public class Enemy extends Character {
       return super.getHealth();
    }
 
-   public int getSpeedValue(){
+   public int getSpeed(){
       return super.getSpeed();
    }
 

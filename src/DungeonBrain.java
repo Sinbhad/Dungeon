@@ -24,7 +24,7 @@ public class DungeonBrain {
         player.setCurrentRoom(dungeon.getHead());
 
 
-        System.out.println("You have entered the dungeon");
+        System.out.println("\n\nYou have entered the dungeon");
         System.out.print("Enter your name challenger : ");
         player.setName(keyboard.nextLine().trim());
 
@@ -138,13 +138,16 @@ public class DungeonBrain {
     }
 
     void playAgain(Scanner keyboard){
-        System.out.print("Would you like to play again? (y/n) : ");
+        System.out.print("\n\nWould you like to play again? (y/n) : ");
         String playAgain = keyboard.nextLine();
-        if(playAgain.trim().equals("y")){
-            System.out.println("Let's play again!");
+        if(playAgain.trim().equalsIgnoreCase("y")){
+            System.out.println("\n\n\n\nLet's play again!");
             dungeonOperator();
-        }else{
+        }else if(playAgain.trim().equalsIgnoreCase("n")){
             System.out.println("Thanks for playing!");
+            System.exit(0);
+        }else{
+            System.out.println("Invalid input!");
         }
     }
 
