@@ -92,7 +92,7 @@ public class Fight {
         RobertHolder currentMoves = enemy.getMoves();
         Random moveIndex = new Random();
         int i = moveIndex.nextInt(currentMoves.size());
-        return (Move) currentMoves.getValueAtIndex(i);
+        return (Move) currentMoves.getAtIndex(i);
     }
 
     void enemyAttackOutput(Enemy enemy, Character character){

@@ -290,7 +290,7 @@ public class Character {
 
     void displayInventory(Scanner keyboard){
         for(int i = 0; i < inventory.size(); i++){
-            System.out.println((i + 1) + ": "+ inventory.getValueAtIndex(i).getName());
+            System.out.println((i + 1) + ": "+ inventory.getAtIndex(i).getName());
         }
         System.out.println("Use 0 to exit inventory");
         System.out.print("Which item would you like to use? (0/" + inventory.size() + ") : ");
@@ -307,7 +307,7 @@ public class Character {
     }
 
     void useInventory(int choice){
-        Item itemUsed = inventory.getValueAtIndex(choice - 1);
+        Item itemUsed = inventory.getAtIndex(choice - 1);
         System.out.println("\n\n" + itemUsed.getName() + " was used");
         this.setHealthValue(this.getHealth() + itemUsed.getHpValue());
         this.setPotionsConsumed(this.getPotionsConsumed() + 1);
