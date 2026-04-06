@@ -22,7 +22,7 @@ public class Fight {
             if (choice.trim().equalsIgnoreCase("A")) {
                 speedCheck(dungeon, character, enemy, keyboard);
             } else if (choice.trim().equalsIgnoreCase("F")) {
-                System.out.println("Get out of here!");
+                System.out.println("Get out of here!\n");
                 enemy.move();
                 character.move(levelCount, keyboard);
             }else if(choice.trim().equalsIgnoreCase("I")){
