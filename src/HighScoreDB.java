@@ -1,8 +1,12 @@
 import java.sql.*;
 
 public class HighScoreDB {
+    //Holds the location of the database
     private static final String URL = "jdbc:sqlite:dungeon_saves.db";
 
+    /**
+     * Create a database if one is not found at the URL
+     */
     public void initializeDatabase() {
         String createTableSQL = "CREATE TABLE IF NOT EXISTS HighScores (id INTEGER PRIMARY KEY AUTOINCREMENT, Name TEXT, Points INTEGER);";
 
@@ -15,6 +19,11 @@ public class HighScoreDB {
         }
     }
 
+    /**
+     * Saves the users name and score to the database so long as it exists
+     * @param playerName
+     * @param finalPoints
+     */
     public void saveStats(String playerName, int finalPoints) {
         String insertSQL = "INSERT INTO HighScores(Name, Points) VALUES(?, ?)";;
 
@@ -31,6 +40,9 @@ public class HighScoreDB {
         }
     }
 
+    /**
+     * Display three highest score so long as a database is holding any
+     */
     public void printHighScores(){
         String selectSQL = "SELECT * FROM HighScores ORDER BY Points DESC LIMIT 3";
 

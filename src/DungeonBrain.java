@@ -7,6 +7,9 @@ import java.util.Scanner;
 
 
 public class DungeonBrain {
+    /**
+     * Essentially the heart of the entire game, creating the objects and database for use throughout
+     */
     public void dungeonOperator(){
         DungeonGenerator generator = new DungeonGenerator();
         Scanner keyboard = new Scanner(System.in);
@@ -23,11 +26,12 @@ public class DungeonBrain {
         generator.setRooms(dungeon);
         player.setCurrentRoom(dungeon.getHead());
 
-
+        //Into output
         System.out.println("\n\nYou have entered the dungeon");
         System.out.print("Enter your name challenger : ");
         player.setName(keyboard.nextLine().trim());
 
+        //Loop input methods until the player has died
         while(player.getHealth() > 0){
             levelCount = conditionCheck(dungeon, player, levelCount, keyboard, enemyRoster);
             if(player.getHealth() > 0){
@@ -36,15 +40,18 @@ public class DungeonBrain {
             }
         }
 
+        //Output for game completion
         System.out.println("You have died...\n");
         System.out.println("You have defeated " + player.getEnemiesDefeated() + " enemies");
         System.out.println("You have survived for " + levelCount + " levels");
         System.out.println("You have traveled " + player.getRoomsTraversed() + " rooms");
         System.out.println("Better luck next time!");
 
+        //Calculate and display the players final score
         int finalPoints = pointsCount(levelCount, player);
         System.out.println("You have earned " + finalPoints + " points\n\n");
 
+        //Adds score to the database and displays the top three scores and names of players
         highScoreDB.saveStats(player.getName(), finalPoints);
         highScoreDB.printHighScores();
 
@@ -52,27 +59,37 @@ public class DungeonBrain {
     }
 
 
-
-
-    
+    /**
+     * Checks various conditions to move the game along, calls methods needed for certain conditions met
+     * @param dungeon
+     * @param character
+     * @param levelCount
+     * @param keyboard
+     * @param enemyRoster
+     * @return
+     */
     int conditionCheck(RobertCircularlyLinkedList<Room> dungeon, Character character, int levelCount, Scanner keyboard, ArrayList<Enemy> enemyRoster){
         Node currentRoomNode = character.getCurrentRoom();
         Room currentRoom = (Room) currentRoomNode.getValue();
         Fight fight = new Fight();
 
+        //Force the user into a bathroom break state, has the potential to cause damage and lets enemies move
         if(character.getRoomsTraversed() % 15 == 0 && character.getRoomsTraversed() != 0){
             tinkleBreak(character, enemyRoster);
         }
 
+        //Handle exit room
         if(currentRoom.getIsExit()){
             levelCount = exitRoom(dungeon, character, levelCount, enemyRoster);
             return levelCount;
         }
 
+        //Begin battle if an enemy is encountered
         if (currentRoom.getEnemyCharacter() != null && !currentRoom.getIsExit()) {
             fight.battle(dungeon, character, (Enemy) currentRoom.getEnemyCharacter(), levelCount);
         }
 
+        //Check for loot
         currentRoomNode = character.getCurrentRoom();
         currentRoom = (Room) currentRoomNode.getValue();
         if(currentRoom.getItem() != null && character.getHealth() > 0){
@@ -82,12 +99,23 @@ public class DungeonBrain {
         return levelCount;
     }
 
+    /**
+     * Moves all existing enemies throughout the dungeon randomly
+     * @param enemyRoster
+     */
     void moveEnemies(ArrayList<Enemy> enemyRoster){
         for (Enemy enemy : enemyRoster) {
             enemy.move();
         }
     }
 
+    /**
+     * Forces the user into a bathroom break.
+     * This allows enemies to move while the player is stuck, and if the user
+     * has consumed more than three potions by this break, they will take ten points of damage
+     * @param character
+     * @param enemyRoster
+     */
     void tinkleBreak(Character character, ArrayList<Enemy> enemyRoster){
         System.out.println(character.getName() + " had to tinkle, stopping for a break...\n");
         moveEnemies(enemyRoster);
@@ -98,6 +126,15 @@ public class DungeonBrain {
         }
     }
 
+    /**
+     * Clears the current dungeon and generates a new one based on the level the player has reached.
+     * Enemy health and damage is increased, the player is rewarded with coins for clearing a level.
+     * @param dungeon
+     * @param character
+     * @param levelCount
+     * @param enemyRoster
+     * @return
+     */
     int exitRoom(RobertCircularlyLinkedList<Room> dungeon, Character character, int levelCount, ArrayList<Enemy> enemyRoster){
         Node currentRoomNode = character.getCurrentRoom();
         Room currentRoom = (Room) currentRoomNode.getValue();
@@ -107,10 +144,16 @@ public class DungeonBrain {
             System.out.println("You have found the exit");
             System.out.println("welcome to the next level.\n");
             System.out.println("You have gained 100 coins and your opponents are now stronger!");
+
+            //Increase level count for score keeping and logic such as enemy count, enemy damage and enemy health.
             levelCount++;
             character.setCoins(character.getCoins() + 100);
+
+            //Display enemy buffs
             System.out.println("The enemy has gained " + (5 * levelCount) + " health points");
             System.out.println("...and " + (5 * levelCount) + " attack points!\n");
+
+            //Create a new dungeon level and set enemy buffs
             generator.create(dungeon, (7 + (5 * levelCount)));
             generator.setRooms(dungeon);
             for(Enemy enemy : enemyRoster){
@@ -122,6 +165,7 @@ public class DungeonBrain {
             character.setCurrentRoom(dungeon.getHead());
         }
 
+        //If the level count is a multiple of five, display the perk selection screen
         if(levelCount % 5 == 0){
             choosePerk(character);
         }
@@ -129,6 +173,12 @@ public class DungeonBrain {
         return levelCount;
     }
 
+    /**
+     * Point calculator for a completed run
+     * @param levelCount
+     * @param character
+     * @return
+     */
     int pointsCount(int levelCount, Character character){
         int points = 0;
         points += levelCount * 100;
@@ -137,6 +187,10 @@ public class DungeonBrain {
         return points;
     }
 
+    /**
+     * Gives the player the choice to start over or end the program
+     * @param keyboard
+     */
     void playAgain(Scanner keyboard){
         System.out.print("\n\nWould you like to play again? (y/n) : ");
         String playAgain = keyboard.nextLine();
@@ -151,9 +205,16 @@ public class DungeonBrain {
         }
     }
 
+    /**
+     * Perk screen handler
+     * Displays random perks from the perk library
+     * @param character
+     */
     void choosePerk(Character character){
         Random random = new Random();
         PerkLibrary perkLibrary = new PerkLibrary();
+
+        //Determine which perks will be available
         int speedIndex = random.nextInt(perkLibrary.SPEED_PERKS.length);
         Perks speedPerk = perkLibrary.SPEED_PERKS[speedIndex];
         int defenseIndex = random.nextInt(perkLibrary.DEFENSE_PERKS.length);
@@ -162,6 +223,8 @@ public class DungeonBrain {
         Perks healthPerk = perkLibrary.HEALTH_PERKS[healthIndex];
         int damageIndex = random.nextInt(perkLibrary.DAMAGE_PERKS.length);
         Perks damagePerk = perkLibrary.DAMAGE_PERKS[damageIndex];
+
+        //Output for player to aid in selection
         System.out.println("Choose a perk");
         System.out.println("1. :" + speedPerk.getPerkName() + " - " + speedPerk.getDescription());
         System.out.println("2. :" + defensePerk.getPerkName() + " - " + defensePerk.getDescription());
@@ -173,6 +236,7 @@ public class DungeonBrain {
         Scanner keyboard = new Scanner(System.in);
         int choice = keyboard.nextInt();
 
+        //Update stats based on user entry or reroll perks
         if(choice == 1 && checkBread(character, speedPerk)){
             character.setSpeedValue((int) (character.getSpeed() + speedPerk.getValue()));
         }else if(choice == 2 && checkBread(character, defensePerk)){
@@ -201,6 +265,12 @@ public class DungeonBrain {
 
     }
 
+    /**
+     * Helper class to determine if the player has enough coins to complete their current selection in the perk menu
+     * @param character
+     * @param perk
+     * @return
+     */
     boolean checkBread(Character character, Perks perk){
         if(character.getCoins() >= perk.getCost()){
             character.setCoins(character.getCoins() - perk.getCost());
