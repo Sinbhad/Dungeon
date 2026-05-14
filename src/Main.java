@@ -1,6 +1,6 @@
-public class Main {
-    public static void main (String[] args){
-        DungeonBrain dungeonBrain = new DungeonBrain();
-        dungeonBrain.dungeonOperator();
-    }
+import Dungeon.*;
+
+void main (){
+    DungeonBrain dungeonBrain = new DungeonBrain();
+    dungeonBrain.dungeonOperator();
 }
