@@ -8,6 +8,8 @@ import lib.RobertHolder;
 
 public class Enemy extends Character {
    private RobertHolder<Move> moves = new RobertHolder();
+   //Used to store the values used for fleeing probability in battle
+   int[] fleeNums = new int[10];
 
     /**
      * Constructor for enemies to be used in the game
@@ -17,8 +19,9 @@ public class Enemy extends Character {
      * @param speedValue
      * @param coinsHad
      */
-   public Enemy(String name, int attackValue, int healthValue, int speedValue, int coinsHad){
+   public Enemy(String name, int attackValue, int healthValue, int speedValue, int coinsHad, int[] fleeNums){
        super(name, attackValue, healthValue, speedValue, coinsHad, new RobertHolder<Item>());
+       this.fleeNums = fleeNums;
    }
 
    public Enemy(){
@@ -51,6 +54,10 @@ public class Enemy extends Character {
 
    public int getCoins(){
       return super.getCoins();
+   }
+
+   public int[] getFleeNum(){
+      return fleeNums;
    }
 
    public void move() {

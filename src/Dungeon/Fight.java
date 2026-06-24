@@ -10,7 +10,7 @@ import java.util.Scanner;
 
 public class Fight {
     /**
-     * Handles enemy encounters, sets the stage and prompts the user
+     * Handles enemy encounters, sets the stage, and prompts the user
      * @param dungeon
      * @param character
      * @param enemy
@@ -39,17 +39,51 @@ public class Fight {
 
             if (choice.trim().equalsIgnoreCase("A")) {
                 speedCheck(dungeon, character, enemy, keyboard);
-                //for now the user has a 100% flee rate with no consequence, a later update may provide a chance meter
             } else if (choice.trim().equalsIgnoreCase("F")) {
                 System.out.println("Get out of here!\n");
+                fleeCheck(dungeon, character, enemy, keyboard, levelCount);
                 enemy.move();
-                character.move(levelCount, keyboard);
             }else if(choice.trim().equalsIgnoreCase("I")){
                 character.displayInventory(keyboard);
             }else{
                 System.out.println("Invalid choice!");
                 attackSelect(dungeon, keyboard,  character, enemy, levelCount);
             }
+        }
+    }
+
+    /**
+     * Helper method to check if the flee number is in the fleeNums array
+     * @param num
+     * @param fleeNums
+     * @return
+     */
+    boolean checkFleeNums(int num, int[] fleeNums){
+        for(int i = 0; i < fleeNums.length; i++){
+            if(num == fleeNums[i]){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Used to determine if the user was able to flee battle safely or if they get hurt trying
+     * @param character
+     * @param enemy
+     * @param keyboard
+     * @param levelCount
+     */
+    void fleeCheck(RobertCircularlyLinkedList<Room> dungeon, Character character, Enemy enemy, Scanner keyboard, int levelCount){
+        int random = new Random().nextInt(9);
+        int[] enemyFleeNums = enemy.getFleeNum();
+        if(checkFleeNums(random, enemyFleeNums)){
+            System.out.println("You got away safely!");
+            character.move(levelCount, keyboard);
+        }else{
+            System.out.println("You got away but you got hurt in the process!");
+            enemyAttackChoice(enemy);
+            enemyAttackOutput(enemy, character);
         }
     }
 
@@ -151,7 +185,7 @@ public class Fight {
     }
 
     /**
-     * Generates formatted output to display enemy move name and damage dealt, also updates players health
+     * Generates formatted output to display enemy move name and damage dealt, also updates players' health
      * @param enemy
      * @param character
      */

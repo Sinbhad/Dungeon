@@ -2,7 +2,7 @@ package Characters;
 
 public class Daniel extends Enemy{
     public Daniel(){
-        super("Daniel the Moose", 0, 80, 5, 25);
+        super("Daniel the Moose", 0, 80, 5, 25, new int[]{8, 9});
         setMoves(new Move("Torsion", "Twister!! That's gotta hurt!\n", 25));
         setMoves(new Move("Vortexblade", this.getName() + " created a spectral sword between his horns and struck you with it!\n", 40));
         setMoves(new Move("Tormento", this.getName() + " sent you to the realm of torment for a mini vacation :)\n", 35));
