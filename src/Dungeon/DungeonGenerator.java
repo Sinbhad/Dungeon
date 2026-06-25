@@ -12,8 +12,8 @@ public class DungeonGenerator {
 
     /**
      * Creates a dungeon with the same number of rooms as the value passed into roomCount
-     * @param dungeon
-     * @param roomCount
+     * @param dungeon currently used dungeon
+     * @param roomCount number of rooms in the dungeon
      */
     public void create(RobertCircularlyLinkedList<Room> dungeon, int roomCount){
         dungeon.clear();
@@ -24,7 +24,7 @@ public class DungeonGenerator {
 
     /**
      * Sets items and enemies in rooms randomly
-     * @param dungeon
+     * @param dungeon currently used dungeon
      */
     void setRooms(RobertCircularlyLinkedList<Room> dungeon) {
         ArrayList<Enemy> enemyRoster = enemyRosterGenerator();
@@ -52,7 +52,7 @@ public class DungeonGenerator {
      * Generates an enemy roster based on the enemies in the enemy library
      * to be used in conjunction with the setRooms method to ensure enemies have full health
      * upon entering a new dungeon level
-     * @return
+     * @return ArrayList of enemies
      */
     ArrayList<Enemy> enemyRosterGenerator() {
         ArrayList<Enemy> enemyRoster = new ArrayList<>();
@@ -71,9 +71,9 @@ public class DungeonGenerator {
 
     /**
      * Gets a random weapon from the weapon section of the item library to add to the dungeon on each new level
-     * @param chanceNum
-     * @param size
-     * @param dungeon
+     * @param chanceNum random number generator
+     * @param size number of rooms in the dungeon
+     * @param dungeon currently used dungeon
      */
     void setWeapon(Random chanceNum, int size, RobertCircularlyLinkedList<Room> dungeon) {
         ItemLibrary itemLibrary = new ItemLibrary();
@@ -84,9 +84,9 @@ public class DungeonGenerator {
 
     /**
      * Gets a random potion from the potion section of the item library to add to the dungeon on each new level
-     * @param chanceNum
-     * @param size
-     * @param dungeon
+     * @param chanceNum random number generator
+     * @param size number of rooms in the dungeon
+     * @param dungeon currently used dungeon
      */
     void setPotion(Random chanceNum, int size, RobertCircularlyLinkedList<Room> dungeon) {
         ItemLibrary itemLibrary = new ItemLibrary();
@@ -97,9 +97,9 @@ public class DungeonGenerator {
 
     /**
      * Gets a random trap from the trap section of the item library to add to the dungeon on each new level
-     * @param chanceNum
-     * @param size
-     * @param dungeon
+     * @param chanceNum random number generator
+     * @param size number of rooms in the dungeon
+     * @param dungeon currently used dungeon
      */
     void setTrap(Random chanceNum, int size, RobertCircularlyLinkedList<Room> dungeon) {
         ItemLibrary itemLibrary = new ItemLibrary();
@@ -110,9 +110,9 @@ public class DungeonGenerator {
 
     /**
      * Gets a random armor set from the armor section of the item library to add to the dungeon on each new level
-     * @param chanceNum
-     * @param size
-     * @param dungeon
+     * @param chanceNum random number generator
+     * @param size number of rooms in the dungeon
+     * @param dungeon currently used dungeon
      */
     void setArmor(Random chanceNum, int size, RobertCircularlyLinkedList<Room> dungeon) {
         ItemLibrary itemLibrary = new ItemLibrary();
@@ -123,9 +123,9 @@ public class DungeonGenerator {
 
     /**
      * Randomly chooses a room number that will be assigned as the exit
-     * @param chanceNum
-     * @param size
-     * @param dungeon
+     * @param chanceNum random number generator
+     * @param size number of rooms in the dungeon
+     * @param dungeon currently used dungeon
      */
     void setExit(Random chanceNum, int size, RobertCircularlyLinkedList<Room> dungeon) {
         int exitRoomIndex = chanceNum.nextInt(size);
@@ -137,10 +137,10 @@ public class DungeonGenerator {
      * Randomly chooses the room for an enemy to be placed in.
      * This is called for each enemy in the current roster when the setRooms
      * method is called
-     * @param chanceNum
-     * @param size
-     * @param dungeon
-     * @param enemyRoster
+     * @param chanceNum random number generator
+     * @param size number of rooms in the dungeon
+     * @param dungeon currently used dungeon
+     * @param enemyRoster arraylist of enemies in the current dungeon
      */
     void setEnemies(Random chanceNum, int size, RobertCircularlyLinkedList<Room> dungeon, ArrayList<Enemy> enemyRoster) {
         int enemyRoomIndex = chanceNum.nextInt(size);
@@ -153,10 +153,10 @@ public class DungeonGenerator {
 
     /**
      * Determines how many enemies will be added to the current floor based on the level count
-     * @param chanceNum
-     * @param size
-     * @param dungeon
-     * @param enemyRoster
+     * @param chanceNum random number generator
+     * @param size number of rooms in the dungeon
+     * @param dungeon currently used dungeon
+     * @param enemyRoster arraylist of enemies in the current dungeon
      */
     void enemyLevelCheck(Random chanceNum, int size, RobertCircularlyLinkedList<Room> dungeon, ArrayList<Enemy> enemyRoster){
         int levelCount = size / 7;

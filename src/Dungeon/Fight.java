@@ -11,10 +11,10 @@ import java.util.Scanner;
 public class Fight {
     /**
      * Handles enemy encounters, sets the stage, and prompts the user
-     * @param dungeon
-     * @param character
-     * @param enemy
-     * @param levelCount
+     * @param dungeon dungeon being used
+     * @param character player character
+     * @param enemy current enemy
+     * @param levelCount current level count
      */
     void battle(RobertCircularlyLinkedList<Room> dungeon, Character character, Enemy enemy, int levelCount){
         Scanner keyboard = new Scanner(System.in);
@@ -24,11 +24,11 @@ public class Fight {
 
     /**
      * Method for encounter interaction, giving the user a chance to fight or flee
-     * @param dungeon
-     * @param keyboard
-     * @param character
-     * @param enemy
-     * @param levelCount
+     * @param dungeon dungeon being used
+     * @param keyboard user input
+     * @param character player character
+     * @param enemy current enemy
+     * @param levelCount current level count
      */
     void attackSelect(RobertCircularlyLinkedList<Room> dungeon, Scanner keyboard, Character character, Enemy enemy, int levelCount){
         String choice = "A";
@@ -54,9 +54,9 @@ public class Fight {
 
     /**
      * Helper method to check if the flee number is in the fleeNums array
-     * @param num
-     * @param fleeNums
-     * @return
+     * @param num random number generated, passed in from the fleeCheck method
+     * @param fleeNums array of "flee" numbers, extracted from the enemy's fleeNums array
+     * @return boolean value indicating if the "flee" number was found in the fleeNums array
      */
     boolean checkFleeNums(int num, int[] fleeNums){
         for(int i = 0; i < fleeNums.length; i++){
@@ -69,10 +69,10 @@ public class Fight {
 
     /**
      * Used to determine if the user was able to flee battle safely or if they get hurt trying
-     * @param character
-     * @param enemy
-     * @param keyboard
-     * @param levelCount
+     * @param character player character
+     * @param enemy current enemy
+     * @param keyboard user input
+     * @param levelCount current level count
      */
     void fleeCheck(RobertCircularlyLinkedList<Room> dungeon, Character character, Enemy enemy, Scanner keyboard, int levelCount){
         int random = new Random().nextInt(9);
@@ -89,10 +89,10 @@ public class Fight {
 
     /**
      * Comparison method to decide whether the enemy or the user attacks first
-     * @param dungeon
-     * @param character
-     * @param enemy
-     * @param keyboard
+     * @param dungeon dungeon being used
+     * @param character player character
+     * @param enemy current enemy
+     * @param keyboard user input
      */
     void speedCheck(RobertCircularlyLinkedList<Room> dungeon, Character character, Enemy enemy, Scanner keyboard){
         if(character.getSpeed() > enemy.getSpeed()){
@@ -119,11 +119,11 @@ public class Fight {
 
     /**
      * Helper method to determine if the enemy is alive and able to attack again
-     * @param dungeon
-     * @param character
-     * @param enemy
-     * @param keyboard
-     * @return
+     * @param dungeon dungeon being used
+     * @param character player character
+     * @param enemy current enemy
+     * @param keyboard user input
+     * @return boolean used to determine certain actions in the game based on enemy health
      */
     Boolean isEnemyAlive(RobertCircularlyLinkedList<Room> dungeon, Character character, Enemy enemy, Scanner keyboard){
         if(enemy.getHealth() <= 0){
@@ -150,8 +150,8 @@ public class Fight {
 
     /**
      * Helper method to determine if the user is still alive to continue the game
-     * @param character
-     * @return
+     * @param character player character
+     * @return boolean used to determine certain actions in the game based on player health
      */
     Boolean isPlayerAlive(Character character){
         if(character.getHealth() <= 0){
@@ -164,7 +164,7 @@ public class Fight {
 
     /**
      * Helper method, mainly for formatting to prevent negative values from being displayed in outputs
-     * @param enemy
+     * @param enemy current enemy
      */
     void zeroHealth(Enemy enemy){
         if(enemy.getHealth() < 0){
@@ -174,8 +174,8 @@ public class Fight {
 
     /**
      * Randomly selects a move for the enemy for use in battles
-     * @param enemy
-     * @return
+     * @param enemy current enemy
+     * @return Move object to be used in with enemyAttackOutput
      */
     Move enemyAttackChoice(Enemy enemy){
         RobertHolder currentMoves = enemy.getMoves();
@@ -186,35 +186,35 @@ public class Fight {
 
     /**
      * Generates formatted output to display enemy move name and damage dealt, also updates players' health
-     * @param enemy
-     * @param character
+     * @param enemy current enemy
+     * @param character player character
      */
     void enemyAttackOutput(Enemy enemy, Character character){
         Move currentMove = enemyAttackChoice(enemy);
         System.out.println(enemy.getName() + " used " + currentMove.getMoveName());
         System.out.println(currentMove.getDescription());
-        double damage = damageCalc(currentMove.getDamage(), enemy, character);
+        double damage = calculateDamageAfterDefense(currentMove.getDamage(), enemy, character);
         System.out.println(enemy.getName() + " dealt " + damage + " damage\n\n");
         character.setHealthValue(character.getHealth() - damage);
     }
 
     /**
      * Helper method to determine the enemies true damage value based on the scaling (dungeon level reached)
-     * @param damage
-     * @param enemy
-     * @param character
-     * @return
+     * @param damage damage value before scaling
+     * @param enemy current enemy
+     * @param character player character
+     * @return double value of damage after defense
      */
-    double damageCalc(int damage, Enemy enemy, Character character){
+    double calculateDamageAfterDefense(int damage, Enemy enemy, Character character){
         double leveledDamage = damage + enemy.getAttackValue();
         return leveledDamage - (leveledDamage * character.getTotalDefense());
     }
 
     /**
      * Removes the current room from the dungeon if the player has defeated an enemy in that room
-     * @param dungeon
-     * @param character
-     * @param enemy
+     * @param dungeon dungeon being used
+     * @param character player character
+     * @param enemy current enemy
      */
     void removeRoom(RobertCircularlyLinkedList<Room> dungeon, Character character, Enemy enemy){
         int random = new Random().nextInt(2);

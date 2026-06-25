@@ -4,14 +4,25 @@ import Dungeon.*;
 import Items.*;
 import lib.Node;
 import lib.RobertHolder;
+
+import java.util.Objects;
 import java.util.Scanner;
 
 public class Character {
     private String name;
-    private int attack, weaponAttack, totalAttack, speed, roomsTraversed, enemiesDefeated, coins, potionsConsumed;
-    private double health, armorDefense, perkDefense, totalDefense;
+    private int attack;
+    private int weaponAttack;
+    private int speed;
+    private int roomsTraversed;
+    private int enemiesDefeated;
+    private int coins;
+    private int potionsConsumed;
+    private double health;
+    private double maxHealth;
+    private double armorDefense;
+    private double perkDefense;
     private Item weapon, armor;
-    private RobertHolder<Item> inventory;
+    private final RobertHolder<Item> inventory;
     private Node currentRoom;
 
     /**
@@ -21,6 +32,7 @@ public class Character {
         this.name = "";
         this.attack = 0;
         this.health = 0;
+        this.maxHealth = 500;
         this.speed = 0;
         this.coins = 0;
         this.weapon = null;
@@ -30,18 +42,40 @@ public class Character {
     }
 
     /**
-     * Constructor that allows for a character to have certain values preset
-     * @param name
-     * @param attack
-     * @param health
-     * @param speed
-     * @param coinsHad
-     * @param inventory
+     * Constructor that allows for an enemy to have certain values preset
+     * @param name Name of the character
+     * @param attack Attack value of the character
+     * @param health Health value of the character
+     * @param speed Speed value of the character
+     * @param coinsHad Coins the character has
+     * @param inventory Inventory of the character
      */
-    public Character(String name, int attack, double health, int speed, int coinsHad, RobertHolder<Item> inventory){
+    public Character(String name, int attack, double health,  int speed, int coinsHad, RobertHolder<Item> inventory){
         this.name = name;
         this.attack = attack;
         this.health = health;
+        this.speed = speed;
+        this.coins = coinsHad;
+        this.weapon = null;
+        this.armor = null;
+        this.currentRoom = null;
+        this.inventory = inventory;
+    }
+
+    /**
+     * Constructor that allows for a character to have certain values preset
+     * @param name Name of the character
+     * @param attack Attack value of the character
+     * @param health Health value of the character
+     * @param speed Speed value of the character
+     * @param coinsHad Coins the character has
+     * @param inventory Inventory of the character
+     */
+    public Character(String name, int attack, double health, double maxHealth, int speed, int coinsHad, RobertHolder<Item> inventory){
+        this.name = name;
+        this.attack = attack;
+        this.health = health;
+        this.maxHealth = maxHealth;
         this.speed = speed;
         this.coins = coinsHad;
         this.weapon = null;
@@ -123,7 +157,8 @@ public class Character {
     }
 
     public void setTotalDefense(double armorDefense, double perkDefense){
-        this.totalDefense = armorDefense + perkDefense;
+        this.armorDefense = armorDefense;
+        this.perkDefense = perkDefense;
     }
 
     public double getTotalDefense(){
@@ -155,7 +190,7 @@ public class Character {
     }
 
     public void setWeaponAttack(int weaponAttack){
-        this.weaponAttack = this.weapon.getAttackValue();
+        this.weaponAttack = weaponAttack;
     }
 
     public int getWeaponAttack(){
@@ -163,7 +198,8 @@ public class Character {
     }
 
     public void setTotalAttack(int attack, int weaponAttack){
-        this.totalAttack = attack + weaponAttack;
+        this.attack = attack;
+        this.weaponAttack = weaponAttack;
     }
 
     public int getTotalAttack(){
@@ -176,6 +212,14 @@ public class Character {
 
     public int getPotionsConsumed(){
         return potionsConsumed;
+    }
+
+    public double getMaxHealth() {
+        return maxHealth;
+    }
+
+    public void setMaxHealth(double maxHealth) {
+        this.maxHealth = maxHealth;
     }
 
     /**
@@ -193,8 +237,8 @@ public class Character {
 
     /**
      * Output prompt and logic for player dungeon traversal
-     * @param levelCount
-     * @param keyboard
+     * @param levelCount current level count
+     * @param keyboard keyboard input
      */
     public void move(int levelCount, Scanner keyboard) {
         Node currentDungeonRoom = this.getCurrentRoom();
@@ -228,7 +272,7 @@ public class Character {
     /**
      * Chest opening handler. Provides players with the choice to open a chest or not.
      * Updates stats according to item type and attributes.
-     * @param keyboard
+     * @param keyboard keyboard input
      */
     public void openChest(Scanner keyboard){
         Node currentDungeonRoom = this.getCurrentRoom();
@@ -245,16 +289,16 @@ public class Character {
             System.out.println("this " + currentRoom.getItem().getDescription() + "\n\n");
 
             //Set stats based on item attributes
-            if(currentRoom.getItem().getHpValue() != 0){
+            if (currentRoom.getItem() != null && currentRoom.getItem().getHpValue() != 0) {
                 healingItemHandler(currentRoom, keyboard);
             }
-            if(currentRoom.getItem().getSpeedValue() != 0){
+            if (currentRoom.getItem() != null && currentRoom.getItem().getSpeedValue() != 0) {
                 speedItemHandler(currentRoom);
             }
-            if(currentRoom.getItem().getType() != null && currentRoom.getItem().getType().equals("Weapon")){
+            if (currentRoom.getItem() != null && currentRoom.getItem().getType() != null && currentRoom.getItem().getType().equals("Weapon")) {
                 weaponItemHandler(currentRoom);
             }
-            if(currentRoom.getItem().getType() != null && currentRoom.getItem().getType().equals("Armor")){
+            if (currentRoom.getItem() != null && currentRoom.getItem().getType() != null && currentRoom.getItem().getType().equals("Armor")) {
                 armorItemHandler(currentRoom);
             }
             currentRoom.setItem(null);
@@ -270,8 +314,8 @@ public class Character {
     /**
      * Helper method for healing items (potions with positive effects).
      * The user may decide to add the item to their inventory rather than using it immediately.
-     * @param currentRoom
-     * @param keyboard
+     * @param currentRoom current room the player is in
+     * @param keyboard keyboard input
      */
     void healingItemHandler(Room currentRoom, Scanner keyboard){
         double hp = this.getHealth();
@@ -283,7 +327,7 @@ public class Character {
             System.out.print("Would you like to add this to your inventory? (Y/N) : ");
             String choice2 = keyboard.nextLine();
             if(choice2.trim().equalsIgnoreCase("y")){
-                inventory.addToBucket(currentRoom.getItem());
+                Objects.requireNonNull(inventory).addToBucket(currentRoom.getItem());
                 currentRoom.setItem(null);
                 return;
             }else if(!choice2.trim().equalsIgnoreCase("n")){
@@ -293,14 +337,14 @@ public class Character {
             }
         }
 
-        //Make sure the players health value stays below the max
+        //Make sure the player's health value stays below the max
         int itemHp = currentRoom.getItem().getHpValue();
-        if(this.getHealth() < 500){
+        if(this.getHealth() < this.getMaxHealth()){
             this.setHealthValue(hp + itemHp);
-            if(this.getHealth() > 500){
-                this.setHealthValue(500);
+            if(this.getHealth() > this.getMaxHealth()){
+                this.setHealthValue(this.getMaxHealth());
             }
-        }else if(this.getHealth() == 500 && itemHp < 0){
+        }else if(this.getHealth() == this.getMaxHealth() && itemHp < 0){
             this.setHealthValue(hp + itemHp);
         }else{
             System.out.println("You have already reached maximum health, no effect\n");
@@ -312,7 +356,7 @@ public class Character {
 
     /**
      * Handles increased speed stat based on item attributes
-     * @param currentRoom
+     * @param currentRoom current room the player is in
      */
     void speedItemHandler(Room currentRoom){
         int itemSpeed = currentRoom.getItem().getSpeedValue();
@@ -321,7 +365,7 @@ public class Character {
 
     /**
      * Handles increased attack stat based on item attributes
-     * @param currentRoom
+     * @param currentRoom current room the player is in
      */
     void weaponItemHandler(Room currentRoom){
         this.setWeapon(currentRoom.getItem());
@@ -331,7 +375,7 @@ public class Character {
 
     /**
      * Handles increase defense stat based on item attributes
-     * @param currentRoom
+     * @param currentRoom current room the player is in
      */
     void armorItemHandler(Room currentRoom){
         this.setArmor(currentRoom.getItem());
@@ -348,7 +392,7 @@ public class Character {
 
     /**
      * Allows the user to view held items
-     * @param keyboard
+     * @param keyboard keyboard input
      */
     public void displayInventory(Scanner keyboard){
         for(int i = 0; i < inventory.size(); i++){
@@ -371,7 +415,7 @@ public class Character {
     /**
      * Helper method to update stats based on item used from inventory.
      * To be used with the displayInventory method.
-     * @param choice
+     * @param choice player's choice of item to use, represented by the index of the item in the inventory
      */
     void useInventory(int choice){
         Item itemUsed = inventory.getAtIndex(choice - 1);

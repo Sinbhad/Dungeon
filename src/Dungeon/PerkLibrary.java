@@ -10,9 +10,9 @@ public class PerkLibrary {
 
     //Health
     public final Perks[] HEALTH_PERKS = {
-            new Perks("Band-aid", "Health", " increases health by 50: 200 coins", 50, 200),
-            new Perks("Healing Potion", "Health", " increases health by 100: 400 coins", 100, 400),
-            new Perks("Ultimate Healing Potion", "Health", " increases health by 200: 600 coins", 200, 600),
+            new Perks("Band-aid", "Health", " increases max health by 50 points: 200 coins", 50, 200),
+            new Perks("Healing Potion", "Health", " increases max health by 100 points: 400 coins", 100, 400),
+            new Perks("Ultimate Healing Potion", "Health", " increases max health by 200 points: 600 coins", 200, 600),
     };
 
     //Damage

@@ -3,11 +3,11 @@ package Items;
 public class Weapon extends Item {
     /**
      * Constructor for weapon items
-     * @param name
-     * @param type
-     * @param description
-     * @param attackVal
-     * @param speedVal
+     * @param name name of the weapon
+     * @param type type of weapon
+     * @param description short description of the weapon
+     * @param attackVal attack value of the weapon
+     * @param speedVal speed value of the weapon
      */
     public Weapon(String name, String type, String description, int attackVal, int speedVal) {
         super(name, type, description, 0, attackVal, speedVal, 0);

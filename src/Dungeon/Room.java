@@ -3,12 +3,31 @@ import Characters.Enemy;
 import Items.Item;
 
 public class Room {
-    private String name;
+    private final String name;
     private Item item;
     private Character playerCharacter;
     private Enemy enemyCharacter;
     private boolean isExit;
 
+    /**
+     * Default constructor for room
+     */
+    public Room (){
+        name = "";
+        item = null;
+        playerCharacter = null;
+        enemyCharacter = null;
+        isExit = false;
+    }
+
+    /**
+     * Constructor for room
+     * @param name name of room
+     * @param item item in room
+     * @param playerCharacter player character in the room
+     * @param enemyCharacter enemy character in room
+     * @param isExit whether room is exit
+     */
     public Room(String name, Item item, Character playerCharacter, Enemy enemyCharacter, boolean isExit){
         this.name = name;
         this.item = item;
@@ -17,15 +36,18 @@ public class Room {
         this.isExit = isExit;
     }
 
+    /**
+     * Sets certain values for a room, used during floor generation
+     * @param item item in room (chest)
+     * @param playerCharacter player character in the room
+     * @param enemyCharacter enemy character in room
+     * @param isExit whether room is exit
+     */
     public void setCertain(Item item, Character playerCharacter, Enemy enemyCharacter, boolean isExit){
         setItem(item);
         setEnemyCharacter(enemyCharacter);
         setPlayerCharacter(playerCharacter);
         setIsExit(isExit);
-    }
-
-    public void setNames(String name){
-        this.name = name;
     }
 
     public String getName(){
@@ -42,10 +64,6 @@ public class Room {
 
     public void setPlayerCharacter(Character playerCharacter) {
         this.playerCharacter = playerCharacter;
-    }
-
-    public Character getPlayerCharacter() {
-        return playerCharacter;
     }
 
     public void setEnemyCharacter(Enemy enemyCharacter) {

@@ -1,26 +1,25 @@
 package Characters;
 
 import Dungeon.Room;
-import Items.Item;
 import lib.Node;
 import java.util.Random;
 import lib.RobertHolder;
 
 public class Enemy extends Character {
-   private RobertHolder<Move> moves = new RobertHolder();
+   private final RobertHolder<Move> moves = new RobertHolder<>();
    //Used to store the values used for fleeing probability in battle
    int[] fleeNums = new int[10];
 
     /**
      * Constructor for enemies to be used in the game
-     * @param name
-     * @param attackValue
-     * @param healthValue
-     * @param speedValue
-     * @param coinsHad
+     * @param name enemy name
+     * @param attackValue enemy attack value
+     * @param healthValue enemy health value
+     * @param speedValue enemy speed value
+     * @param coinsHad coins enemy has for player to collect
      */
    public Enemy(String name, int attackValue, int healthValue, int speedValue, int coinsHad, int[] fleeNums){
-       super(name, attackValue, healthValue, speedValue, coinsHad, new RobertHolder<Item>());
+       super(name, attackValue, healthValue, speedValue, coinsHad, new RobertHolder<>());
        this.fleeNums = fleeNums;
    }
 
@@ -29,7 +28,7 @@ public class Enemy extends Character {
    }
 
    public void setMoves(Move move){
-      this.moves.addToBucket(move);
+       this.moves.addToBucket(move);
    }
 
    public RobertHolder getMoves(){
@@ -60,6 +59,9 @@ public class Enemy extends Character {
       return fleeNums;
    }
 
+   /**
+    * Moves the enemy to a random adjacent room
+    */
    public void move() {
       Node enemyRoomNode = this.getCurrentRoom();
 

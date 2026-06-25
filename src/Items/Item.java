@@ -22,13 +22,13 @@ public class Item{
 
     /**
      * Constructor for item of multiple types
-     * @param name
-     * @param type
-     * @param description
-     * @param hpValue
-     * @param attackValue
-     * @param speedValue
-     * @param defenseValue
+     * @param name name of item
+     * @param type type of item
+     * @param description description of item
+     * @param hpValue health value of item
+     * @param attackValue attack value of an item
+     * @param speedValue speed value of item
+     * @param defenseValue defense value of item
      */
     public Item(String name, String type, String description, int hpValue, int attackValue, int speedValue, double defenseValue){
         this.name = name;
@@ -72,9 +72,7 @@ public class Item{
         return attackValue;
     }
 
-    public void setHpValue(int hpValue){
-        this.hpValue = hpValue;
-    }
+    public void setHpValue(int hpValue){this.hpValue = hpValue;}
 
     public int getHpValue(){
         return hpValue;

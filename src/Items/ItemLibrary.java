@@ -14,7 +14,7 @@ public class ItemLibrary {
             //Speed
             new Potion("Mini Speed Potion","Speed Up Item","increases speed by 15 points",0,15),
             new Potion("Moderate Speed Potion", "Speed Up Item", "increases speed by 30 points", 0, 30),
-            new Potion("Great Speed Potion", "Speed Up Item", "increases speed by 50 ponts", 0, 50),
+            new Potion("Great Speed Potion", "Speed Up Item", "increases speed by 50 points", 0, 50),
             new Potion("Mega Speed Potion", "Speed Up Item", "increases speed by 75 points", 0, 75),
 
             //Healing and Speed

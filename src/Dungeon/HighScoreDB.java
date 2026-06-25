@@ -21,12 +21,12 @@ public class HighScoreDB {
     }
 
     /**
-     * Saves the users name and score to the database so long as it exists
-     * @param playerName
-     * @param finalPoints
+     * Saves the user's name and score to the database so long as it exists
+     * @param playerName player name stored in the database
+     * @param finalPoints player score stored in the database
      */
     public void saveStats(String playerName, int finalPoints) {
-        String insertSQL = "INSERT INTO HighScores(Name, Points) VALUES(?, ?)";;
+        String insertSQL = "INSERT INTO HighScores(Name, Points) VALUES(?, ?)";
 
         try (Connection connection = DriverManager.getConnection(URL);
              PreparedStatement preparedStatement = connection.prepareStatement(insertSQL)) {

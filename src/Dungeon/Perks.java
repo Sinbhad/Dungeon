@@ -5,6 +5,9 @@ public class Perks {
     int cost;
     double value;
 
+    /**
+     * default constructor for perks
+     */
     public Perks(){
         this.name = "";
         this.type = "";
@@ -13,16 +16,20 @@ public class Perks {
         cost = 0;
     }
 
+    /**
+     * constructor for perks
+     * @param name name of perk
+     * @param type type of attribute that perk increases
+     * @param description description of perk
+     * @param value value of perk in terms of how much it increases the player's stats
+     * @param cost cost of perk
+     */
     public Perks(String name, String type, String description, double value, int cost){
         this.name = name;
         this.type = type;
         this.description = description;
         this.value = value;
-        this.cost = 0;
-    }
-
-    public void setPerkName(String name){
-        this.name = name;
+        this.cost = cost;
     }
 
     public String getPerkName(){
@@ -51,10 +58,6 @@ public class Perks {
 
     public double getValue(){
         return value;
-    }
-
-    public void setCost(int cost){
-        this.cost = cost;
     }
 
     public int getCost(){
