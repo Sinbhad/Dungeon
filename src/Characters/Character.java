@@ -339,14 +339,19 @@ public class Character {
 
         //Make sure the player's health value stays below the max
         int itemHp = currentRoom.getItem().getHpValue();
-        if(this.getHealth() < this.getMaxHealth()){
+        if (itemHp < 0) {
+            // It's a trap: always apply damage
             this.setHealthValue(hp + itemHp);
-            if(this.getHealth() > this.getMaxHealth()){
+
+        } else if (this.getHealth() < this.getMaxHealth()) {
+            // It's a healing item and player is below max health: apply healing
+            this.setHealthValue(hp + itemHp);
+
+            // Cap health at maxHealth
+            if (this.getHealth() > this.getMaxHealth()) {
                 this.setHealthValue(this.getMaxHealth());
             }
-        }else if(this.getHealth() == this.getMaxHealth() && itemHp < 0){
-            this.setHealthValue(hp + itemHp);
-        }else{
+        } else {
             System.out.println("You have already reached maximum health, no effect\n");
         }
 

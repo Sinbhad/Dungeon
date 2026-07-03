@@ -1,7 +1,10 @@
 package Dungeon;
 
+import Items.Item;
 import Items.ItemLibrary;
 import Characters.*;
+import Items.Weapon;
+import Items.Weapons.*;
 import lib.Node;
 import lib.RobertCircularlyLinkedList;
 
@@ -28,6 +31,7 @@ public class DungeonGenerator {
      */
     void setRooms(RobertCircularlyLinkedList<Room> dungeon) {
         ArrayList<Enemy> enemyRoster = enemyRosterGenerator();
+        ArrayList<Weapon> weaponRoster = weaponRosterGenerator();
 
         Random chanceNum = new Random();
         int size = dungeon.getSize();
@@ -41,7 +45,7 @@ public class DungeonGenerator {
 
         
         enemyLevelCheck(chanceNum, size, dungeon, enemyRoster);
-        setWeapon(chanceNum, size, dungeon);
+        setWeapon(chanceNum, size, dungeon, weaponRoster);
         setPotion(chanceNum, size, dungeon);
         setTrap(chanceNum, size, dungeon);
         setArmor(chanceNum, size, dungeon);
@@ -69,17 +73,30 @@ public class DungeonGenerator {
         return enemyRoster;
     }
 
+    ArrayList<Weapon> weaponRosterGenerator(){
+        ArrayList<Weapon> weaponRoster = new ArrayList<>();
+        weaponRoster.add(new Dagger());
+        weaponRoster.add(new ShortSword());
+        weaponRoster.add(new BroadSword());
+        weaponRoster.add(new Mace());
+        weaponRoster.add(new Hammer());
+        weaponRoster.add(new TwoHandedHammer());
+        weaponRoster.add(new TacticalWalkingStick());
+        weaponRoster.add(new MagesStaff());
+        return weaponRoster;
+    }
+
     /**
      * Gets a random weapon from the weapon section of the item library to add to the dungeon on each new level
      * @param chanceNum random number generator
      * @param size number of rooms in the dungeon
      * @param dungeon currently used dungeon
      */
-    void setWeapon(Random chanceNum, int size, RobertCircularlyLinkedList<Room> dungeon) {
-        ItemLibrary itemLibrary = new ItemLibrary();
+    void setWeapon(Random chanceNum, int size, RobertCircularlyLinkedList<Room> dungeon, ArrayList<Weapon> weaponRoster) {
         int weaponRoomIndex = chanceNum.nextInt(size);
         Room weaponRoom = dungeon.getValAtIndex(weaponRoomIndex);
-        weaponRoom.setItem(itemLibrary.WEAPONS[chanceNum.nextInt(itemLibrary.WEAPONS.length)]);
+        Weapon weapon = weaponRoster.get(chanceNum.nextInt(weaponRoster.size()));
+        weaponRoom.setItem(weapon);
     }
 
     /**

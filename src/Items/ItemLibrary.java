@@ -33,18 +33,6 @@ public class ItemLibrary {
             new Trap("Welp Trap", "Trap", "lowers players hp by 200, welp...", -200, 0)
     };
 
-    //Weapons
-    public final Weapon[] WEAPONS = {
-            new Weapon("Dagger", "Weapon", "increases attack by 20 but decreases speed by 5", 20, -5),
-            new Weapon("Short Sword", "Weapon", "increases attack by 30 but decreases speed by 5", 30, -5),
-            new Weapon("Broad Sword", "Weapon", "increases damage by 50 but decreases speed by 10", 50, -10),
-            new Weapon("Mace", "Weapon", "increases damage by 10 but decreases speed by 5", 10, -5),
-            new Weapon("Hammer", "Weapon", "increases damage by 20 but decreases speed by 10", 20, -10),
-            new Weapon("Two Handed Hammer", "Weapon", "increases damage by 60 but decreases speed by 15", 60, -15),
-            new Weapon("15 in 1 Tactical Walking Stick", "Weapon", "increases damage by 150 and increases speed by 30", 150, 30),
-            new Weapon("Mage's Staff", "Weapon", "increases damage by 300, does not decrease speed", 300, 0),
-    };
-
     //Armor
     public final Armor[] ARMOR_PIECES = {
             new Armor("Scraps of Cloth", "Armor", "increases defense by 5, does not decrease speed", 0, 5, 0),
