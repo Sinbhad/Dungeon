@@ -1,6 +1,7 @@
 package Dungeon;
 import Characters.*;
 import Characters.Character;
+import Items.Weapon;
 import lib.Node;
 import lib.RobertCircularlyLinkedList;
 import lib.RobertHolder;
@@ -19,7 +20,7 @@ public class Fight {
     void battle(RobertCircularlyLinkedList<Room> dungeon, Character character, Enemy enemy, int levelCount){
         Scanner keyboard = new Scanner(System.in);
         System.out.println("You have encountered " + enemy.getName() + ", hit them with all you got\n");
-        attackSelect(dungeon, keyboard, character, enemy, levelCount);
+        startBattleSelection(dungeon, keyboard, character, enemy, levelCount);
     }
 
     /**
@@ -30,7 +31,7 @@ public class Fight {
      * @param enemy current enemy
      * @param levelCount current level count
      */
-    void attackSelect(RobertCircularlyLinkedList<Room> dungeon, Scanner keyboard, Character character, Enemy enemy, int levelCount){
+    void startBattleSelection(RobertCircularlyLinkedList<Room> dungeon, Scanner keyboard, Character character, Enemy enemy, int levelCount){
         String choice = "A";
         while ((enemy.getHealth() > 0 && character.getHealth() > 0) && !choice.equalsIgnoreCase("F")) {
             System.out.println("Enter I to display inventory");
@@ -38,16 +39,20 @@ public class Fight {
             choice = keyboard.nextLine();
 
             if (choice.trim().equalsIgnoreCase("A")) {
-                speedCheck(dungeon, character, enemy, keyboard);
+                Move move = character.chooseMove((Weapon) character.getWeapon(), keyboard);
+                if (move != null) {
+                    speedCheck(dungeon, character, enemy, keyboard, move);
+                } else {
+                    System.out.println("No move selected. Try again.");
+                }
             } else if (choice.trim().equalsIgnoreCase("F")) {
                 System.out.println("Get out of here!\n");
                 fleeCheck(dungeon, character, enemy, keyboard, levelCount);
                 enemy.move();
-            }else if(choice.trim().equalsIgnoreCase("I")){
+            } else if (choice.trim().equalsIgnoreCase("I")) {
                 character.displayInventory(keyboard);
-            }else{
+            } else {
                 System.out.println("Invalid choice!");
-                attackSelect(dungeon, keyboard,  character, enemy, levelCount);
             }
         }
     }
@@ -94,11 +99,9 @@ public class Fight {
      * @param enemy current enemy
      * @param keyboard user input
      */
-    void speedCheck(RobertCircularlyLinkedList<Room> dungeon, Character character, Enemy enemy, Scanner keyboard){
+    void speedCheck(RobertCircularlyLinkedList<Room> dungeon, Character character, Enemy enemy, Scanner keyboard, Move move){
         if(character.getSpeed() > enemy.getSpeed()){
-            System.out.println("\nYou hit " + enemy.getName() + " dealing " + character.getTotalAttack() + " damage\n");
-            enemy.setHealthValue(enemy.getHealth() - character.getTotalAttack());
-
+            attackOutput(character, enemy, move);
             if(isEnemyAlive(dungeon, character, enemy,  keyboard)){
                 enemyAttackOutput(enemy, character);
             }
@@ -106,15 +109,23 @@ public class Fight {
         } else {
             System.out.println("\n" + enemy.getName() + " is faster than you and attacks first\n");
             enemyAttackOutput(enemy, character);
-
             if(isPlayerAlive(character)){
                 System.out.println("You hit " + enemy.getName() + " dealing " + character.getTotalAttack() + " damage\n");
                 enemy.setHealthValue(enemy.getHealth() - character.getTotalAttack());
             }
         }
+        zeroHealth(character);
         System.out.println("You have " + character.getHealth() + " health remaining");
         zeroHealth(enemy);
         System.out.println(enemy.getName() + " has " + enemy.getHealth() + " remaining\n");
+    }
+
+    void attackOutput(Character character, Enemy enemy, Move move){
+        System.out.println("You used " + move.getMoveName());
+        System.out.println(move.getDescription() + "dealing " + (character.getTotalAttack() + move.getDamage()) + " damage\n");
+        enemy.setHealthValue(enemy.getHealth() - (character.getTotalAttack() + move.getDamage()));
+        System.out.println(enemy.getName() + " has " + enemy.getHealth() + " health remaining");
+
     }
 
     /**
@@ -164,11 +175,11 @@ public class Fight {
 
     /**
      * Helper method, mainly for formatting to prevent negative values from being displayed in outputs
-     * @param enemy current enemy
+     * @param character current character
      */
-    void zeroHealth(Enemy enemy){
-        if(enemy.getHealth() < 0){
-            enemy.setHealthValue(0);
+    void zeroHealth(Character character){
+        if(character.getHealth() < 0){
+            character.setHealthValue(0);
         }
     }
 

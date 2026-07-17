@@ -2,7 +2,7 @@ package Characters;
 
 public class Move{
     private String moveName, description;
-    private int damage;
+    private int damage, energyCost;
 
     /**
      * Default constructor for enemy moves
@@ -11,18 +11,31 @@ public class Move{
         this.moveName = "";
         this.description = "";
         this.damage = 0;
+        this.energyCost = 0;
     }
 
     /**
-     * Constructor that handles creation of moves for enemies with an actual definition
-     * @param moveName
-     * @param description
-     * @param damage
+     * Constructor that handles creation of moves for weapon-based player moves with an actual definition
+     * @param moveName name of move
+     * @param description description of the move (what it does, possible effects, etc.)
+     * @param damage damage dealt by move
+     * @param energyCost energy cost of move
      */
-    public Move(String moveName, String description, int damage){
+    public Move(String moveName, String description, int damage, int energyCost){
         this.moveName = moveName;
         this.description = description;
         this.damage = damage;
+        this.energyCost = energyCost;
+    }
+
+    /**
+     * Constructor that handles creation of moves for enemy moves with an actual definition
+     * @param moveName name of move
+     * @param description description of the move (what it does, possible effects, etc.)
+     * @param damage damage dealt by move
+     */
+    public Move(String moveName, String description, int damage){
+        this(moveName, description, damage, 0);
     }
 
     public void setMoveName(String moveName){
@@ -47,5 +60,13 @@ public class Move{
 
     public int getDamage(){
         return damage;
+    }
+
+    public void setEnergyCost(int energyCost){
+        this.energyCost = energyCost;
+    }
+
+    public int getEnergyCost(){
+        return energyCost;
     }
 }

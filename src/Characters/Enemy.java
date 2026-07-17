@@ -18,8 +18,8 @@ public class Enemy extends Character {
      * @param speedValue enemy speed value
      * @param coinsHad coins enemy has for player to collect
      */
-   public Enemy(String name, int attackValue, int healthValue, int speedValue, int coinsHad, int[] fleeNums){
-       super(name, attackValue, healthValue, speedValue, coinsHad, new RobertHolder<>());
+   public Enemy(String name, int attackValue, int healthValue, int staminaValue, int speedValue, int coinsHad, int[] fleeNums){
+       super(name, attackValue, healthValue, staminaValue, speedValue, coinsHad, new RobertHolder<>());
        this.fleeNums = fleeNums;
    }
 

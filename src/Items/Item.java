@@ -1,11 +1,14 @@
 package Items;
 
+import lib.RobertHolder;
+
 public class Item{
     String name;
     String type;
     String description;
     int hpValue, attackValue, speedValue;
     double defenseValue;
+    RobertHolder moves = new RobertHolder();
 
     /**
      * Default item constructor
@@ -92,5 +95,9 @@ public class Item{
 
     public double getDefenseValue(){
         return defenseValue;
+    }
+
+    public RobertHolder getMoves(){
+        return moves;
     }
 }

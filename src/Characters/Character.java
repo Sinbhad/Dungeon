@@ -10,20 +10,16 @@ import java.util.Scanner;
 
 public class Character {
     private String name;
-    private int attack;
-    private int weaponAttack;
-    private int speed;
-    private int roomsTraversed;
-    private int enemiesDefeated;
-    private int coins;
-    private int potionsConsumed;
-    private double health;
-    private double maxHealth;
-    private double armorDefense;
-    private double perkDefense;
+
+    //Player state
+    private int attack, weaponAttack, speed, coins, stamina, maxStamina;
+    private double health, maxHealth, armorDefense, perkDefense;
     private Item weapon, armor;
     private final RobertHolder<Item> inventory;
     private Node currentRoom;
+
+    //Point tracking
+    private int roomsTraversed, enemiesDefeated, potionsConsumed;
 
     /**
      * Default constructor
@@ -33,10 +29,14 @@ public class Character {
         this.attack = 0;
         this.health = 0;
         this.maxHealth = 500;
+        this.stamina = 0;
+        this.maxStamina = 0;
         this.speed = 0;
         this.coins = 0;
         this.weapon = null;
+        this.setWeapon(new Weapon("Fists", null, null, 0, 0));
         this.armor = null;
+        this.setArmor(new Armor("Naked", null, null, 0, 0, 0));
         this.currentRoom = null;
         this.inventory = null;
     }
@@ -45,19 +45,23 @@ public class Character {
      * Constructor that allows for an enemy to have certain values preset
      * @param name Name of the character
      * @param attack Attack value of the character
-     * @param health Health value of the character
+     * @param health Health value of the character\
+     * @param stamina Stamina value of the character
      * @param speed Speed value of the character
      * @param coinsHad Coins the character has
      * @param inventory Inventory of the character
      */
-    public Character(String name, int attack, double health,  int speed, int coinsHad, RobertHolder<Item> inventory){
+    public Character(String name, int attack, double health, int stamina,  int speed, int coinsHad, RobertHolder<Item> inventory){
         this.name = name;
         this.attack = attack;
         this.health = health;
+        this.stamina = stamina;
         this.speed = speed;
         this.coins = coinsHad;
         this.weapon = null;
+        this.setWeapon(new Weapon("Fists", null, null, 0, 0));
         this.armor = null;
+        this.setArmor(new Armor("Naked", null, null, 0, 0, 0));
         this.currentRoom = null;
         this.inventory = inventory;
     }
@@ -79,7 +83,9 @@ public class Character {
         this.speed = speed;
         this.coins = coinsHad;
         this.weapon = null;
+        this.setWeapon(new Weapon("Fists", null, null, 0, 0));
         this.armor = null;
+        this.setArmor(new Armor("Naked", null, null, 0, 0, 0));
         this.currentRoom = null;
         this.inventory = inventory;
     }
@@ -222,6 +228,19 @@ public class Character {
         this.maxHealth = maxHealth;
     }
 
+    public void setStamina(int stamina) {
+        this.stamina = stamina;
+    }
+    public int getStamina() {
+        return stamina;
+    }
+    public void setMaxStamina(int maxStamina) {
+        this.maxStamina = maxStamina;
+    }
+    public int getMaxStamina() {
+        return maxStamina;
+    }
+
     /**
      * Method used throughout the game to display equipment and other stats on each turn
      */
@@ -229,9 +248,11 @@ public class Character {
         int healthInt = (int)this.health;
         System.out.println(name);
         System.out.println("Health Points: " + healthInt);
-        System.out.println("Attack Points: " + attack);
-        System.out.println("Weapon: " + weapon.getName());
-        System.out.println("Armor: " + armor.getName());
+        System.out.println("Total Attack: " + getTotalAttack());
+        String weaponName = (this.getWeapon() != null) ? this.getWeapon().getName() : "Fists";
+        System.out.println("Weapon: " + weaponName);
+        String armorName = (this.getArmor() != null) ? this.getArmor().getName() : "Naked";
+        System.out.println("Armor: " + armorName);
         System.out.println("Coins: " + coins);
     }
 
@@ -295,10 +316,10 @@ public class Character {
             if (currentRoom.getItem() != null && currentRoom.getItem().getSpeedValue() != 0) {
                 speedItemHandler(currentRoom);
             }
-            if (currentRoom.getItem() != null && currentRoom.getItem().getType() != null && currentRoom.getItem().getType().equals("Weapon")) {
+            if (currentRoom.getItem() != null && currentRoom.getItem() instanceof Weapon) {
                 weaponItemHandler(currentRoom);
             }
-            if (currentRoom.getItem() != null && currentRoom.getItem().getType() != null && currentRoom.getItem().getType().equals("Armor")) {
+            if (currentRoom.getItem() != null && currentRoom.getItem() instanceof Armor) {
                 armorItemHandler(currentRoom);
             }
             currentRoom.setItem(null);
@@ -344,7 +365,7 @@ public class Character {
             this.setHealthValue(hp + itemHp);
 
         } else if (this.getHealth() < this.getMaxHealth()) {
-            // It's a healing item and player is below max health: apply healing
+            // It's a healing item, and player is below max health: apply healing
             this.setHealthValue(hp + itemHp);
 
             // Cap health at maxHealth
@@ -376,6 +397,7 @@ public class Character {
         this.setWeapon(currentRoom.getItem());
         this.setWeaponAttack(currentRoom.getItem().getAttackValue());
         this.setTotalAttack(this.getAttack() , this.getWeaponAttack());
+        this.setSpeedValue(this.getSpeed() + currentRoom.getItem().getSpeedValue());
     }
 
     /**
@@ -400,7 +422,14 @@ public class Character {
      * @param keyboard keyboard input
      */
     public void displayInventory(Scanner keyboard){
-        for(int i = 0; i < inventory.size(); i++){
+        int inventorySize = 0;
+        if(inventory != null && inventory.size() >= 0){
+            inventorySize = inventory.size();
+        }else{
+            System.out.println("You have no items in your inventory\n");
+            return;
+        }
+        for(int i = 0; i < inventorySize; i++){
             System.out.println((i + 1) + ": "+ inventory.getAtIndex(i).getName());
         }
         System.out.println("Use 0 to exit inventory");
@@ -423,11 +452,70 @@ public class Character {
      * @param choice player's choice of item to use, represented by the index of the item in the inventory
      */
     void useInventory(int choice){
-        Item itemUsed = inventory.getAtIndex(choice - 1);
-        System.out.println("\n\n" + itemUsed.getName() + " was used");
-        this.setHealthValue(this.getHealth() + itemUsed.getHpValue());
-        this.setPotionsConsumed(this.getPotionsConsumed() + 1);
-        System.out.println(itemUsed.getHpValue() + " health restored\n\n");
-        inventory.removeAtIndex(choice);
+        if(inventory == null || inventory.size() == 0){
+            System.out.println("You have no items in your inventory\n");
+        }else if(choice > inventory.size()){
+            System.out.println("Invalid choice\n");
+        }else{
+            Item itemUsed = inventory.getAtIndex(choice - 1);
+            System.out.println("\n\n" + itemUsed.getName() + " was used");
+            this.setHealthValue(this.getHealth() + itemUsed.getHpValue());
+            this.setPotionsConsumed(this.getPotionsConsumed() + 1);
+            System.out.println(itemUsed.getHpValue() + " health restored\n\n");
+            inventory.removeAtIndex(choice);
+        }
+    }
+
+    public Move chooseMove(Weapon weapon, Scanner keyboard){
+        Move move = null;
+        if(weapon == null || weapon.getMoves() == null || weapon.getMoves().size() == 0){
+            System.out.println("You have no moves to choose from\n");
+            move = returnSelectedMoveFormatted(null, 12, keyboard);
+        }else{
+            System.out.println("Choose a move from the following list:");
+            RobertHolder<Move> currentMoves = weapon.getMoves();
+            for (int i = 0; i < currentMoves.size(); i++) {
+                Move m = currentMoves.getAtIndex(i);
+                System.out.println((i + 1) + ": " + m.getMoveName());
+            }
+            System.out.print("Enter your choice: ");
+            String choice = keyboard.nextLine();
+            int choiceNum;
+            try {
+                choiceNum = Integer.parseInt(choice.trim());
+            } catch (NumberFormatException e) {
+                choiceNum = -1;
+            }
+            move = returnSelectedMoveFormatted(currentMoves, choiceNum, keyboard);
+        }
+        return move;
+    }
+
+    Move returnSelectedMoveFormatted(RobertHolder<Move> moves, int choice, Scanner keyboard) {
+        //Check if moves is null (handling the "no moves" case)
+        if (moves == null || moves.size() == 0) {
+            if (choice == 12) {
+                System.out.println("Resorting to fists\n");
+                return new Move("Punch", "Bam! you hit them right in the face", 10, 0);
+            }
+            //bs move to fill the void
+            System.out.println("No moves available. Resorting to fists\n");
+            return new Move("Punch", "Bam! you hit them right in the face", 10, 0);
+        }
+
+        // error handling
+        if (choice < 1 || choice > moves.size()) {
+            System.out.println("Invalid move selection.");
+            return chooseMove((Weapon) this.getWeapon(), keyboard);
+        }
+
+
+        Move selectedMove = moves.getAtIndex(choice - 1);
+        if (selectedMove == null) {
+            System.out.println("Resorting to fists\n");
+            return new Move("Punch", "Bam! you hit them right in the face", 0, 0);
+        }
+
+        return selectedMove;
     }
 }
