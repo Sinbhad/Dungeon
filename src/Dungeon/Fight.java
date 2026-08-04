@@ -49,7 +49,7 @@ public class Fight {
                 }
             } else if (choice.trim().equalsIgnoreCase("F")) {
                 System.out.println("Get out of here!\n");
-                fleeCheck(dungeon, character, enemy, keyboard, levelCount);
+                fleeCheck(character, enemy, keyboard, levelCount);
                 enemy.move();
             } else if (choice.trim().equalsIgnoreCase("I")) {
                 character.displayInventory(keyboard);
@@ -84,7 +84,7 @@ public class Fight {
      * @param keyboard user input
      * @param levelCount current level count
      */
-    void fleeCheck(RobertCircularlyLinkedList<Room> dungeon, Character character, Enemy enemy, Scanner keyboard, int levelCount){
+    void fleeCheck(Character character, Enemy enemy, Scanner keyboard, int levelCount){
         int random = new Random().nextInt(9);
         int[] enemyFleeNums = enemy.getFleeNum();
         if(checkFleeNums(random, enemyFleeNums)){
