@@ -62,7 +62,9 @@ public class Fight {
     }
 
     private boolean staminaCheck(Character character, Move move){
-        return move.getEnergyCost() > character.getStamina;
+        if(move != null && move.getStaminaCost() <= character.getStamina()){return true;}
+        else if(move != null && move.getStaminaCost() > character.getStamina()){return false;}
+        else{return false;}
     }
 
     /**
