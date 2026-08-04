@@ -249,8 +249,10 @@ public class Character {
         System.out.println(name);
         System.out.println("Health Points: " + healthInt);
         System.out.println("Total Attack: " + getTotalAttack());
+        //if a weapon has not yet been acquired, the game wil build a default placeholder
         String weaponName = (this.getWeapon() != null) ? this.getWeapon().getName() : "Fists";
         System.out.println("Weapon: " + weaponName);
+        //if an armor has not yet been acquired, the game wil build a default placeholder
         String armorName = (this.getArmor() != null) ? this.getArmor().getName() : "Naked";
         System.out.println("Armor: " + armorName);
         System.out.println("Coins: " + coins);
@@ -478,6 +480,7 @@ public class Character {
                 Move m = currentMoves.getAtIndex(i);
                 System.out.println((i + 1) + ": " + m.getMoveName() + " Sp: " + m.getStaminaCost());
             }
+            System.out.println("Sp available " + this.getStamina() + "\n");
             System.out.print("Enter your choice: ");
             String choice = keyboard.nextLine();
             int choiceNum;
@@ -509,7 +512,7 @@ public class Character {
             return chooseMove((Weapon) this.getWeapon(), keyboard);
         }
 
-
+        //edge case mainly for testing
         Move selectedMove = moves.getAtIndex(choice - 1);
         if (selectedMove == null) {
             System.out.println("Resorting to fists\n");
