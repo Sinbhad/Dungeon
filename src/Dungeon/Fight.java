@@ -98,6 +98,7 @@ public class Fight {
             enemyAttackChoice(enemy);
             enemyAttackOutput(enemy, character);
         }
+        character.setStamina(character.getMaxStamina());
     }
 
     /**
@@ -161,6 +162,7 @@ public class Fight {
                 character.openChest(keyboard);
             }
             removeRoom(dungeon, character, enemy);
+            character.setStamina(character.getMaxStamina());
             return false;
         }else{
             return true;
