@@ -40,14 +40,12 @@ public class Fight {
 
             if (choice.trim().equalsIgnoreCase("A")) {
                 Move move = character.chooseMove((Weapon) character.getWeapon(), keyboard);
-                if (move != null && staminaCheck(character, move)) {
+                if (staminaCheck(character, move)) {
                     speedCheck(dungeon, character, enemy, keyboard, move);
-                }else if (move != null && !staminaCheck(character, move)){
+                }else if (!staminaCheck(character, move)){
                     System.out.println("You do not currently have enough stamina to use that move,\nplease select another");
-                    move = character.chooseMove((Weapon) character.getWeapon(), keyboard);
                 }else {
                     System.out.println("No move selected. Try again.");
-                    move = character.chooseMove((Weapon) character.getWeapon(), keyboard);
                 }
             } else if (choice.trim().equalsIgnoreCase("F")) {
                 System.out.println("Get out of here!\n");
@@ -62,9 +60,7 @@ public class Fight {
     }
 
     private boolean staminaCheck(Character character, Move move){
-        if(move != null && move.getStaminaCost() <= character.getStamina()){return true;}
-        else if(move != null && move.getStaminaCost() > character.getStamina()){return false;}
-        else{return false;}
+        return move != null && move.getStaminaCost() <= character.getStamina();
     }
 
     /**
@@ -74,9 +70,10 @@ public class Fight {
      * @return boolean value indicating if the "flee" number was found in the fleeNums array
      */
     boolean checkFleeNums(int num, int[] fleeNums){
-        for(int i = 0; i < fleeNums.length; i++){
-            if(num == fleeNums[i]){return true;}
+        for (int fleeNum : fleeNums) {
+            if (num == fleeNum) {return true;}
         }
+
         return false;
     }
 
