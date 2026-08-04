@@ -476,7 +476,7 @@ public class Character {
             RobertHolder<Move> currentMoves = weapon.getMoves();
             for (int i = 0; i < currentMoves.size(); i++) {
                 Move m = currentMoves.getAtIndex(i);
-                System.out.println((i + 1) + ": " + m.getMoveName());
+                System.out.println((i + 1) + ": " + m.getMoveName()) + " Sp: " + m.getStaminaCost();
             }
             System.out.print("Enter your choice: ");
             String choice = keyboard.nextLine();

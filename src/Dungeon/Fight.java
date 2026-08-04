@@ -40,10 +40,14 @@ public class Fight {
 
             if (choice.trim().equalsIgnoreCase("A")) {
                 Move move = character.chooseMove((Weapon) character.getWeapon(), keyboard);
-                if (move != null) {
+                if (move != null && staminaCheck(character, move)) {
                     speedCheck(dungeon, character, enemy, keyboard, move);
-                } else {
+                }else if (move != null && !staminaCheck(character, move)){
+                    System.out.println("You do not currently have enough stamina to use that move,\nplease select another");
+                    move = character.chooseMove((Weapon) character.getWeapon(), keyboard);
+                }else {
                     System.out.println("No move selected. Try again.");
+                    move = character.chooseMove((Weapon) character.getWeapon(), keyboard);
                 }
             } else if (choice.trim().equalsIgnoreCase("F")) {
                 System.out.println("Get out of here!\n");
@@ -57,6 +61,10 @@ public class Fight {
         }
     }
 
+    private boolean staminaCheck(Character character, Move move){
+        return move.getEnergyCost() > character.getStamina;
+    }
+
     /**
      * Helper method to check if the flee number is in the fleeNums array
      * @param num random number generated, passed in from the fleeCheck method
@@ -65,9 +73,7 @@ public class Fight {
      */
     boolean checkFleeNums(int num, int[] fleeNums){
         for(int i = 0; i < fleeNums.length; i++){
-            if(num == fleeNums[i]){
-                return true;
-            }
+            if(num == fleeNums[i]){return true;}
         }
         return false;
     }
@@ -168,9 +174,7 @@ public class Fight {
         if(character.getHealth() <= 0){
             System.out.println("oh no...");
             return false;
-        }else{
-            return true;
-        }
+        }else{return true;}
     }
 
     /**
@@ -178,9 +182,7 @@ public class Fight {
      * @param character current character
      */
     void zeroHealth(Character character){
-        if(character.getHealth() < 0){
-            character.setHealthValue(0);
-        }
+        if(character.getHealth() < 0){character.setHealthValue(0);}
     }
 
     /**
