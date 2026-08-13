@@ -61,6 +61,7 @@ Every **5 floors**, players enter the Perk Shop to purchase permanent upgrades:
 *  **Health Perks**: *Band-aid, Healing Potion, Ultimate Healing Potion* (Max HP boosts).
 *  **Damage Perks**: *Can of Spinach, Strength Training, Steroids* (Flat Attack boosts).
 *  **Speed Perks**: *Running Shoes, Weight Loss Pill, Wings of Hermes* (Speed boosts).
+*  **Stamina Perks** *Iron Lung, Peptides, Beet Powder* (Stamina boosts).
 ### 4. Itemization & Chest Traps
 * **Weapons**: *Broad Sword, Short Sword, Dagger, Hammer, Two-Handed Hammer, Mace, Mage's Staff, Tactical Walking Stick*.
 * **Armor**: *Scraps of Cloth, Leather Armor, Chain Mail, Knight's Armor, Plate Mail, Dragon's Breastplate, Magic Armor*.

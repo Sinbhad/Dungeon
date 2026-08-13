@@ -1,4 +1,4 @@
-import Dungeon.*;
+import dungeon.*;
 
 void main (){
     DungeonBrain dungeonBrain = new DungeonBrain();
