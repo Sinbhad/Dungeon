@@ -33,6 +33,7 @@ This game demonstrates my ability to create a robust and efficient data structur
 * **Risk/Reward Loot & Trap Mechanic**: Chests hold powerful weapons, armor, and potions, but can trigger punishing traps. The core of the chest experience is randomized, the player must be strategic about opening traps as it could make them unstoppable or end a run.
 * **Milestone Perk Store**: Unlocks every 5 levels, offering permanent stat upgrades for Health, Defense, Damage, Stamina, and Speed.
 * **Persistent SQLite Leaderboard**: Saves player stats, rooms explored, enemies defeated, and total calculated points to an embedded SQLite database (`dungeon_saves.db`).
+* **Integrated Custom Formatting**: Customizable text formatting for console output, including color, and various other effects.
 
 ## Core Architecture & Custom Data Structures
 [ Room 0 (Head) ] <=====> [ Room 1 ] <=====> [ Room 2 ] <=====> [ Room N (Tail) ] ^ ^ |================================================================| (Circular Doubly Linked Connection)
@@ -80,13 +81,13 @@ Dungeon/
 ├── dungeon_saves.db            # SQLite High Score Database
 ├── src/
 │   ├── Main.java               # Application entry point
-│   ├── Characters/             # Player, Enemy, Subclasses & Combat Entities
+│   ├── characters/             # Player, Enemy, Subclasses & Combat Entities
 │   │   ├── Character.java      # Base entity class with stat & inventory logic
 │   │   ├── Enemy.java          # Roaming & combat AI logic
 │   │   ├── Player.java         # Player controller & movement
 │   │   ├── Move.java           # Combat move definitions & stamina costs
 │   │   └── [Andrew, Byron, Daniel, Jared, Jenna, Joe, Marc, Patrick, Samir, Slime].java
-│   ├── Dungeon/                # Core engine & dungeon mechanics
+│   ├── dungeon/                # Core engine & dungeon mechanics
 │   │   ├── DungeonBrain.java   # Main game loop, flow control, & events
 │   │   ├── DungeonGenerator.java # Procedural room & enemy population
 │   │   ├── Fight.java          # Turn-based combat & evasion mechanics
@@ -94,7 +95,7 @@ Dungeon/
 │   │   ├── Room.java           # Room state (enemies, items, exits)
 │   │   ├── Perks.java          # Perk entity model
 │   │   └── PerkLibrary.java    # Perk store catalogue
-│   ├── Items/                  # Itemization & Equipment
+│   ├── items/                  # Itemization & Equipment
 │   │   ├── Item.java           # Base item model
 │   │   ├── ItemLibrary.java    # Loot tables (Potions, Traps, Armor)
 │   │   ├── Weapon.java         # Weapon base class
