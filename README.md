@@ -147,6 +147,7 @@ Fix (No code change): Add slf4j-nop-2.0.17.jar to your src/lib/ folder/libraries
 
 Fat JAR Extraction Issue: If IntelliJ is set to "extract to target JAR", signature files (META-INF/*.SF, *.RSA) and JDBC service bindings from sqlite-jdbc get mangled, throwing SecurityException or No suitable driver found.
 2. How to Package Properly in IntelliJ (Clean JAR)
+```Text
 In IntelliJ, press Ctrl+Alt+Shift+S (Project Structure) 
 →
 → Artifacts.
@@ -171,3 +172,4 @@ bash
 
 cd out/artifacts/DungeonGame_jar
 java -jar DungeonGame.jar
+```
