@@ -146,7 +146,7 @@ java --enable-preview -cp "out/production/Dungeon:src/lib/sqlite-jdbc-3.51.3.0.j
 Fix (No code change): Add slf4j-nop-2.0.17.jar to your src/lib/ folder/libraries, or run java with -Dorg.slf4j.simpleLogger.defaultLogLevel=off.
 
 Fat JAR Extraction Issue: If IntelliJ is set to "extract to target JAR", signature files (META-INF/*.SF, *.RSA) and JDBC service bindings from sqlite-jdbc get mangled, throwing SecurityException or No suitable driver found.
-2. How to Package Properly in IntelliJ (Clean JAR)
+#### 2. How to Package Properly in IntelliJ (Clean JAR)
 ```Text
 In IntelliJ, press Ctrl+Alt+Shift+S (Project Structure) 
 →
