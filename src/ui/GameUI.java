@@ -9,7 +9,10 @@ public class GameUI {
                 .replace("[B]", GameFormatter.BLUE)
                 .replace("[P]", GameFormatter.PURPLE)
                 .replace("[C]", GameFormatter.CYAN)
+
                 .replace("[BLD]", GameFormatter.BOLD)
+                .replace("[ITL]", GameFormatter.ITALICS)
+
                 .replace("[BRK]", GameFormatter.RESET);
 
         System.out.println(coloredString);

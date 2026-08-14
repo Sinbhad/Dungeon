@@ -4,11 +4,13 @@ import dungeon.*;
 import items.*;
 import lib.Node;
 import lib.RobertHolder;
+import ui.*;
 
 import java.util.Objects;
 import java.util.Scanner;
 
 public class Character {
+    GameUI gameUI = new GameUI();
     private String name;
 
     //Player state
@@ -106,7 +108,7 @@ public class Character {
         return attack;
     }
 
-    public void setHealthValue(double health){
+    public void setHealth(double health){
         this.health = health;
     }
 
@@ -348,44 +350,66 @@ public class Character {
      */
     void healingItemHandler(Room currentRoom, Scanner keyboard){
         double hp = this.getHealth();
+        boolean willUsePotion = true;
+        int itemHp = currentRoom.getItem().getHpValue();
+
+
+        if (itemHp < 0) {
+            // It's a trap: always apply damage
+            this.setHealth(hp + itemHp);
+            return;
+        }
+
+        System.out.print("Would you like to add this to your inventory? (Y/N) : ");
+        String choice2 = keyboard.nextLine();
+
 
         //Check to be certain this is a healing item
         if(currentRoom.getItem().getHpValue() > 0){
-
-            //Prompt user for storage, used now otherwise
-            System.out.print("Would you like to add this to your inventory? (Y/N) : ");
-            String choice2 = keyboard.nextLine();
-            if(choice2.trim().equalsIgnoreCase("y")){
-                Objects.requireNonNull(inventory).addToBucket(currentRoom.getItem());
-                currentRoom.setItem(null);
-                return;
-            }else if(!choice2.trim().equalsIgnoreCase("n")){
-                System.out.println("Invalid choice\n");
-            }else{
-                System.out.println("You chose to drink the potion now\n");
-            }
+            willUsePotion = consumePotionChoice(choice2, currentRoom, keyboard);
         }
 
         //Make sure the player's health value stays below the max
-        int itemHp = currentRoom.getItem().getHpValue();
-        if (itemHp < 0) {
-            // It's a trap: always apply damage
-            this.setHealthValue(hp + itemHp);
-
-        } else if (this.getHealth() < this.getMaxHealth()) {
+        if (this.getHealth() < this.getMaxHealth() && willUsePotion) {
             // It's a healing item, and player is below max health: apply healing
-            this.setHealthValue(hp + itemHp);
+            this.setHealth(hp + itemHp);
 
             // Cap health at maxHealth
             if (this.getHealth() > this.getMaxHealth()) {
-                this.setHealthValue(this.getMaxHealth());
+                this.setHealth(this.getMaxHealth());
             }
-        } else {
-            System.out.println("You have already reached maximum health, no effect\n");
+            //Add to the kidney stone meter
+            this.setPotionsConsumed(this.getPotionsConsumed() + 1);
+        } else if(this.getHealth() == this.getMaxHealth() && willUsePotion){
+            gameUI.prettyPrint("[BLD][R]You have already reached maximum health, no effect[BRK]\n+" +
+                                   "You have not consumed the potion, adding to inventory instead\n");
+            Objects.requireNonNull(inventory).addToBucket(currentRoom.getItem());
+            currentRoom.setItem(null);
         }
 
-        //Add to the kidney stone meter
-        this.setPotionsConsumed(this.getPotionsConsumed() + 1);
+
+    }
+
+    /**
+     * Handles the user's choice of whether to consume a potion or not.
+     * @param choice User's choice of whether to consume the potion or not, based on the keyboard input
+     * @param currentRoom Current room the player is in
+     * @param keyboard Scanner object for keyboard input
+     * @return returns a boolean value for use with the healingItemHandler method.
+     */
+    boolean consumePotionChoice(String choice, Room currentRoom, Scanner keyboard){
+        //Prompt user for storage, used now otherwise
+        if(choice.trim().equalsIgnoreCase("y")){
+            Objects.requireNonNull(inventory).addToBucket(currentRoom.getItem());
+            currentRoom.setItem(null);
+            return false;
+        }else if(choice.trim().equalsIgnoreCase("n")){
+            gameUI.prettyPrint("[BLD][R]Invalid choice![BRK]\n");
+            healingItemHandler(currentRoom, keyboard);
+        }else{
+            System.out.println("You chose to drink the potion now\n");
+        }
+        return true;
     }
 
     /**
@@ -474,7 +498,7 @@ public class Character {
         }else{
             Item itemUsed = inventory.getAtIndex(choice - 1);
             System.out.println("\n\n" + itemUsed.getName() + " was used");
-            this.setHealthValue(this.getHealth() + itemUsed.getHpValue());
+            this.setHealth(this.getHealth() + itemUsed.getHpValue());
             this.setPotionsConsumed(this.getPotionsConsumed() + 1);
             System.out.println(itemUsed.getHpValue() + " health restored\n\n");
             inventory.removeAtIndex(choice);
@@ -508,15 +532,18 @@ public class Character {
     }
 
     Move returnSelectedMoveFormatted(RobertHolder<Move> moves, int choice, Scanner keyboard) {
-        //Check if moves is null (handling the "no moves" case)
+        //Default move if no moves are available
+        Move punch = new Move("Punch", "Bam! you hit them right in the face ", 10, 0);
+
+        //Check if moves are null (handling the "no moves" case)
         if (moves == null || moves.size() == 0) {
             if (choice == 12) {
                 System.out.println("Resorting to fists\n");
-                return new Move("Punch", "Bam! you hit them right in the face", 10, 0);
+                return punch;
             }
             //bs move to fill the void
             System.out.println("No moves available. Resorting to fists\n");
-            return new Move("Punch", "Bam! you hit them right in the face", 10, 0);
+            return punch;
         }
 
         // error handling
@@ -529,7 +556,7 @@ public class Character {
         Move selectedMove = moves.getAtIndex(choice - 1);
         if (selectedMove == null) {
             System.out.println("Resorting to fists\n");
-            return new Move("Punch", "Bam! you hit them right in the face", 0, 0);
+            return punch;
         }
 
         return selectedMove;

@@ -117,7 +117,7 @@ public class Fight {
             enemyAttackOutput(enemy, character);
             if(isPlayerAlive(character)){
                 System.out.println("You hit " + enemy.getName() + " dealing " + character.getTotalAttack() + " damage\n");
-                enemy.setHealthValue(enemy.getHealth() - character.getTotalAttack());
+                enemy.setHealth(enemy.getHealth() - character.getTotalAttack());
             }
         }
         zeroHealth(character);
@@ -129,7 +129,7 @@ public class Fight {
     void attackOutput(Character character, Enemy enemy, Move move){
         System.out.println("You used " + move.getMoveName());
         System.out.println(move.getDescription() + "dealing " + (character.getTotalAttack() + move.getDamage()) + " damage\n");
-        enemy.setHealthValue(enemy.getHealth() - (character.getTotalAttack() + move.getDamage()));
+        enemy.setHealth(enemy.getHealth() - (character.getTotalAttack() + move.getDamage()));
         System.out.println(enemy.getName() + " has " + enemy.getHealth() + " health remaining");
 
     }
@@ -183,7 +183,7 @@ public class Fight {
      * @param character current character
      */
     void zeroHealth(Character character){
-        if(character.getHealth() < 0){character.setHealthValue(0);}
+        if(character.getHealth() < 0){character.setHealth(0);}
     }
 
     /**
@@ -209,7 +209,7 @@ public class Fight {
         System.out.println(currentMove.getDescription());
         double damage = calculateDamageAfterDefense(currentMove.getDamage(), enemy, character);
         System.out.println(enemy.getName() + " dealt " + damage + " damage\n\n");
-        character.setHealthValue(character.getHealth() - damage);
+        character.setHealth(character.getHealth() - damage);
     }
 
     /**

@@ -16,13 +16,14 @@ public class DungeonBrain {
     /**
      * Essentially the heart of the entire game, creating the objects and database for use throughout
      */
+    GameUI gameUI = new GameUI();
     public void dungeonOperator(){
         DungeonGenerator generator = new DungeonGenerator();
         Scanner keyboard = new Scanner(System.in);
         RobertCircularlyLinkedList<Room> dungeon = new RobertCircularlyLinkedList<>();
         HighScoreDB highScoreDB = new HighScoreDB();
         highScoreDB.initializeDatabase();
-        GameUI gameUI = new GameUI();
+
         int roomCount = 7;
         int levelCount = 1;
 
@@ -34,9 +35,10 @@ public class DungeonBrain {
         player.setCurrentRoom(dungeon.getHead());
 
         //Intro output
-        //gameUI.prettyPrint("\n\n[P][BLD]You have entered the dungeon[BRK]");
-        System.out.println("\n\nYou have entered the dungeon");
-        System.out.print("Enter your name challenger : ");
+        gameUI.prettyPrint(
+                "\n\nYou have entered the dungeon" +
+                "\nEnter your name challenger : ");
+
         player.setName(keyboard.nextLine().trim());
 
         //Loop input methods until the player has died
@@ -48,16 +50,20 @@ public class DungeonBrain {
             }
         }
 
-        //Output for game completion
-        System.out.println("You have died...\n");
-        System.out.println("You have defeated " + player.getEnemiesDefeated() + " enemies");
-        System.out.println("You have survived for " + levelCount + " levels");
-        System.out.println("You have traveled " + player.getRoomsTraversed() + " rooms");
-        System.out.println("Better luck next time!");
 
-        //Calculate and display the player's final score
+        //Calculate the player's final score
         int finalPoints = pointsCount(levelCount, player);
-        System.out.println("You have earned " + finalPoints + " points\n\n");
+
+        //Output for game completion
+        gameUI.prettyPrint(
+                "[BLD][R]You have died...[BRK]\n" +
+                 "You have defeated [BLD][P]" + player.getEnemiesDefeated() + "[BRK] enemies\n" +
+                 "You have survived for [BLD][P]" + levelCount + "[BRK] levels\n" +
+                 "You have traveled [BLD][P]" + player.getRoomsTraversed() + "[BRK] rooms\n" +
+                 "You have earned [BLD][P]" + finalPoints + "[BRK] points\n" +
+                 "[ITL]Better luck next time![BRK]\n\n"
+        );
+
 
         //Adds score to the database and displays the top three scores and names of players
         highScoreDB.saveStats(player.getName(), finalPoints);
@@ -101,7 +107,7 @@ public class DungeonBrain {
         currentRoomNode = character.getCurrentRoom();
         currentRoom = (Room) currentRoomNode.getValue();
         if(currentRoom.getItem() != null && character.getHealth() > 0){
-            System.out.println("You found a chest!");
+            gameUI.prettyPrint("[G]You found a chest![BRK]");
             character.openChest(keyboard);
         }
         return levelCount;
@@ -125,12 +131,12 @@ public class DungeonBrain {
      * @param enemyRoster arraylist of enemies in the current dungeon
      */
     void tinkleBreak(Character character, ArrayList<Enemy> enemyRoster){
-        System.out.println(character.getName() + " had to tinkle, stopping for a break...\n");
+        gameUI.prettyPrint(character.getName() + " had to tinkle, stopping for a break...\n");
         moveEnemies(enemyRoster);
         if(character.getPotionsConsumed() > 3){
             character.setPotionsConsumed(0);
-            System.out.println("Wow, that hurt! You just passed a kidney stone, you have lost 10 health points :(\n");
-            character.setHealthValue(character.getHealth() - 10);
+            gameUI.prettyPrint("[BLD]Wow, that hurt![BRK] \nYou just passed a kidney stone, [R]you have lost 10 health points :([BRK]\n");
+            character.setHealth(character.getHealth() - 10);
         }
     }
 
@@ -147,25 +153,28 @@ public class DungeonBrain {
         Node currentRoomNode = character.getCurrentRoom();
         Room currentRoom = (Room) currentRoomNode.getValue();
         DungeonGenerator generator = new DungeonGenerator();
+        int coinsPerLevel = 100 * levelCount;
+        int enemyScaling = (levelCount * 5);
 
         if(currentRoom.getIsExit()){
-            System.out.println("You have found the exit");
-            System.out.println("welcome to the next level.\n");
-            System.out.println("You have gained 100 coins and your opponents are now stronger!");
+            gameUI.prettyPrint(
+                    "[G]You have found the exit![BRK]" +
+                    "\nWelcome to the next level.\n" +
+                    "\nYou have gained [P]" + coinsPerLevel + "[BRK] coins and your opponents are now stronger!");
 
             //Increase level count for score keeping and logic such as enemy count, enemy damage and enemy health.
             levelCount++;
-            character.setCoins(character.getCoins() + 100);
+            character.setCoins(character.getCoins() + coinsPerLevel);
 
             //Display enemy buffs
-            System.out.println("The enemy has gained " + (5 * levelCount) + " health points");
-            System.out.println("...and " + (5 * levelCount) + " attack points!\n");
+            gameUI.prettyPrint("The enemy has gained " + (enemyScaling) + " health points\n" +
+                                  "...and " + (enemyScaling) + " attack points!\n");
 
             //Create a new dungeon level and set enemy buffs
             generator.createLevel(dungeon, (7 + (5 * levelCount)));
             generator.setRooms(dungeon);
             for(Enemy enemy : enemyRoster){
-                enemy.setHealthValue(enemy.getHealthValue() + (5 * levelCount));
+                enemy.setHealth(enemy.getHealthValue() + (5 * levelCount));
             }
             for(Enemy enemy: enemyRoster){
                 enemy.setAttackValue(enemy.getAttackValue() + (5 * levelCount));
@@ -200,16 +209,16 @@ public class DungeonBrain {
      * @param keyboard scanner object for user input
      */
     void playAgain(Scanner keyboard){
-        System.out.print("\n\nWould you like to play again? (y/n) : ");
+        gameUI.prettyPrint("\n\nWould you like to play again? (y/n): ");
         String playAgain = keyboard.nextLine();
         if(playAgain.trim().equalsIgnoreCase("y")){
-            System.out.println("\n\n\n\nLet's play again!");
+            gameUI.prettyPrint("\n\n\n\nLet's play again!");
             dungeonOperator();
         }else if(playAgain.trim().equalsIgnoreCase("n")){
-            System.out.println("Thanks for playing!");
+            gameUI.prettyPrint("Thanks for playing!");
             System.exit(0);
         }else{
-            System.out.println("Invalid input!");
+            gameUI.prettyPrint("[BLD][R]Invalid input![BRK]");
         }
     }
 
@@ -235,15 +244,17 @@ public class DungeonBrain {
         Perks staminaPerk = perkLibrary.STAMINA_PERKS[staminaIndex];
 
         //Output for player to aid in selection
-        System.out.println("Choose a perk");
-        System.out.println("1. :" + speedPerk.getPerkName() + " - " + speedPerk.getDescription());
-        System.out.println("2. :" + defensePerk.getPerkName() + " - " + defensePerk.getDescription());
-        System.out.println("3. :" + healthPerk.getPerkName() + " - " + healthPerk.getDescription());
-        System.out.println("4. :" + damagePerk.getPerkName() + " - " + damagePerk.getDescription());
-        System.out.println("5. :" + staminaPerk.getPerkName() + " - " + staminaPerk.getDescription());
-        System.out.println("6. :Reroll for 100 coins\n\n");
-        System.out.println("You have " + character.getCoins() + " coins");
-        System.out.print("Enter your choice: (1-6) '0 to exit': ");
+        gameUI.prettyPrint(
+                "[BLD][C]Choose a perk[BRK]" +
+                "\n[C]1.[BRK] :" + speedPerk.getPerkName() + " - " + speedPerk.getDescription() +
+                "\n[C]2.[BRK] :" + defensePerk.getPerkName() + " - " + defensePerk.getDescription() +
+                "\n[C]3.[BRK] :" + healthPerk.getPerkName() + " - " + healthPerk.getDescription() +
+                "\n[C]4.[BRK] :" + damagePerk.getPerkName() + " - " + damagePerk.getDescription() +
+                "\n[C]5.[BRK] :" + staminaPerk.getPerkName() + " - " + staminaPerk.getDescription() +
+                "\n[C]6.[BRK] :Reroll for 100 coins\n\n +" +
+                "You have " + character.getCoins() + " coins" +
+                "\nEnter your choice: [C](1-6)[BRK] [R][BLD]'0 to exit'[BRK]: ");
+
         Scanner keyboard = new Scanner(System.in);
         int choice = keyboard.nextInt();
 
@@ -252,13 +263,13 @@ public class DungeonBrain {
             character.setSpeedValue((int) (character.getSpeed() + speedPerk.getValue()));
         }else if(choice == 2 && checkBread(character, defensePerk)){
             if(character.getTotalDefense() == 0.8){
-                System.out.println("You have already reached maximum defense, choose a different perk or move on");
+                gameUI.prettyPrint("You have already reached maximum defense, choose a different perk or move on");
                 choosePerk(character);
             }
             character.setTotalDefense(character.getArmorDefense() , (character.getPerkDefense() + defensePerk.getValue()));
             if(character.getTotalDefense() > 0.8){
                 character.setTotalDefense(0.8, 0);
-                System.out.println("Your defense value would exceed 80%, you have been set to 80% :(");
+                gameUI.prettyPrint("Your defense value would exceed 80%, you have been set to 80% :(");
             }
         }else if(choice == 3 && checkBread(character, healthPerk)){
             character.setMaxHealth((character.getMaxHealth() + healthPerk.getValue()));
@@ -270,9 +281,9 @@ public class DungeonBrain {
             character.setCoins(character.getCoins() - 100);
             choosePerk(character);
         }else if(choice == 0){
-            System.out.println("Moving on then, good luck!\n\n");
+            gameUI.prettyPrint("Moving on then, good luck!\n\n");
         }else{
-            System.out.println("Invalid choice");
+            gameUI.prettyPrint("[BLD][R]Invalid choice");
             choosePerk(character);
         }
 
@@ -289,7 +300,7 @@ public class DungeonBrain {
             character.setCoins(character.getCoins() - perk.getCost());
             return true;
         }else{
-            System.out.println("You do not have enough coins to buy this perk");
+            gameUI.prettyPrint("[BLD][R]You do not have enough coins to buy this perk![BRK]");
             return false;
         }
     }

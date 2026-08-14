@@ -14,4 +14,5 @@ public class GameFormatter {
 
     // Text Formatting
     public static final String BOLD = "\u001B[1m";
+    public static final String ITALICS = "\u001B[3m";
 }
