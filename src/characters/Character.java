@@ -250,17 +250,30 @@ public class Character {
      * Method used throughout the game to display equipment and other stats on each turn
      */
     void displayStats(){
-        int healthInt = (int)this.health;
-        System.out.println(name);
-        System.out.println("Health Points: " + healthInt);
-        System.out.println("Total Attack: " + getTotalAttack());
+        String healthFormatString = "[G]";
+
         //if a weapon has not yet been acquired, the game wil build a default placeholder
         String weaponName = (this.getWeapon() != null) ? this.getWeapon().getName() : "Fists";
-        System.out.println("Weapon: " + weaponName);
         //if an armor has not yet been acquired, the game wil build a default placeholder
         String armorName = (this.getArmor() != null) ? this.getArmor().getName() : "Naked";
-        System.out.println("Armor: " + armorName);
-        System.out.println("Coins: " + coins);
+
+        if(this.maxHealth / this.health < 0.5){
+            healthFormatString = "[R]";
+        }
+
+        gameUI.prettyPrint(
+                "\n[BLD][B]" + name + "[BRK]" +
+                "\n[BLD]Health Points: [BRK]" + healthFormatString + this.health + "[BRK]" +
+                "\n[BLD]Total Attack: [BRK][P]" + getTotalAttack() + "[BRK]" +
+                "\n[BLD]Weapon: [BRK][P]" + weaponName + "[BRK]" +
+                "\n[BLD]Armor: [BRK][P]" + armorName + "[BRK]" +
+                "\n[BLD]Coins: [BRK][Y]" + coins + "[BRK]");
+
+
+        System.out.println();
+
+        System.out.println();
+        System.out.println();
     }
 
     /**
@@ -404,10 +417,10 @@ public class Character {
             currentRoom.setItem(null);
             return false;
         }else if(choice.trim().equalsIgnoreCase("n")){
+            System.out.println("You chose to drink the potion now\n");
+        }else{
             gameUI.prettyPrint("[BLD][R]Invalid choice![BRK]\n");
             healingItemHandler(currentRoom, keyboard);
-        }else{
-            System.out.println("You chose to drink the potion now\n");
         }
         return true;
     }
