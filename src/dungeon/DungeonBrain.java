@@ -35,9 +35,7 @@ public class DungeonBrain {
         player.setCurrentRoom(dungeon.getHead());
 
         //Intro output
-        gameUI.prettyPrint(
-                "\n\nYou have entered the dungeon" +
-                "\nEnter your name challenger : ");
+        System.out.print("\n\nYou have entered the dungeon \nEnter your name challenger : ");
 
         player.setName(keyboard.nextLine().trim());
 
@@ -209,7 +207,7 @@ public class DungeonBrain {
      * @param keyboard scanner object for user input
      */
     void playAgain(Scanner keyboard){
-        gameUI.prettyPrint("\n\nWould you like to play again? (y/n): ");
+        System.out.print("\n\nWould you like to play again? (y/n): ");
         String playAgain = keyboard.nextLine();
         if(playAgain.trim().equalsIgnoreCase("y")){
             gameUI.prettyPrint("\n\n\n\nLet's play again!");
@@ -252,9 +250,9 @@ public class DungeonBrain {
                 "\n[C]4.[BRK] :" + damagePerk.getPerkName() + " - " + damagePerk.getDescription() +
                 "\n[C]5.[BRK] :" + staminaPerk.getPerkName() + " - " + staminaPerk.getDescription() +
                 "\n[C]6.[BRK] :Reroll for 100 coins\n\n +" +
-                "You have " + character.getCoins() + " coins" +
-                "\nEnter your choice: [C](1-6)[BRK] [R][BLD]'0 to exit'[BRK]: ");
+                "You have " + character.getCoins() + " coins");
 
+        System.out.print("Enter your choice: [C](1-6)[BRK] [R][BLD]'0 to exit'[BRK]: ");
         Scanner keyboard = new Scanner(System.in);
         int choice = keyboard.nextInt();
 
