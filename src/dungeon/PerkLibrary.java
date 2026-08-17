@@ -3,23 +3,23 @@ package dungeon;
 public class PerkLibrary {
     //Defense
     public final Perks[] DEFENSE_PERKS = {
-            new Perks("Slight Defense Boost", "Defense", " increases defense by 10: 200 coins", .1, 200),
-            new Perks("Decent Defense Boost", "Defense", " increases defense by 20: 400 coins", .2, 400),
-            new Perks("Great Defense Boost", "Defense", " increases defense by 30: 600 coins", .3, 600),
+            new Perks("[BLD]Slight Defense Boost[BRK]", "Defense", " increases defense by 10: [BLD][Y]200[BRK] coins", .1, 200),
+            new Perks("[BLD]Decent Defense Boost[BRK]", "Defense", " increases defense by 20: [BLD][Y]400[BRK] coins", .2, 400),
+            new Perks("[BLD]Great Defense Boost[BRK]", "Defense", " increases defense by 30: [BLD][Y]600[BRK] coins", .3, 600),
     };
 
     //Health
     public final Perks[] HEALTH_PERKS = {
-            new Perks("Band-aid", "Health", " increases max health by 50 points: 200 coins", 50, 200),
-            new Perks("Healing Potion", "Health", " increases max health by 100 points: 400 coins", 100, 400),
-            new Perks("Ultimate Healing Potion", "Health", " increases max health by 200 points: 600 coins", 200, 600),
+            new Perks("[BLD]Band-aid[BRK]", "Health", " increases max health by 50 points: [BLD][Y]200[BRK] coins", 50, 200),
+            new Perks("[BLD]Healing Potion[BRK]", "Health", " increases max health by 100 points: [BLD][Y]400[BRK] coins", 100, 400),
+            new Perks("[BLD]Ultimate Healing Potion[BRK]", "Health", " increases max health by 200 points: [BLD][Y]600[BRK] coins", 200, 600),
     };
 
     //Damage
     public final Perks[] DAMAGE_PERKS = {
-            new Perks("Can of Spinach", "Damage", " increases damage by 10: 200 coins", 10, 200),
-            new Perks("Strength Training", "Damage", " increases damage by 30: 400 coins", 30, 400),
-            new Perks("Steroids", "Damage", " increases damage by 80: 1000 coins", 80, 1000),
+            new Perks("[BLD]Can of Spinach[BRK]", "Damage", " increases damage by 10: [BLD][Y]200[BRK] coins", 10, 200),
+            new Perks("[BLD]Strength Training[BRK]", "Damage", " increases damage by 30: [BLD][Y]400[BRK] coins", 30, 400),
+            new Perks("[BLD]Steroids[BRK]", "Damage", " increases damage by 80: [BLD][Y]1000[BRK] coins", 80, 1000),
     };
 
     //Speed

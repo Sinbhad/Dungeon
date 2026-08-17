@@ -156,9 +156,9 @@ public class DungeonBrain {
 
         if(currentRoom.getIsExit()){
             gameUI.prettyPrint(
-                    "[G]You have found the exit![BRK]" +
+                    "[BLD][G]You have found the exit![BRK]" +
                     "\nWelcome to the next level.\n" +
-                    "\nYou have gained [P]" + coinsPerLevel + "[BRK] coins and your opponents are now stronger!");
+                    "\nYou have gained [BLD][Y]" + coinsPerLevel + "[BRK] coins and your opponents are now stronger!");
 
             //Increase level count for score keeping and logic such as enemy count, enemy damage and enemy health.
             levelCount++;
@@ -249,10 +249,10 @@ public class DungeonBrain {
                 "\n[C]3.[BRK] :" + healthPerk.getPerkName() + " - " + healthPerk.getDescription() +
                 "\n[C]4.[BRK] :" + damagePerk.getPerkName() + " - " + damagePerk.getDescription() +
                 "\n[C]5.[BRK] :" + staminaPerk.getPerkName() + " - " + staminaPerk.getDescription() +
-                "\n[C]6.[BRK] :Reroll for 100 coins\n\n +" +
-                "You have " + character.getCoins() + " coins");
+                "\n[C]6.[BRK] :Reroll for 100 coins\n\n " +
+                "\nYou have [BLD][Y]" + character.getCoins() + "[BRK] coins");
 
-        System.out.print("Enter your choice: [C](1-6)[BRK] [R][BLD]'0 to exit'[BRK]: ");
+        gameUI.prettyPrint("Enter your choice: [C](1-6)[BRK] [R][BLD]'0 to exit'[BRK]: ");
         Scanner keyboard = new Scanner(System.in);
         int choice = keyboard.nextInt();
 

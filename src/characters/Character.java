@@ -262,12 +262,12 @@ public class Character {
         }
 
         gameUI.prettyPrint(
-                "\n[BLD][B]" + name + "[BRK]" +
-                "\n[BLD]Health Points: [BRK]" + healthFormatString + this.health + "[BRK]" +
+                "\n[BLD][P]" + name + "[BRK]" +
+                "\n[BLD]Health Points: " + healthFormatString + this.health + "[BRK]" +
                 "\n[BLD]Total Attack: [BRK][P]" + getTotalAttack() + "[BRK]" +
-                "\n[BLD]Weapon: [BRK][P]" + weaponName + "[BRK]" +
-                "\n[BLD]Armor: [BRK][P]" + armorName + "[BRK]" +
-                "\n[BLD]Coins: [BRK][Y]" + coins + "[BRK]");
+                "\n[BLD]Weapon: [C]" + weaponName + "[BRK]" +
+                "\n[BLD]Armor: [C]" + armorName + "[BRK]" +
+                "\n[BLD]Coins: [Y]" + coins + "[BRK]");
 
 
         System.out.println();
