@@ -6,7 +6,7 @@ autonomous enemy movement and actions, interesting survival mechanics, and persi
 This project was started in my data structures and algorithms class, driven by a custom self built implementation of a **Circular Doubly Linked List**, as well as my own implementation of an **ArrayList**.
 This game demonstrates my ability to create a robust and efficient data structure as well as being able to tailor it to the specific needs of a game.
 
-# Javadoc : https://sinbhad.github.io/Dungeon/index.html
+Javadoc : https://sinbhad.github.io/Dungeon/index.html
 
 ## Table of Contents
 
