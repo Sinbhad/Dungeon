@@ -1,5 +1,8 @@
 package ui;
 
+/**
+ * Library for storing command line arguments to be used with the pretty print method
+ */
 public class GameFormatter {
     // This resets the text color back to normal
     public static final String RESET = "\u001B[0m";

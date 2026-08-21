@@ -1,6 +1,10 @@
 package ui;
 
 public class GameUI {
+    /**
+     * Used to provide a better UX with customizable styling options pulled from the GameFormatter Library
+     * @param s Passed in string to be manipulated
+     */
     public void prettyPrint(String s){
         String coloredString = s
                 .replace("[R]", GameFormatter.RED)
