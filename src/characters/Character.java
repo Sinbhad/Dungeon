@@ -453,8 +453,8 @@ public class Character {
         //Maintain max defense stat
         if(this.getTotalDefense() > 0.8){
             this.setTotalDefense(0.8 , 0.0);
-            gameUI.prettyPrintln("\nTotal defense value has reached or exceeded the maximum value\n");
-            gameUI.prettyPrintln("Total defense value has been reduced to max (80%)\n");
+            gameUI.prettyPrintln("\n[BLD][R]Total defense value has reached or exceeded the maximum value[BRK]\n\n" +
+                                    "Total defense value has been reduced to max (80%)\n");
         }
 
     }
@@ -571,7 +571,7 @@ public class Character {
 
         // error handling
         if (choice < 1 || choice > moves.size()) {
-            gameUI.prettyPrintln("Invalid move selection.");
+            gameUI.prettyPrintln("[INVALID]");
             return chooseMove((Weapon) this.getWeapon(), keyboard);
         }
 
