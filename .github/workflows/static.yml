@@ -1,0 +1,49 @@
+name: Deploy Javadocs to GitHub Pages
+
+on:
+  push:
+    branches:
+      - main # Triggers when you push code to main
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+
+      - name: Generate Javadocs
+        run: |
+          # Creates a target folder and generates documentation for all source directories
+          mkdir -p docs
+          javadoc -d docs -sourcepath src -subpackages characters:dungeon:items:lib -cp "src/lib/sqlite-jdbc-3.51.3.0.jar"
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload Artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: './docs'
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
