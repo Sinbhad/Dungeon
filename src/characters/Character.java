@@ -538,7 +538,7 @@ public class Character {
             for (int i = 0; i < currentMoves.size(); i++) {
                 Move m = currentMoves.getAtIndex(i);
                 gameUI.prettyPrintln("[C]" + (i + 1) + "[BRK][BLD]: " + m.getMoveName() + " [BRK][Y]Sp[BRK]: " + m.getStaminaCost() +
-                                        "[R]DMG[BRK]: " + (m.getDamage() * getTotalAttack()));
+                                        " [R]DMG[BRK]: " + (m.getDamage() + getTotalAttack()));
             }
             gameUI.prettyPrintln("Sp available [Y]" + this.getStamina() + "[BRK]\n");
             gameUI.prettyPrint("Enter your choice: ");
