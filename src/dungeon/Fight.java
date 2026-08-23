@@ -130,6 +130,7 @@ public class Fight {
         System.out.println("You used " + move.getMoveName());
         System.out.println(move.getDescription() + "dealing " + (character.getTotalAttack() + move.getDamage()) + " damage\n");
         enemy.setHealth(enemy.getHealth() - (character.getTotalAttack() + move.getDamage()));
+        if(enemy.getHealth() > 0) zeroHealth(enemy);
         System.out.println(enemy.getName() + " has " + enemy.getHealth() + " health remaining");
 
     }

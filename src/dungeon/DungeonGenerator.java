@@ -72,6 +72,11 @@ public class DungeonGenerator {
         return enemyRoster;
     }
 
+    /**
+     * Generates an enemy roster based on the weapons in the item library
+     * to be used with setRooms to ensure each floor contains a weapon chest
+     * @return ArrayList of weapons
+     */
     ArrayList<Weapon> weaponRosterGenerator(){
         ArrayList<Weapon> weaponRoster = new ArrayList<>();
         weaponRoster.add(new Dagger());

@@ -6,7 +6,18 @@ public class GameUI {
      * @param s Passed in string to be manipulated
      */
     public void prettyPrint(String s){
-        String coloredString = s
+        String prettyString = prettyStringFormatter(s);
+        System.out.print(prettyString);
+    }
+
+    public void prettyPrintln(String s){
+        String prettyString = prettyStringFormatter(s);
+        System.out.println(prettyString);
+    }
+
+    public String prettyStringFormatter(String s){
+        String coloredString;
+        coloredString = s
                 .replace("[R]", GameFormatter.RED)
                 .replace("[G]", GameFormatter.GREEN)
                 .replace("[Y]", GameFormatter.YELLOW)
@@ -17,8 +28,11 @@ public class GameUI {
                 .replace("[BLD]", GameFormatter.BOLD)
                 .replace("[ITL]", GameFormatter.ITALICS)
 
+                .replace("[EMPTYINV]", GameFormatter.EMPTY_INVENTORY)
+                .replace("[INVALID]", GameFormatter.INVALID_CHOICE)
+
                 .replace("[BRK]", GameFormatter.RESET);
 
-        System.out.println(coloredString);
+        return coloredString;
     }
 }

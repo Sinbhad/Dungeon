@@ -257,11 +257,12 @@ public class Character {
         //if an armor has not yet been acquired, the game wil build a default placeholder
         String armorName = (this.getArmor() != null) ? this.getArmor().getName() : "Naked";
 
+        //Color of health points determined by player health < 50% == red || > 50% == green
         if(this.maxHealth / this.health < 0.5){
             healthFormatString = "[R]";
         }
 
-        gameUI.prettyPrint(
+        gameUI.prettyPrintln(
                 "\n[BLD][P]" + name + "[BRK]" +
                 "\n[BLD]Health Points: " + healthFormatString + this.health + "[BRK]" +
                 "\n[BLD]Total Attack: [BRK][P]" + getTotalAttack() + "[BRK]" +
@@ -270,10 +271,7 @@ public class Character {
                 "\n[BLD]Coins: [Y]" + coins + "[BRK]");
 
 
-        System.out.println();
-
-        System.out.println();
-        System.out.println();
+        gameUI.prettyPrintln("\n\n");
     }
 
     /**
@@ -285,28 +283,28 @@ public class Character {
         Node currentDungeonRoom = this.getCurrentRoom();
         Room currentRoom = (Room) currentDungeonRoom.getValue();
 
-        System.out.println(currentRoom.getName() + ": Level " + levelCount);
+        gameUI.prettyPrintln(currentRoom.getName() + ": Level " + levelCount);
         this.displayStats();
 
-        System.out.println("\n\nEnter I to display inventory");
+        gameUI.prettyPrintln("\n\nEnter I to display inventory");
         System.out.print("Would you like to move left or right? (L/R) : ");
         String choice = keyboard.nextLine();
 
         if (choice.trim().equalsIgnoreCase("l")) {
-            System.out.println("You have moved left\n");
+            gameUI.prettyPrintln("You have moved left\n");
             this.setCurrentRoom(currentDungeonRoom.getLastNode());
             this.setRoomsTraversed(this.getRoomsTraversed() + 1);
 
         } else if (choice.trim().equalsIgnoreCase("r")) {
-            System.out.println("You have moved right\n");
+            gameUI.prettyPrintln("You have moved right\n");
             this.setCurrentRoom(currentDungeonRoom.getNextNode());
             this.setRoomsTraversed(this.getRoomsTraversed() + 1);
 
         }else if(choice.trim().equalsIgnoreCase("i")){
-            System.out.println("-=Inventory=-\n");
+            gameUI.prettyPrintln("-=Inventory=-\n");
             displayInventory(keyboard);
         } else {
-            System.out.println("Invalid choice\n");
+            gameUI.prettyPrintln("Invalid choice\n");
         }
     }
 
@@ -325,9 +323,9 @@ public class Character {
 
         //Evaluate input
         if(choice.trim().equalsIgnoreCase("y")){
-            System.out.println("\nYou have opened the chest");
+            gameUI.prettyPrintln("\nYou have opened the chest");
             System.out.print("You have found a " + currentRoom.getItem().getName() + ", ");
-            System.out.println("this " + currentRoom.getItem().getDescription() + "\n\n");
+            gameUI.prettyPrintln("this " + currentRoom.getItem().getDescription() + "\n\n");
 
             //Set stats based on item attributes
             if (currentRoom.getItem() != null && currentRoom.getItem().getHpValue() != 0) {
@@ -348,9 +346,9 @@ public class Character {
             currentRoom.setItem(null);
 
         }else if(choice.trim().equalsIgnoreCase("n")){
-            System.out.println("You have not opened the chest");
+            gameUI.prettyPrintln("You have not opened the chest");
         }else{
-            System.out.println("Invalid choice");
+            gameUI.prettyPrintln("Invalid choice");
             openChest(keyboard);
         }
     }
@@ -394,7 +392,7 @@ public class Character {
             //Add to the kidney stone meter
             this.setPotionsConsumed(this.getPotionsConsumed() + 1);
         } else if(this.getHealth() == this.getMaxHealth() && willUsePotion){
-            gameUI.prettyPrint("[BLD][R]You have already reached maximum health, no effect[BRK]\n+" +
+            gameUI.prettyPrintln("[BLD][R]You have already reached maximum health, no effect[BRK]\n+" +
                                    "You have not consumed the potion, adding to inventory instead\n");
             Objects.requireNonNull(inventory).addToBucket(currentRoom.getItem());
             currentRoom.setItem(null);
@@ -417,9 +415,9 @@ public class Character {
             currentRoom.setItem(null);
             return false;
         }else if(choice.trim().equalsIgnoreCase("n")){
-            System.out.println("You chose to drink the potion now\n");
+            gameUI.prettyPrintln("You chose to drink the potion now\n");
         }else{
-            gameUI.prettyPrint("[BLD][R]Invalid choice![BRK]\n");
+            gameUI.prettyPrintln("[BLD][R]Invalid choice![BRK]\n");
             healingItemHandler(currentRoom, keyboard);
         }
         return true;
@@ -455,15 +453,16 @@ public class Character {
         //Maintain max defense stat
         if(this.getTotalDefense() > 0.8){
             this.setTotalDefense(0.8 , 0.0);
-            System.out.println("\nTotal defense value has reached or exceeded the maximum value\n");
-            System.out.println("Total defense value has been reduced to max (80%)\n");
+            gameUI.prettyPrintln("\nTotal defense value has reached or exceeded the maximum value\n");
+            gameUI.prettyPrintln("Total defense value has been reduced to max (80%)\n");
         }
 
     }
 
     /**
      * Handles increased stamina stat based on item attributes
-     * @param currentRoom
+     * @param currentRoom the Room the player found the chest in is passed in to ensure correct
+     *                    manipulation of the item held within
      */
     void staminaItemHandler(Room currentRoom){
         this.setMaxStamina(this.getMaxStamina() + currentRoom.getItem().getStaminaValue());
@@ -478,22 +477,22 @@ public class Character {
         if(inventory != null && inventory.size() >= 0){
             inventorySize = inventory.size();
         }else{
-            System.out.println("You have no items in your inventory\n");
+            gameUI.prettyPrintln("[BLD][R]You have no items in your inventory![BRK]\n");
             return;
         }
         for(int i = 0; i < inventorySize; i++){
-            System.out.println((i + 1) + ": "+ inventory.getAtIndex(i).getName());
+            gameUI.prettyPrintln((i + 1) + ": "+ inventory.getAtIndex(i).getName());
         }
-        System.out.println("Use 0 to exit inventory");
-        System.out.print("Which item would you like to use? (0/" + inventory.size() + ") : ");
+        gameUI.prettyPrintln("Use [C]0[BRK] to exit inventory");
+        System.out.print("Which item would you like to use? [C](0/" + inventory.size() + ")[BRK] : ");
         String choice = keyboard.nextLine();
         int choiceNum = Integer.parseInt(choice.trim());
         if(choiceNum >= 1 && choiceNum <= inventory.size()){
             useInventory(choiceNum);
         }else if(choiceNum == 0){
-            System.out.println("If you didn't want to use an item, why did you open this menu??\n\n");
+            gameUI.prettyPrintln("[BLD][R]If you didn't want to use an item, why did you open this menu??[BRK]\n\n");
         }else{
-            System.out.println("Invalid choice\n");
+            gameUI.prettyPrintln("[INVALID]");
             displayInventory(keyboard);
         }
     }
@@ -505,33 +504,44 @@ public class Character {
      */
     void useInventory(int choice){
         if(inventory == null || inventory.size() == 0){
-            System.out.println("You have no items in your inventory\n");
+            gameUI.prettyPrintln("[EMPTYINV]");
         }else if(choice > inventory.size()){
-            System.out.println("Invalid choice\n");
+            gameUI.prettyPrintln("[INVALID]");
         }else{
             Item itemUsed = inventory.getAtIndex(choice - 1);
-            System.out.println("\n\n" + itemUsed.getName() + " was used");
+            gameUI.prettyPrintln("\n\n[C]" + itemUsed.getName() + "[BRK] was used");
             this.setHealth(this.getHealth() + itemUsed.getHpValue());
             this.setPotionsConsumed(this.getPotionsConsumed() + 1);
-            System.out.println(itemUsed.getHpValue() + " health restored\n\n");
+            gameUI.prettyPrintln("[G]" + itemUsed.getHpValue() + "[BRK] health restored\n\n");
             inventory.removeAtIndex(choice);
         }
     }
 
+    /**
+     * Method to display available moves to the player as well as displaying useful stats that can help the player decide
+     * @param weapon the weapon the player is currently using
+     * @param keyboard keyboard
+     * @return the selected move is returned for further processing in a separate method
+     */
     public Move chooseMove(Weapon weapon, Scanner keyboard){
+        //Define a null move to store the users selection
         Move move = null;
+        //If a user has no weapon they have no moves to choose from
         if(weapon == null || weapon.getMoves() == null || weapon.getMoves().size() == 0){
-            System.out.println("You have no moves to choose from\n");
+            gameUI.prettyPrintln("[BLD][R]You have no moves to choose from![BRK]\n");
+            //Default move (punch)
             move = returnSelectedMoveFormatted(null, 12, keyboard);
         }else{
-            System.out.println("Choose a move from the following list:");
+            //Displays all moves associated with current weapon
+            gameUI.prettyPrintln("Choose a move from the following list:");
             RobertHolder<Move> currentMoves = weapon.getMoves();
             for (int i = 0; i < currentMoves.size(); i++) {
                 Move m = currentMoves.getAtIndex(i);
-                System.out.println((i + 1) + ": " + m.getMoveName() + " Sp: " + m.getStaminaCost());
+                gameUI.prettyPrintln("[C]" + (i + 1) + "[BRK][BLD]: " + m.getMoveName() + " [BRK][Y]Sp[BRK]: " + m.getStaminaCost() +
+                                        "[R]DMG[BRK]: " + (m.getDamage() * getTotalAttack()));
             }
-            System.out.println("Sp available " + this.getStamina() + "\n");
-            System.out.print("Enter your choice: ");
+            gameUI.prettyPrintln("Sp available [Y]" + this.getStamina() + "[BRK]\n");
+            gameUI.prettyPrint("Enter your choice: ");
             String choice = keyboard.nextLine();
             int choiceNum;
             try {
@@ -551,24 +561,24 @@ public class Character {
         //Check if moves are null (handling the "no moves" case)
         if (moves == null || moves.size() == 0) {
             if (choice == 12) {
-                System.out.println("Resorting to fists\n");
+                gameUI.prettyPrintln("Resorting to fists\n");
                 return punch;
             }
             //bs move to fill the void
-            System.out.println("No moves available. Resorting to fists\n");
+            gameUI.prettyPrintln("No moves available. Resorting to fists\n");
             return punch;
         }
 
         // error handling
         if (choice < 1 || choice > moves.size()) {
-            System.out.println("Invalid move selection.");
+            gameUI.prettyPrintln("Invalid move selection.");
             return chooseMove((Weapon) this.getWeapon(), keyboard);
         }
 
         //edge case mainly for testing
         Move selectedMove = moves.getAtIndex(choice - 1);
         if (selectedMove == null) {
-            System.out.println("Resorting to fists\n");
+            gameUI.prettyPrintln("Resorting to fists\n");
             return punch;
         }
 
