@@ -5,11 +5,15 @@ import items.Weapon;
 import lib.Node;
 import lib.RobertCircularlyLinkedList;
 import lib.RobertHolder;
+import ui.GameFormatter;
+import ui.GameUI;
 
 import java.util.Random;
 import java.util.Scanner;
 
 public class Fight {
+    GameUI gameUI = new GameUI();
+
     /**
      * Handles enemy encounters, sets the stage, and prompts the user
      * @param dungeon dungeon being used
@@ -19,7 +23,7 @@ public class Fight {
      */
     void battle(RobertCircularlyLinkedList<Room> dungeon, Character character, Enemy enemy, int levelCount){
         Scanner keyboard = new Scanner(System.in);
-        System.out.println("You have encountered " + enemy.getName() + ", hit them with all you got\n");
+        gameUI.prettyPrintln("[G]You have encountered [BLD][R]" + enemy.getName() + "[BRK][G], hit them with all you got![BRK]\n");
         startBattleSelection(dungeon, keyboard, character, enemy, levelCount);
     }
 
@@ -34,8 +38,8 @@ public class Fight {
     void startBattleSelection(RobertCircularlyLinkedList<Room> dungeon, Scanner keyboard, Character character, Enemy enemy, int levelCount){
         String choice = "A";
         while ((enemy.getHealth() > 0 && character.getHealth() > 0) && !choice.equalsIgnoreCase("F")) {
-            System.out.println("Enter I to display inventory");
-            System.out.print("Would you like to attack or flee? (A/F): ");
+            gameUI.prettyPrintln("Enter [C]I[BRK] to display inventory");
+            gameUI.prettyPrint("Would you like to attack or flee? [C](A/F)[BRK]: ");
             choice = keyboard.nextLine();
 
             if (choice.trim().equalsIgnoreCase("A")) {
@@ -43,18 +47,18 @@ public class Fight {
                 if (staminaCheck(character, move)) {
                     speedCheck(dungeon, character, enemy, keyboard, move);
                 }else if (!staminaCheck(character, move)){
-                    System.out.println("You do not currently have enough stamina to use that move,\nplease select another");
+                    gameUI.prettyPrintln("[R]You do not currently have enough [BLD][Y]stamina[BRK] [R]to use that move,\nplease select another[BRK]");
                 }else {
-                    System.out.println("No move selected. Try again.");
+                    gameUI.prettyPrintln("[INVALID]");
                 }
             } else if (choice.trim().equalsIgnoreCase("F")) {
-                System.out.println("Get out of here!\n");
+                gameUI.prettyPrintln("[R]Get out of here!\n");
                 fleeCheck(character, enemy, keyboard, levelCount);
                 enemy.move();
             } else if (choice.trim().equalsIgnoreCase("I")) {
                 character.displayInventory(keyboard);
             } else {
-                System.out.println("Invalid choice!");
+                gameUI.prettyPrintln("[INVALID]");
             }
         }
     }
@@ -88,10 +92,10 @@ public class Fight {
         int random = new Random().nextInt(9);
         int[] enemyFleeNums = enemy.getFleeNum();
         if(checkFleeNums(random, enemyFleeNums)){
-            System.out.println("You got away safely!");
+            gameUI.prettyPrintln("[G]You got away safely![BRK]");
             character.move(levelCount, keyboard);
         }else{
-            System.out.println("You got away but you got hurt in the process!");
+            gameUI.prettyPrintln("[R]You got away but you got hurt in the process![BRK]");
             enemyAttackChoice(enemy);
             enemyAttackOutput(enemy, character);
         }
@@ -113,25 +117,26 @@ public class Fight {
             }
 
         } else {
-            System.out.println("\n" + enemy.getName() + " is faster than you and attacks first\n");
+            gameUI.prettyPrintln("\n[BLD][R]" + enemy.getName() + "[BRK] is faster than you and attacks first\n");
             enemyAttackOutput(enemy, character);
             if(isPlayerAlive(character)){
-                System.out.println("You hit " + enemy.getName() + " dealing " + character.getTotalAttack() + " damage\n");
+                gameUI.prettyPrintln("You hit [BLD][R]" + enemy.getName() + "[BRK] dealing " + character.getTotalAttack() + " damage\n");
                 enemy.setHealth(enemy.getHealth() - character.getTotalAttack());
             }
         }
         zeroHealth(character);
-        System.out.println("You have " + character.getHealth() + " health remaining");
+        gameUI.prettyPrintln("You have [G]" + character.getHealth() + "[BRK] health remaining");
         zeroHealth(enemy);
-        System.out.println(enemy.getName() + " has " + enemy.getHealth() + " remaining\n");
+        gameUI.prettyPrintln("[BLD][R]" + enemy.getName() + " has " + enemy.getHealth() + " remaining\n");
     }
 
     void attackOutput(Character character, Enemy enemy, Move move){
-        System.out.println("You used " + move.getMoveName());
-        System.out.println(move.getDescription() + "dealing " + (character.getTotalAttack() + move.getDamage()) + " damage\n");
+        gameUI.prettyPrintln("You used [BLD][C]" + move.getMoveName() + "[BRK][ITL]" + move.getDescription() +
+                                "[BRK]dealing [R]" + (character.getTotalAttack() + move.getDamage()) + "[BRK] damage\n");
+
         enemy.setHealth(enemy.getHealth() - (character.getTotalAttack() + move.getDamage()));
         if(enemy.getHealth() > 0) zeroHealth(enemy);
-        System.out.println(enemy.getName() + " has " + enemy.getHealth() + " health remaining");
+        gameUI.prettyPrintln(enemy.getName() + " has [R]" + enemy.getHealth() + "[BRK] health remaining");
 
     }
 
@@ -145,8 +150,8 @@ public class Fight {
      */
     Boolean isEnemyAlive(RobertCircularlyLinkedList<Room> dungeon, Character character, Enemy enemy, Scanner keyboard){
         if(enemy.getHealth() <= 0){
-            System.out.println("Success! You have beaten " + enemy.getName());
-            System.out.println("For defeating " + enemy.getName() + " you have gained " + enemy.getCoins() + " coins\n");
+            gameUI.prettyPrintln("[BLD][G]Success! [BRK]You have beaten [R]" + enemy.getName() +
+                                    "[BRK]For defeating [C]" + enemy.getName() + "[BRK] you have gained [Y]" + enemy.getCoins() + "[BRK] coins\n");
 
             //Reward player with coins for defeating an enemy
             character.setCoins(character.getCoins() + enemy.getCoins());
@@ -174,7 +179,7 @@ public class Fight {
      */
     Boolean isPlayerAlive(Character character){
         if(character.getHealth() <= 0){
-            System.out.println("oh no...");
+            gameUI.prettyPrintln("[R]oh no...[BRK]");
             return false;
         }else{return true;}
     }
@@ -206,10 +211,10 @@ public class Fight {
      */
     void enemyAttackOutput(Enemy enemy, Character character){
         Move currentMove = enemyAttackChoice(enemy);
-        System.out.println(enemy.getName() + " used " + currentMove.getMoveName());
-        System.out.println(currentMove.getDescription());
+        gameUI.prettyPrintln("[R]" + enemy.getName() + "[BRK] used [C]" + currentMove.getMoveName() +
+                                "[BRK][ITL]" + currentMove.getDescription());
         double damage = calculateDamageAfterDefense(currentMove.getDamage(), enemy, character);
-        System.out.println(enemy.getName() + " dealt " + damage + " damage\n\n");
+        gameUI.prettyPrintln("[R]" + enemy.getName() + "[BRK] dealt [R]" + damage + "[BRK] damage\n\n");
         character.setHealth(character.getHealth() - damage);
     }
 
@@ -237,10 +242,10 @@ public class Fight {
         //Move the character randomly to the left or right before removing the room
         if(random == 0){
             character.setCurrentRoom(character.getCurrentRoom().getNextNode());
-            System.out.println("The room you once knew has disappeared!\nYou have been moved to the right.\n");
+            gameUI.prettyPrintln("[G]The room you once knew has disappeared!\nYou have been moved to the right.[BRK]\n");
         }else{
             character.setCurrentRoom(character.getCurrentRoom().getLastNode());
-            System.out.println("The room you once knew has disappeared!\nYou have been moved to the left.\n");
+            gameUI.prettyPrintln("[G]The room you once knew has disappeared!\nYou have been moved to the left.[BRK]\n");
         }
         Node enemyRoomNode = enemy.getCurrentRoom();
         dungeon.remove((Room)enemyRoomNode.getValue());

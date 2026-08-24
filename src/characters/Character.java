@@ -263,11 +263,11 @@ public class Character {
         }
 
         gameUI.prettyPrintln(
-                "\n[BLD][P]" + name + "[BRK]" +
+                "\n[ITL][P]" + name + "[BRK]" +
                 "\n[BLD]Health Points: " + healthFormatString + this.health + "[BRK]" +
                 "\n[BLD]Total Attack: [BRK][P]" + getTotalAttack() + "[BRK]" +
-                "\n[BLD]Weapon: [C]" + weaponName + "[BRK]" +
-                "\n[BLD]Armor: [C]" + armorName + "[BRK]" +
+                "\n[BLD]Weapon: [ITL][C]" + weaponName + "[BRK]" +
+                "\n[BLD]Armor: [ITL][C]" + armorName + "[BRK]" +
                 "\n[BLD]Coins: [Y]" + coins + "[BRK]");
 
 
@@ -283,10 +283,10 @@ public class Character {
         Node currentDungeonRoom = this.getCurrentRoom();
         Room currentRoom = (Room) currentDungeonRoom.getValue();
 
-        gameUI.prettyPrintln(currentRoom.getName() + ": Level " + levelCount);
+        gameUI.prettyPrintln("[BLD] " + currentRoom.getName() + ": Level " + levelCount);
         this.displayStats();
 
-        gameUI.prettyPrint("\n\nEnter I to display inventory \nWould you like to move left or right? (L/R): ");
+        gameUI.prettyPrint("\n\nEnter [C]I[BRK] to display inventory \nWould you like to move left or right? [C](L/R)[BRK]: ");
         String choice = keyboard.nextLine();
 
         if (choice.trim().equalsIgnoreCase("l")) {
@@ -323,9 +323,9 @@ public class Character {
 
         //Evaluate input
         if(choice.trim().equalsIgnoreCase("y")){
-            gameUI.prettyPrintln("\n[G]You have opened the chest[BRK]");
-            System.out.print("You have found a [BLD][B]" + currentRoom.getItem().getName() + "[BRK], ");
-            gameUI.prettyPrintln("this [ITL]" + currentRoom.getItem().getDescription() + "[BRK]\n\n");
+            gameUI.prettyPrintln("\n[G]You have opened the chest[BRK]\n" +
+                                    "You have found a [BLD][B]" + currentRoom.getItem().getName() + "[BRK], " +
+                                    "[ITL]this " + currentRoom.getItem().getDescription() + "[BRK]\n\n\n");
 
             //Set stats based on item attributes
             if (currentRoom.getItem() != null && currentRoom.getItem().getHpValue() != 0) {
@@ -372,7 +372,7 @@ public class Character {
             return;
         }
 
-        System.out.print("Would you like to add this to your inventory? (Y/N) : ");
+        gameUI.prettyPrint("Would you like to add this to your inventory? [C](Y/N)[BRK]: ");
         String choice2 = keyboard.nextLine();
         willUsePotion = consumePotionChoice(choice2, currentRoom, keyboard);
 
@@ -482,7 +482,7 @@ public class Character {
             gameUI.prettyPrintln((i + 1) + ": "+ inventory.getAtIndex(i).getName());
         }
         gameUI.prettyPrintln("Use [C]0[BRK] to exit inventory");
-        System.out.print("Which item would you like to use? [C](0/" + inventory.size() + ")[BRK] : ");
+        gameUI.prettyPrint("Which item would you like to use? [C](0/" + inventory.size() + ")[BRK] : ");
         String choice = keyboard.nextLine();
         int choiceNum = Integer.parseInt(choice.trim());
         if(choiceNum >= 1 && choiceNum <= inventory.size()){

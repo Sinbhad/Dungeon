@@ -207,13 +207,13 @@ public class DungeonBrain {
      * @param keyboard scanner object for user input
      */
     void playAgain(Scanner keyboard){
-        System.out.print("\n\nWould you like to play again? (y/n): ");
+        gameUI.prettyPrint("\n\nWould you like to play again? [C](Y/N)[BRK]: ");
         String playAgain = keyboard.nextLine();
         if(playAgain.trim().equalsIgnoreCase("y")){
             gameUI.prettyPrintln("\n\n\n\nLet's play again!");
             dungeonOperator();
         }else if(playAgain.trim().equalsIgnoreCase("n")){
-            gameUI.prettyPrintln("Thanks for playing!");
+            gameUI.prettyPrintln("[BLD][ITL]Thanks for playing![BRK]");
             System.exit(0);
         }else{
             gameUI.prettyPrintln("[INVALID]");
@@ -244,12 +244,12 @@ public class DungeonBrain {
         //Output for player to aid in selection
         gameUI.prettyPrintln(
                 "[BLD][C]Choose a perk[BRK]" +
-                "\n[C]1.[BRK] :" + speedPerk.getPerkName() + " - " + speedPerk.getDescription() +
-                "\n[C]2.[BRK] :" + defensePerk.getPerkName() + " - " + defensePerk.getDescription() +
-                "\n[C]3.[BRK] :" + healthPerk.getPerkName() + " - " + healthPerk.getDescription() +
-                "\n[C]4.[BRK] :" + damagePerk.getPerkName() + " - " + damagePerk.getDescription() +
-                "\n[C]5.[BRK] :" + staminaPerk.getPerkName() + " - " + staminaPerk.getDescription() +
-                "\n[C]6.[BRK] :Reroll for 100 coins\n\n " +
+                "\n[C]1.[BRK] :[BLD]" + speedPerk.getPerkName() + "[BRK] - [ITL]" + speedPerk.getDescription() + "[BRK]" +
+                "\n[C]2.[BRK] :[BLD]" + defensePerk.getPerkName() + "[BRK] - [ITL]" + defensePerk.getDescription() + "[BRK]" +
+                "\n[C]3.[BRK] :[BLD]" + healthPerk.getPerkName() + "[BRK] - [ITL]" + healthPerk.getDescription() + "[BRK]" +
+                "\n[C]4.[BRK] :[BLD]" + damagePerk.getPerkName() + "[BRK] - [ITL]" + damagePerk.getDescription() + "[BRK]" +
+                "\n[C]5.[BRK] :[BLD]" + staminaPerk.getPerkName() + "[BRK] - [ITL]" + staminaPerk.getDescription() + "[BRK]" +
+                "\n[C]6.[BRK] :[BLD]Reroll for [C]100[BRK][BLD] coins[BRK]\n\n [ITL]" +
                 "\nYou have [BLD][Y]" + character.getCoins() + "[BRK] coins");
 
         gameUI.prettyPrintln("Enter your choice: [C](1-6)[BRK] [R][BLD]'0 to exit'[BRK]: ");
