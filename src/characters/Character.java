@@ -283,7 +283,7 @@ public class Character {
         Node currentDungeonRoom = this.getCurrentRoom();
         Room currentRoom = (Room) currentDungeonRoom.getValue();
 
-        gameUI.prettyPrintln("[BLD] " + currentRoom.getName() + ": Level " + levelCount);
+        gameUI.prettyPrintln("[BLD]" + currentRoom.getName() + ": Level " + levelCount);
         this.displayStats();
 
         gameUI.prettyPrint("\n\nEnter [C]I[BRK] to display inventory \nWould you like to move left or right? [C](L/R)[BRK]: ");
