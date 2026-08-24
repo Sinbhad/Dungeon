@@ -31,7 +31,8 @@ public class GameUI {
                 .replace("[EMPTYINV]", GameFormatter.EMPTY_INVENTORY)
                 .replace("[INVALID]", GameFormatter.INVALID_CHOICE)
 
-                .replace("[BRK]", GameFormatter.RESET);
+                .replace("[BRK]", GameFormatter.RESET)
+                .replace("[CLR]", GameFormatter.CLEAR_TERMINAL);
 
         return coloredString;
     }

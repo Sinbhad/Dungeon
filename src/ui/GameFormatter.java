@@ -6,6 +6,7 @@ package ui;
 public class GameFormatter {
     //Clear
     public static final String RESET = "\u001B[0m";
+    public static final String CLEAR_TERMINAL = "\033[H\033[2J";
 
     //Text Colors
     public static final String RED = "\u001B[31m";

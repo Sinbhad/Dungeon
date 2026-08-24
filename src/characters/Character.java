@@ -286,25 +286,25 @@ public class Character {
         gameUI.prettyPrintln(currentRoom.getName() + ": Level " + levelCount);
         this.displayStats();
 
-        gameUI.prettyPrintln("\n\nEnter I to display inventory");
-        System.out.print("Would you like to move left or right? (L/R) : ");
+        gameUI.prettyPrint("\n\nEnter I to display inventory \nWould you like to move left or right? (L/R): ");
         String choice = keyboard.nextLine();
 
         if (choice.trim().equalsIgnoreCase("l")) {
-            gameUI.prettyPrintln("You have moved left\n");
+
+            gameUI.prettyPrintln("\n[CLR][G]You have moved left[BRK]\n");
             this.setCurrentRoom(currentDungeonRoom.getLastNode());
             this.setRoomsTraversed(this.getRoomsTraversed() + 1);
 
         } else if (choice.trim().equalsIgnoreCase("r")) {
-            gameUI.prettyPrintln("You have moved right\n");
+            gameUI.prettyPrintln("\n[CLR]You have moved right\n");
             this.setCurrentRoom(currentDungeonRoom.getNextNode());
             this.setRoomsTraversed(this.getRoomsTraversed() + 1);
 
         }else if(choice.trim().equalsIgnoreCase("i")){
-            gameUI.prettyPrintln("-=Inventory=-\n");
+            gameUI.prettyPrintln("[CLR]-=Inventory=-\n");
             displayInventory(keyboard);
         } else {
-            gameUI.prettyPrintln("Invalid choice\n");
+            gameUI.prettyPrintln("[INVALID]");
         }
     }
 
@@ -318,14 +318,14 @@ public class Character {
         Room currentRoom = (Room) currentDungeonRoom.getValue();
 
         //Prompt the user
-        System.out.print("\n\nWould you like to open the chest? (Y/N) : ");
+        gameUI.prettyPrint("\n\nWould you like to open the chest? [C](Y/N)[BRK]: ");
         String choice = keyboard.nextLine();
 
         //Evaluate input
         if(choice.trim().equalsIgnoreCase("y")){
-            gameUI.prettyPrintln("\nYou have opened the chest");
-            System.out.print("You have found a " + currentRoom.getItem().getName() + ", ");
-            gameUI.prettyPrintln("this " + currentRoom.getItem().getDescription() + "\n\n");
+            gameUI.prettyPrintln("\n[G]You have opened the chest[BRK]");
+            System.out.print("You have found a [BLD][B]" + currentRoom.getItem().getName() + "[BRK], ");
+            gameUI.prettyPrintln("this [ITL]" + currentRoom.getItem().getDescription() + "[BRK]\n\n");
 
             //Set stats based on item attributes
             if (currentRoom.getItem() != null && currentRoom.getItem().getHpValue() != 0) {
@@ -346,9 +346,9 @@ public class Character {
             currentRoom.setItem(null);
 
         }else if(choice.trim().equalsIgnoreCase("n")){
-            gameUI.prettyPrintln("You have not opened the chest");
+            gameUI.prettyPrintln("[G]You have not opened the chest[BRK]");
         }else{
-            gameUI.prettyPrintln("Invalid choice");
+            gameUI.prettyPrintln("[INVALID]");
             openChest(keyboard);
         }
     }
@@ -363,6 +363,7 @@ public class Character {
         double hp = this.getHealth();
         boolean willUsePotion = true;
         int itemHp = currentRoom.getItem().getHpValue();
+        int itemSpeed = currentRoom.getItem().getSpeedValue();
 
 
         if (itemHp < 0) {
@@ -373,15 +374,11 @@ public class Character {
 
         System.out.print("Would you like to add this to your inventory? (Y/N) : ");
         String choice2 = keyboard.nextLine();
+        willUsePotion = consumePotionChoice(choice2, currentRoom, keyboard);
 
-
-        //Check to be certain this is a healing item
-        if(currentRoom.getItem().getHpValue() > 0){
-            willUsePotion = consumePotionChoice(choice2, currentRoom, keyboard);
-        }
 
         //Make sure the player's health value stays below the max
-        if (this.getHealth() < this.getMaxHealth() && willUsePotion) {
+        if (willUsePotion && this.getHealth() < this.getMaxHealth()) {
             // It's a healing item, and player is below max health: apply healing
             this.setHealth(hp + itemHp);
 
@@ -391,6 +388,7 @@ public class Character {
             }
             //Add to the kidney stone meter
             this.setPotionsConsumed(this.getPotionsConsumed() + 1);
+            if(itemSpeed > 0){speedItemHandler(currentRoom);}
         } else if(this.getHealth() == this.getMaxHealth() && willUsePotion){
             gameUI.prettyPrintln("[BLD][R]You have already reached maximum health, no effect[BRK]\n+" +
                                    "You have not consumed the potion, adding to inventory instead\n");
@@ -415,9 +413,9 @@ public class Character {
             currentRoom.setItem(null);
             return false;
         }else if(choice.trim().equalsIgnoreCase("n")){
-            gameUI.prettyPrintln("You chose to drink the potion now\n");
+            gameUI.prettyPrintln("[G]You chose to drink the potion now[BRK]\n");
         }else{
-            gameUI.prettyPrintln("[BLD][R]Invalid choice![BRK]\n");
+            gameUI.prettyPrintln("[INVALID]\n");
             healingItemHandler(currentRoom, keyboard);
         }
         return true;
