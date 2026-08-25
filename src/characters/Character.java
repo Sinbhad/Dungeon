@@ -77,11 +77,12 @@ public class Character {
      * @param coinsHad Coins the character has
      * @param inventory Inventory of the character
      */
-    public Character(String name, int attack, double health, double maxHealth, int speed, int coinsHad, RobertHolder<Item> inventory){
+    public Character(String name, int attack, double health, double maxHealth, int stamina , int speed, int coinsHad, RobertHolder<Item> inventory){
         this.name = name;
         this.attack = attack;
         this.health = health;
         this.maxHealth = maxHealth;
+        this.stamina = stamina;
         this.speed = speed;
         this.coins = coinsHad;
         this.weapon = null;
@@ -381,14 +382,13 @@ public class Character {
         if (willUsePotion && this.getHealth() < this.getMaxHealth()) {
             String healthString = String.valueOf(this.getHealth());
             // It's a healing item, and player is below max health: apply healing
-            gameUI.prettyPrint(health);
             this.setHealth(hp + itemHp);
-            gameUI.prettyPrint(health);
 
             // Cap health at maxHealth
             if (this.getHealth() > this.getMaxHealth()) {
                 this.setHealth(this.getMaxHealth());
             }
+
             //Add to the kidney stone meter
             this.setPotionsConsumed(this.getPotionsConsumed() + 1);
             if(itemSpeed > 0){speedItemHandler(currentRoom);}

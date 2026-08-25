@@ -21,6 +21,6 @@ public class GameFormatter {
     public static final String ITALICS = "\u001B[3m";
 
     //Messages
-    public static final String EMPTY_INVENTORY = "[BLD][R]You have no items in your inventory![BRK]\n";
-    public static final String INVALID_CHOICE = "[BLD][R]Invalid choice[BRK]\n";
+    public static final String EMPTY_INVENTORY = "\u001B[1m\u001B[31mYou have no items in your inventory!\u001B[0m\n";
+    public static final String INVALID_CHOICE = "\u001B[1m\u001B[31mInvalid choice\u001B[0m\n";
 }

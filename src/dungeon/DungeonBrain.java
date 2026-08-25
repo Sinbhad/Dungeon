@@ -253,7 +253,7 @@ public class DungeonBrain {
                 "\n[C]6.[BRK] :[BLD]Reroll for [C]100[BRK][BLD] coins[BRK]\n\n [ITL]" +
                 "\nYou have [BLD][Y]" + character.getCoins() + "[BRK] coins");
 
-        gameUI.prettyPrintln("Enter your choice: [C](1-6)[BRK] [R][BLD]'0 to exit'[BRK]: ");
+        gameUI.prettyPrint("Enter your choice: [C](1-6)[BRK] [R][BLD]'0 to exit'[BRK]: ");
         Scanner keyboard = new Scanner(System.in);
         int choice = keyboard.nextInt();
 

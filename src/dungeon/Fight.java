@@ -127,7 +127,7 @@ public class Fight {
         zeroHealth(character);
         gameUI.prettyPrintln("You have [G]" + character.getHealth() + "[BRK] health remaining");
         zeroHealth(enemy);
-        gameUI.prettyPrintln("[BLD][R]" + enemy.getName() + " has " + enemy.getHealth() + " remaining\n");
+        gameUI.prettyPrintln("[R]" + enemy.getName() + "[BRK] has [R]" + enemy.getHealth() + "[BRK] health remaining\n");
     }
 
     void attackOutput(Character character, Enemy enemy, Move move){
@@ -136,7 +136,7 @@ public class Fight {
 
         enemy.setHealth(enemy.getHealth() - (character.getTotalAttack() + move.getDamage()));
         if(enemy.getHealth() > 0) zeroHealth(enemy);
-        gameUI.prettyPrintln(enemy.getName() + " has [R]" + enemy.getHealth() + "[BRK] health remaining");
+        gameUI.prettyPrintln("[R]" + enemy.getName() + "[BRK] has [R]" + enemy.getHealth() + "[BRK] health remaining");
 
     }
 
@@ -151,7 +151,7 @@ public class Fight {
     Boolean isEnemyAlive(RobertCircularlyLinkedList<Room> dungeon, Character character, Enemy enemy, Scanner keyboard){
         if(enemy.getHealth() <= 0){
             gameUI.prettyPrintln("[BLD][G]Success! [BRK]You have beaten [R]" + enemy.getName() +
-                                    "[BRK]\nFor defeating [C]" + enemy.getName() + "[BRK] you have gained [Y]" + enemy.getCoins() + "[BRK] coins\n");
+                                    "[BRK]\nFor defeating [R]" + enemy.getName() + "[BRK] you have gained [Y]" + enemy.getCoins() + "[BRK] coins\n");
 
             //Reward player with coins for defeating an enemy
             character.setCoins(character.getCoins() + enemy.getCoins());
@@ -212,7 +212,7 @@ public class Fight {
     void enemyAttackOutput(Enemy enemy, Character character){
         Move currentMove = enemyAttackChoice(enemy);
         gameUI.prettyPrintln("[R]" + enemy.getName() + "[BRK] used [C]" + currentMove.getMoveName() +
-                                "[BRK][ITL]" + currentMove.getDescription());
+                                "[BRK][ITL] " + currentMove.getDescription());
         double damage = calculateDamageAfterDefense(currentMove.getDamage(), enemy, character);
         gameUI.prettyPrintln("[R]" + enemy.getName() + "[BRK] dealt [R]" + damage + "[BRK] damage\n\n");
         character.setHealth(character.getHealth() - damage);
