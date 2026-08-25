@@ -90,6 +90,14 @@ public class DungeonBrain {
             tinkleBreak(character, enemyRoster);
         }
 
+        //Check for loot
+        currentRoomNode = character.getCurrentRoom();
+        currentRoom = (Room) currentRoomNode.getValue();
+        if(currentRoom.getItem() != null && character.getHealth() > 0){
+            gameUI.prettyPrintln("[G]You found a chest![BRK]");
+            character.openChest(keyboard);
+        }
+
         //Handle exit room
         if(currentRoom.getIsExit()){
             levelCount = exitRoom(dungeon, character, levelCount, enemyRoster);
@@ -101,13 +109,6 @@ public class DungeonBrain {
             fight.battle(dungeon, character, currentRoom.getEnemyCharacter(), levelCount);
         }
 
-        //Check for loot
-        currentRoomNode = character.getCurrentRoom();
-        currentRoom = (Room) currentRoomNode.getValue();
-        if(currentRoom.getItem() != null && character.getHealth() > 0){
-            gameUI.prettyPrintln("[G]You found a chest![BRK]");
-            character.openChest(keyboard);
-        }
         return levelCount;
     }
 

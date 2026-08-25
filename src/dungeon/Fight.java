@@ -23,7 +23,7 @@ public class Fight {
      */
     void battle(RobertCircularlyLinkedList<Room> dungeon, Character character, Enemy enemy, int levelCount){
         Scanner keyboard = new Scanner(System.in);
-        gameUI.prettyPrintln("[G]You have encountered [BLD][R]" + enemy.getName() + "[BRK][G], hit them with all you got![BRK]\n");
+        gameUI.prettyPrintln("[BLD]You have encountered [R]" + enemy.getName() + "[BRK][BLD], hit them with all you got![BRK]\n");
         startBattleSelection(dungeon, keyboard, character, enemy, levelCount);
     }
 
@@ -131,7 +131,7 @@ public class Fight {
     }
 
     void attackOutput(Character character, Enemy enemy, Move move){
-        gameUI.prettyPrintln("You used [BLD][C]" + move.getMoveName() + "[BRK][ITL]" + move.getDescription() +
+        gameUI.prettyPrintln("You used [BLD][C]" + move.getMoveName() + "[BRK][ITL] " + move.getDescription() +
                                 "[BRK]dealing [R]" + (character.getTotalAttack() + move.getDamage()) + "[BRK] damage\n");
 
         enemy.setHealth(enemy.getHealth() - (character.getTotalAttack() + move.getDamage()));
@@ -151,7 +151,7 @@ public class Fight {
     Boolean isEnemyAlive(RobertCircularlyLinkedList<Room> dungeon, Character character, Enemy enemy, Scanner keyboard){
         if(enemy.getHealth() <= 0){
             gameUI.prettyPrintln("[BLD][G]Success! [BRK]You have beaten [R]" + enemy.getName() +
-                                    "[BRK]For defeating [C]" + enemy.getName() + "[BRK] you have gained [Y]" + enemy.getCoins() + "[BRK] coins\n");
+                                    "[BRK]\nFor defeating [C]" + enemy.getName() + "[BRK] you have gained [Y]" + enemy.getCoins() + "[BRK] coins\n");
 
             //Reward player with coins for defeating an enemy
             character.setCoins(character.getCoins() + enemy.getCoins());

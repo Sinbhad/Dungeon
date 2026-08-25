@@ -24,8 +24,6 @@ public class DungeonGenerator {
         }
     }
 
-    private enum EnemyRoster {lowEnemyRoster, midEnemyRoster, highEnemyRoster}
-
     /**
      * Sets items and enemies in rooms randomly
      * @param dungeon currently used dungeon

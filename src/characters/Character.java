@@ -379,8 +379,11 @@ public class Character {
 
         //Make sure the player's health value stays below the max
         if (willUsePotion && this.getHealth() < this.getMaxHealth()) {
+            String healthString = String.valueOf(this.getHealth());
             // It's a healing item, and player is below max health: apply healing
+            gameUI.prettyPrint(health);
             this.setHealth(hp + itemHp);
+            gameUI.prettyPrint(health);
 
             // Cap health at maxHealth
             if (this.getHealth() > this.getMaxHealth()) {
