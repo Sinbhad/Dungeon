@@ -28,7 +28,7 @@ public class DungeonBrain {
         int levelCount = 1;
 
         Player player = new Player();
-        ArrayList<Enemy> enemyRoster = generator.enemyRosterGenerator();
+        ArrayList<Enemy> enemyRoster = new ArrayList<>();
 
         generator.createLevel(dungeon, roomCount);
         generator.setRooms(dungeon);

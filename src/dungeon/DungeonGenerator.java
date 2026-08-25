@@ -24,12 +24,14 @@ public class DungeonGenerator {
         }
     }
 
+    private enum EnemyRoster {lowEnemyRoster, midEnemyRoster, highEnemyRoster}
+
     /**
      * Sets items and enemies in rooms randomly
      * @param dungeon currently used dungeon
      */
     void setRooms(RobertCircularlyLinkedList<Room> dungeon) {
-        ArrayList<Enemy> enemyRoster = enemyRosterGenerator();
+        ArrayList<Enemy> enemyRoster = new ArrayList<>();
         ArrayList<Weapon> weaponRoster = weaponRosterGenerator();
 
         Random chanceNum = new Random();
@@ -42,7 +44,21 @@ public class DungeonGenerator {
             tempRoom = (Room)tempNode.getNextNode().getValue();
         }
 
-        
+
+        int levelCount = size / 7;
+
+        //Set difficulty based on level count
+        if (levelCount == 1) {
+            lowEnemyRosterGenerator(enemyRoster);
+        } else if (levelCount > 1 && levelCount <= 4) {
+            lowEnemyRosterGenerator(enemyRoster);
+            midEnemyRosterGenerator(enemyRoster);
+        } else{
+            lowEnemyRosterGenerator(enemyRoster);
+            midEnemyRosterGenerator(enemyRoster);
+            highEnemyRosterGenerator(enemyRoster);
+        }
+
         enemyLevelCheck(chanceNum, size, dungeon, enemyRoster);
         setWeapon(chanceNum, size, dungeon, weaponRoster);
         setPotion(chanceNum, size, dungeon);
@@ -52,24 +68,34 @@ public class DungeonGenerator {
     }
 
     /**
-     * Generates an enemy roster based on the enemies in the enemy library
-     * to be used in conjunction with the setRooms method to ensure enemies have full health
-     * upon entering a new dungeon level
-     * @return ArrayList of enemies
+     * Creates an enemy roster for lower levels
+     * @param enemyRoster ArrayList of enemies to be spawned
      */
-    ArrayList<Enemy> enemyRosterGenerator() {
-        ArrayList<Enemy> enemyRoster = new ArrayList<>();
+    void lowEnemyRosterGenerator(ArrayList<Enemy> enemyRoster) {
         enemyRoster.add(new Slime());
-        enemyRoster.add(new Daniel());
         enemyRoster.add(new Jared());
+        enemyRoster.add(new Samir());
+    }
+
+    /**
+     * Creates an enemy roster for mid-levels
+     * @param enemyRoster ArrayList of enemies to be spawned
+     */
+    void midEnemyRosterGenerator(ArrayList<Enemy> enemyRoster){
+        enemyRoster.add(new Jenna());
+        enemyRoster.add(new Marc());
+        enemyRoster.add(new Joe());
+        enemyRoster.add(new Daniel());
+    }
+
+    /**
+     * Creates a roster of the strongest enemies for later levels
+     * @param enemyRoster ArrayList of enemies to be spawned
+     */
+    void highEnemyRosterGenerator(ArrayList<Enemy> enemyRoster){
         enemyRoster.add(new Patrick());
         enemyRoster.add(new Andrew());
         enemyRoster.add(new Byron());
-        enemyRoster.add(new Jenna());
-        enemyRoster.add(new Joe());
-        enemyRoster.add(new Marc());
-        enemyRoster.add(new Samir());
-        return enemyRoster;
     }
 
     /**
