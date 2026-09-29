@@ -16,7 +16,8 @@ public class Character {
     //Player state
     private int attack, weaponAttack, speed, coins, stamina, maxStamina;
     private double health, maxHealth, armorDefense, perkDefense;
-    private Item weapon, armor;
+    private Weapon weapon;
+    private Item armor;
     private final RobertHolder<Item> inventory;
     private Node<Room> currentRoom;
 
@@ -125,11 +126,11 @@ public class Character {
         return speed;
     }
 
-    public void setWeapon(Item weapon){
+    public void setWeapon(Weapon weapon){
         this.weapon = weapon;
     }
 
-    public Item getWeapon(){
+    public Weapon getWeapon(){
         return weapon;
     }
 
@@ -437,7 +438,7 @@ public class Character {
      * @param currentRoom current room the player is in
      */
     void weaponItemHandler(Room currentRoom){
-        this.setWeapon(currentRoom.getItem());
+        this.setWeapon(currentRoom.getWeapon());
         this.setWeaponAttack(currentRoom.getItem().getAttackValue());
         this.setTotalAttack(this.getAttack() , this.getWeaponAttack());
         this.setSpeedValue(this.getSpeed() + currentRoom.getItem().getSpeedValue());
@@ -573,7 +574,7 @@ public class Character {
         // error handling
         if (choice < 1 || choice > moves.size()) {
             gameUI.prettyPrintln("[INVALID]");
-            return chooseMove((Weapon) this.getWeapon(), keyboard);
+            return chooseMove(this.getWeapon(), keyboard);
         }
 
         //edge case mainly for testing

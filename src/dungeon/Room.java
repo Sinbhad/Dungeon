@@ -2,6 +2,7 @@ package dungeon;
 import characters.Character;
 import characters.Enemy;
 import items.Item;
+import items.Weapon;
 
 public class Room {
     private final String name;
@@ -61,6 +62,11 @@ public class Room {
 
     public Item getItem(){
         return item;
+    }
+
+    //Used for sly type casting when needed >:)
+    public Weapon getWeapon(){
+        return (Weapon) item;
     }
 
     public void setPlayerCharacter(Character playerCharacter) {
