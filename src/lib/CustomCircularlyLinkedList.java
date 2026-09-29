@@ -7,8 +7,8 @@ package lib;
  * Author: Robert Poley
  */
 public class CustomCircularlyLinkedList<T>{
-    Node head;
-    Node tail;
+    Node<T> head;
+    Node<T> tail;
 
     /**
      * Retrieves the Node stored at the first memory address in the list
@@ -32,7 +32,7 @@ public class CustomCircularlyLinkedList<T>{
      */
     public void add(T value) {
         //Temporary storage to pass the value along without breaking things
-        Node<T> newNode = new Node(value);
+        Node<T> newNode = new Node<>(value);
 
         //If the head is empty the data will be assigned as the head and tail to create the circle
         if (head == null) {
@@ -75,7 +75,7 @@ public class CustomCircularlyLinkedList<T>{
 
 
         //Placeholder for data assignment
-        Node<T> newNode = new Node(value);
+        Node<T> newNode = new Node<>(value);
 
         //Head case
         if (index == 0) {
@@ -89,7 +89,7 @@ public class CustomCircularlyLinkedList<T>{
             head = newNode;
         } else {
             //If the index is within range the following loop will move through the list until the desired index is reached
-            Node currentNode = head;
+            Node<T> currentNode = head;
             for (int i = 0; i < index; i++) {
                 currentNode = currentNode.getNextNode();
             }
@@ -151,7 +151,7 @@ public class CustomCircularlyLinkedList<T>{
      * @param index the address to search
      * @return returns a Node type object from the list
      */
-    public Node getNodeAtIndex(int index){
+    public Node<T> getNodeAtIndex(int index){
         Node<T> tempNode = head;
         for(int i = 0; i < index; i++){
             if(tempNode == null) return null;
@@ -174,7 +174,7 @@ public class CustomCircularlyLinkedList<T>{
         }
 
         //Base case, stop if any condition is met
-        if (size == 0 || index < 0 || index >= size) return;
+        if (index < 0 || index >= size) return;
 
         // Edge case, if there is only one value, break any links
         if (size == 1) {
@@ -183,7 +183,7 @@ public class CustomCircularlyLinkedList<T>{
             head = null;
             tail = null;
         } else {
-            Node tempNode = head;
+            Node<T> tempNode = head;
             //Step through the list to find the node to remove
             for (int i = 0; i < index; i++) {
                 tempNode = tempNode.getNextNode();
@@ -329,13 +329,12 @@ public class CustomCircularlyLinkedList<T>{
     public boolean hasNext(T data){
         int index = findIndex(data);
         Node<T> node = getNodeAtIndex(index);
-        if(node.checkIfNextExists()){return true;}
-        else{return false;}
+        return node.checkIfNextExists();
     }
 
     /**
      * Retrieves the Node stored in the tail segment of the list
-     * @return
+     * @return returns tail
      */
     public Node<T> getLast(){
         return tail;
