@@ -2,7 +2,7 @@ package main;
 import dungeon.DungeonBrain;
 
 class Main{
-    static void main(String[] args){
+    static void main(){
         DungeonBrain dungeonBrain = new DungeonBrain();
         dungeonBrain.dungeonOperator();
     }
