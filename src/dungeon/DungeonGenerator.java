@@ -5,7 +5,7 @@ import characters.*;
 import items.Weapon;
 import items.weapons.*;
 import lib.Node;
-import lib.RobertCircularlyLinkedList;
+import lib.CustomCircularlyLinkedList;
 
 import java.util.Random;
 import java.util.ArrayList;
@@ -17,7 +17,7 @@ public class DungeonGenerator {
      * @param dungeon currently used dungeon
      * @param roomCount number of rooms in the dungeon
      */
-    public void createLevel(RobertCircularlyLinkedList<Room> dungeon, int roomCount){
+    public void createLevel(CustomCircularlyLinkedList<Room> dungeon, int roomCount){
         dungeon.clear();
         for(int i = 0; i < roomCount; i++){
             dungeon.add(new Room("Room " + (i + 1), null, null, null, false));
@@ -28,7 +28,7 @@ public class DungeonGenerator {
      * Sets items and enemies in rooms randomly
      * @param dungeon currently used dungeon
      */
-    void setRooms(RobertCircularlyLinkedList<Room> dungeon) {
+    void setRooms(CustomCircularlyLinkedList<Room> dungeon) {
         ArrayList<Enemy> enemyRoster = new ArrayList<>();
         ArrayList<Weapon> weaponRoster = weaponRosterGenerator();
 
@@ -120,7 +120,7 @@ public class DungeonGenerator {
      * @param size number of rooms in the dungeon
      * @param dungeon currently used dungeon
      */
-    void setWeapon(Random chanceNum, int size, RobertCircularlyLinkedList<Room> dungeon, ArrayList<Weapon> weaponRoster) {
+    void setWeapon(Random chanceNum, int size, CustomCircularlyLinkedList<Room> dungeon, ArrayList<Weapon> weaponRoster) {
         int weaponRoomIndex = chanceNum.nextInt(size);
         Room weaponRoom = dungeon.getValAtIndex(weaponRoomIndex);
         Weapon weapon = weaponRoster.get(chanceNum.nextInt(weaponRoster.size()));
@@ -133,7 +133,7 @@ public class DungeonGenerator {
      * @param size number of rooms in the dungeon
      * @param dungeon currently used dungeon
      */
-    void setPotion(Random chanceNum, int size, RobertCircularlyLinkedList<Room> dungeon) {
+    void setPotion(Random chanceNum, int size, CustomCircularlyLinkedList<Room> dungeon) {
         ItemLibrary itemLibrary = new ItemLibrary();
         int healthPotionRoomIndex = chanceNum.nextInt(size);
         Room healthPotionRoom = dungeon.getValAtIndex(healthPotionRoomIndex);
@@ -146,7 +146,7 @@ public class DungeonGenerator {
      * @param size number of rooms in the dungeon
      * @param dungeon currently used dungeon
      */
-    void setTrap(Random chanceNum, int size, RobertCircularlyLinkedList<Room> dungeon) {
+    void setTrap(Random chanceNum, int size, CustomCircularlyLinkedList<Room> dungeon) {
         ItemLibrary itemLibrary = new ItemLibrary();
         int trapRoomIndex = chanceNum.nextInt(size);
         Room trapRoom = dungeon.getValAtIndex(trapRoomIndex);
@@ -159,7 +159,7 @@ public class DungeonGenerator {
      * @param size number of rooms in the dungeon
      * @param dungeon currently used dungeon
      */
-    void setArmor(Random chanceNum, int size, RobertCircularlyLinkedList<Room> dungeon) {
+    void setArmor(Random chanceNum, int size, CustomCircularlyLinkedList<Room> dungeon) {
         ItemLibrary itemLibrary = new ItemLibrary();
         int armorRoomIndex = chanceNum.nextInt(size);
         Room armorRoom = dungeon.getValAtIndex(armorRoomIndex);
@@ -172,7 +172,7 @@ public class DungeonGenerator {
      * @param size number of rooms in the dungeon
      * @param dungeon currently used dungeon
      */
-    void setExit(Random chanceNum, int size, RobertCircularlyLinkedList<Room> dungeon) {
+    void setExit(Random chanceNum, int size, CustomCircularlyLinkedList<Room> dungeon) {
         int exitRoomIndex = chanceNum.nextInt(size);
         Room exitRoom = dungeon.getValAtIndex(exitRoomIndex);
         exitRoom.setIsExit(true);
@@ -187,7 +187,7 @@ public class DungeonGenerator {
      * @param dungeon currently used dungeon
      * @param enemyRoster arraylist of enemies in the current dungeon
      */
-    void setEnemies(Random chanceNum, int size, RobertCircularlyLinkedList<Room> dungeon, ArrayList<Enemy> enemyRoster) {
+    void setEnemies(Random chanceNum, int size, CustomCircularlyLinkedList<Room> dungeon, ArrayList<Enemy> enemyRoster) {
         int enemyRoomIndex = chanceNum.nextInt(size);
         Node enemyRoomNode = dungeon.getNodeAtIndex(enemyRoomIndex);
         Room enemyRoom = (Room) enemyRoomNode.getValue();
@@ -203,7 +203,7 @@ public class DungeonGenerator {
      * @param dungeon currently used dungeon
      * @param enemyRoster arraylist of enemies in the current dungeon
      */
-    void enemyLevelCheck(Random chanceNum, int size, RobertCircularlyLinkedList<Room> dungeon, ArrayList<Enemy> enemyRoster){
+    void enemyLevelCheck(Random chanceNum, int size, CustomCircularlyLinkedList<Room> dungeon, ArrayList<Enemy> enemyRoster){
         int levelCount = size / 7;
         if (levelCount == 1) {
             setEnemies(chanceNum, size, dungeon, enemyRoster);

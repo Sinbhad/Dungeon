@@ -2,7 +2,7 @@ package dungeon;
 
 import characters.Character;
 import characters.Enemy;
-import lib.RobertCircularlyLinkedList;
+import lib.CustomCircularlyLinkedList;
 import lib.Node;
 import characters.*;
 import ui.*;
@@ -20,7 +20,7 @@ public class DungeonBrain {
     public void dungeonOperator(){
         DungeonGenerator generator = new DungeonGenerator();
         Scanner keyboard = new Scanner(System.in);
-        RobertCircularlyLinkedList<Room> dungeon = new RobertCircularlyLinkedList<>();
+        CustomCircularlyLinkedList<Room> dungeon = new CustomCircularlyLinkedList<>();
         HighScoreDB highScoreDB = new HighScoreDB();
         highScoreDB.initializeDatabase();
 
@@ -80,7 +80,7 @@ public class DungeonBrain {
      * @param enemyRoster arraylist of enemies in the current dungeon
      * @return int value of the current dungeon level
      */
-    int conditionCheck(RobertCircularlyLinkedList<Room> dungeon, Character character, int levelCount, Scanner keyboard, ArrayList<Enemy> enemyRoster){
+    int conditionCheck(CustomCircularlyLinkedList<Room> dungeon, Character character, int levelCount, Scanner keyboard, ArrayList<Enemy> enemyRoster){
         Node currentRoomNode = character.getCurrentRoom();
         Room currentRoom = (Room) currentRoomNode.getValue();
         Fight fight = new Fight();
@@ -148,7 +148,7 @@ public class DungeonBrain {
      * @param enemyRoster arraylist of enemies in the current dungeon
      * @return int value of the current dungeon level
      */
-    int exitRoom(RobertCircularlyLinkedList<Room> dungeon, Character character, int levelCount, ArrayList<Enemy> enemyRoster){
+    int exitRoom(CustomCircularlyLinkedList<Room> dungeon, Character character, int levelCount, ArrayList<Enemy> enemyRoster){
         Node currentRoomNode = character.getCurrentRoom();
         Room currentRoom = (Room) currentRoomNode.getValue();
         DungeonGenerator generator = new DungeonGenerator();

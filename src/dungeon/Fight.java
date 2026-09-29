@@ -3,7 +3,7 @@ import characters.*;
 import characters.Character;
 import items.Weapon;
 import lib.Node;
-import lib.RobertCircularlyLinkedList;
+import lib.CustomCircularlyLinkedList;
 import lib.RobertHolder;
 import ui.GameFormatter;
 import ui.GameUI;
@@ -21,7 +21,7 @@ public class Fight {
      * @param enemy current enemy
      * @param levelCount current level count
      */
-    void battle(RobertCircularlyLinkedList<Room> dungeon, Character character, Enemy enemy, int levelCount){
+    void battle(CustomCircularlyLinkedList<Room> dungeon, Character character, Enemy enemy, int levelCount){
         Scanner keyboard = new Scanner(System.in);
         gameUI.prettyPrintln("[BLD]You have encountered [R]" + enemy.getName() + "[BRK][BLD], hit them with all you got![BRK]\n");
         startBattleSelection(dungeon, keyboard, character, enemy, levelCount);
@@ -35,7 +35,7 @@ public class Fight {
      * @param enemy current enemy
      * @param levelCount current level count
      */
-    void startBattleSelection(RobertCircularlyLinkedList<Room> dungeon, Scanner keyboard, Character character, Enemy enemy, int levelCount){
+    void startBattleSelection(CustomCircularlyLinkedList<Room> dungeon, Scanner keyboard, Character character, Enemy enemy, int levelCount){
         String choice = "A";
         while ((enemy.getHealth() > 0 && character.getHealth() > 0) && !choice.equalsIgnoreCase("F")) {
             gameUI.prettyPrintln("Enter [C]I[BRK] to display inventory");
@@ -109,7 +109,7 @@ public class Fight {
      * @param enemy current enemy
      * @param keyboard user input
      */
-    void speedCheck(RobertCircularlyLinkedList<Room> dungeon, Character character, Enemy enemy, Scanner keyboard, Move move){
+    void speedCheck(CustomCircularlyLinkedList<Room> dungeon, Character character, Enemy enemy, Scanner keyboard, Move move){
         if(character.getSpeed() > enemy.getSpeed()){
             attackOutput(character, enemy, move);
             if(isEnemyAlive(dungeon, character, enemy,  keyboard)){
@@ -148,7 +148,7 @@ public class Fight {
      * @param keyboard user input
      * @return boolean used to determine certain actions in the game based on enemy health
      */
-    Boolean isEnemyAlive(RobertCircularlyLinkedList<Room> dungeon, Character character, Enemy enemy, Scanner keyboard){
+    Boolean isEnemyAlive(CustomCircularlyLinkedList<Room> dungeon, Character character, Enemy enemy, Scanner keyboard){
         if(enemy.getHealth() <= 0){
             gameUI.prettyPrintln("[BLD][G]Success! [BRK]You have beaten [R]" + enemy.getName() +
                                     "[BRK]\nFor defeating [R]" + enemy.getName() + "[BRK] you have gained [Y]" + enemy.getCoins() + "[BRK] coins\n");
@@ -236,7 +236,7 @@ public class Fight {
      * @param character player character
      * @param enemy current enemy
      */
-    void removeRoom(RobertCircularlyLinkedList<Room> dungeon, Character character, Enemy enemy){
+    void removeRoom(CustomCircularlyLinkedList<Room> dungeon, Character character, Enemy enemy){
         int random = new Random().nextInt(2);
 
         //Move the character randomly to the left or right before removing the room

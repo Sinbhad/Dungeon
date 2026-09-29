@@ -28,7 +28,7 @@ Javadoc : https://sinbhad.github.io/Dungeon/index.html
 - [License](#-license)
 
 - ## Key Features
-- * **Custom Generic Data Structures**: Implements `RobertCircularlyLinkedList<T>` for seamless circular room navigation and `RobertHolder<T>` for dynamic inventory management without reliance on built-in collections.
+- * **Custom Generic Data Structures**: Implements `CustomCircularlyLinkedList<T>` for seamless circular room navigation and `RobertHolder<T>` for dynamic inventory management without reliance on built-in collections.
 * **Procedural Multi-Floor Labyrinths**: Floors dynamically scale in size (`7 + 5 * level`) with randomized enemy placements, loot chests, and exit gates. As the player progresses, the enemies scale in size and difficulty.
 * **Tactical Stamina & Speed Combat**: Dynamic move sets, weapon scaling, stamina management, and probabilistic evasion/flee mechanics.
 * **Autonomous Enemy AI**: Adversaries roam between rooms independently after player actions and during player pauses.
@@ -42,7 +42,7 @@ Javadoc : https://sinbhad.github.io/Dungeon/index.html
 
 
 
-### 1. `RobertCircularlyLinkedList<T>` (`src/lib/`)
+### 1. `CustomCircularlyLinkedList<T>` (`src/lib/`)
 * **Circular Doubly-Linked Architecture**: Every node retains pointers to both `nextNode` and `lastNode`. The `tail` node wraps around to the `head`, and the `head` links back to `tail`.
 * **Zero-Bound Navigation**: Allows cyclic traversal through dungeon rooms in either direction (`Forward` or `Backward`) without boundary exceptions.
 * **Dynamic Mutation**: Supports index-based insertion (`addAtIndex`), removal, and linear array conversion.
@@ -107,7 +107,7 @@ Dungeon/
 │   │   └── Weapons/            # Specific weapon implementations
 │   ├── lib/                    # Custom data structures & 3rd party drivers
 │   │   ├── Node.java           # Generic doubly-linked node
-│   │   ├── RobertCircularlyLinkedList.java # Generic circular linked list
+│   │   ├── CustomCircularlyLinkedList.java # Generic circular linked list
 │   │   ├── RobertHolder.java   # Generic auto-resizing dynamic array
 │   │   └── sqlite-jdbc-3.51.3.0.jar # SQLite JDBC Driver
 │   └── META-INF/
