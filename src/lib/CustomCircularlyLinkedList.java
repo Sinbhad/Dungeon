@@ -1,10 +1,12 @@
 package lib;
 
-@SuppressWarnings("ALL")
 /**
  * Custom generic implementation of a Circular Linked List
+ * Many methods may deviate from the expected implementation,
+ * this implementation is tailored to the needs of my current project.
+ * Author: Robert Poley
  */
-public class RobertCircularlyLinkedList<T>{
+public class CustomCircularlyLinkedList<T>{
     Node head;
     Node tail;
 
@@ -12,7 +14,7 @@ public class RobertCircularlyLinkedList<T>{
      * Retrieves the Node stored at the first memory address in the list
      * @return returns a node of any type
      */
-    public Node <T> getHead(){
+    public Node<T> getHead(){
         return head;
     }
 
@@ -30,7 +32,7 @@ public class RobertCircularlyLinkedList<T>{
      */
     public void add(T value) {
         //Temporary storage to pass the value along without breaking things
-        Node newNode = new Node(value);
+        Node<T> newNode = new Node(value);
 
         //If the head is empty the data will be assigned as the head and tail to create the circle
         if (head == null) {
@@ -73,7 +75,7 @@ public class RobertCircularlyLinkedList<T>{
 
 
         //Placeholder for data assignment
-        Node newNode = new Node(value);
+        Node<T> newNode = new Node(value);
 
         //Head case
         if (index == 0) {
@@ -93,11 +95,14 @@ public class RobertCircularlyLinkedList<T>{
             }
 
             //Holder for old value
-            Node prevNode = currentNode.getLastNode();
+            Node<T> prevNode = currentNode.getLastNode();
 
             //Wire up the new node to sit in between the old values
+            //First the node is connected to the nodes next to it
             newNode.setNextNode(currentNode);
             newNode.setLastNode(prevNode);
+
+            //Then the nodes we want next to the newly added nodes are connected to it
             prevNode.setNextNode(newNode);
             currentNode.setLastNode(newNode);
         }
@@ -108,7 +113,7 @@ public class RobertCircularlyLinkedList<T>{
      */
     public void printAll(){
         if (head == null) return;
-        Node tempNode = head;
+        Node<T> tempNode = head;
         do{
             System.out.println(tempNode.getValue());
             tempNode = tempNode.getNextNode();
@@ -120,7 +125,7 @@ public class RobertCircularlyLinkedList<T>{
      */
     public void printReverse(){
         if (tail == null) return;
-        Node tempNode = tail;
+        Node<T> tempNode = tail;
         do{
             System.out.println(tempNode.getValue());
             tempNode = tempNode.getLastNode();
@@ -133,12 +138,12 @@ public class RobertCircularlyLinkedList<T>{
      * @return returns a generic value
      */
     public T getValAtIndex(int index){
-        Node tempNode = head;
+        Node<T> tempNode = head;
         for(int i = 0; i < index; i++){
             if(tempNode == null) return null;
             tempNode = tempNode.getNextNode();
         }
-        return (T) tempNode.getValue();
+        return tempNode.getValue();
     }
 
     /**
@@ -147,7 +152,7 @@ public class RobertCircularlyLinkedList<T>{
      * @return returns a Node type object from the list
      */
     public Node getNodeAtIndex(int index){
-        Node tempNode = head;
+        Node<T> tempNode = head;
         for(int i = 0; i < index; i++){
             if(tempNode == null) return null;
             tempNode = tempNode.getNextNode();
@@ -163,30 +168,49 @@ public class RobertCircularlyLinkedList<T>{
     public void removeAt(int index) {
         //Storage for size
         int size = getSize();
+        if(index > size){
+            System.out.println("Index out of bounds, removal incomplete. Size of list :" + size);
+            return;
+        }
 
         //Base case, stop if any condition is met
         if (size == 0 || index < 0 || index >= size) return;
 
-        Node tempNode = head;
-        //Step through the list
-        for (int i = 0; i < index; i++) {
-            tempNode = tempNode.getNextNode();
-        }
-
-        //Edge case, if there is only one value, break any links
+        // Edge case, if there is only one value, break any links
         if (size == 1) {
+            //Clear data before removing
+            getHead().setNodeValue(null);
             head = null;
             tail = null;
         } else {
-            //Create the proper links
-            Node prevNode = tempNode.getLastNode();
-            Node nextNode = tempNode.getNextNode();
+            Node tempNode = head;
+            //Step through the list to find the node to remove
+            for (int i = 0; i < index; i++) {
+                tempNode = tempNode.getNextNode();
+            }
 
-            prevNode.setNextNode(nextNode);
-            nextNode.setLastNode(prevNode);
+            //Create Node objects to store nodes
+            Node<T> prevNode = tempNode.getLastNode();
+            Node<T> nextNode = tempNode.getNextNode();
 
-            if (tempNode == head) head = nextNode;
-            if (tempNode == tail) tail = prevNode;
+            //Clear data before breaking link
+            tempNode.setNodeValue(null);
+
+            //The node before the removed node now points ahead to the node that was ahead of the removed node
+            if (prevNode != null) {
+                prevNode.setNextNode(nextNode);
+            } else {
+                //If there is no previous node, remove the head
+                head = nextNode;
+            }
+
+            //The node after the removed node now points backward to the node that was behind the removed node
+            if (nextNode != null) {
+                nextNode.setLastNode(prevNode);
+            } else {
+                //If there is no next node, remove the tail
+                tail = prevNode;
+            }
         }
     }
 
@@ -249,6 +273,7 @@ public class RobertCircularlyLinkedList<T>{
 
                 //Edge case, node in the list
                 if (head == tail && head == tempNode) {
+                    getHead().setNodeValue(null);
                     head = null;
                     tail = null;
                 } else {
@@ -256,12 +281,24 @@ public class RobertCircularlyLinkedList<T>{
                     Node<T> prevNode = tempNode.getLastNode();
                     Node<T> nextNode = tempNode.getNextNode();
 
-                    prevNode.setNextNode(nextNode);
-                    nextNode.setLastNode(prevNode);
+                    //Clear data from node before breaking link
+                    tempNode.setNodeValue(null);
 
-                    //Reassign head or tail if the removed node held those positions
-                    if (tempNode == head) head = nextNode;
-                    if (tempNode == tail) tail = prevNode;
+                    //The node before the removed node now points ahead to the node that was ahead of the removed node
+                    if (prevNode != null) {
+                        prevNode.setNextNode(nextNode);
+                    } else {
+                        //If there is no previous node, remove the head
+                        head = nextNode;
+                    }
+
+                    //The node after the removed node now points backward to the node that was behind the removed node
+                    if (nextNode != null) {
+                        nextNode.setLastNode(prevNode);
+                    } else {
+                        //If there is no next node, remove the tail
+                        tail = prevNode;
+                    }
                 }
                 break;
             }
@@ -279,7 +316,7 @@ public class RobertCircularlyLinkedList<T>{
      */
     public int getSize(){
         if (head == null) return 0;
-        Node tempNode = head;
+        Node<T> tempNode = head;
         int size = 0;
         do{
             size++;
@@ -288,11 +325,19 @@ public class RobertCircularlyLinkedList<T>{
         return size;
     }
 
+
+    public boolean hasNext(T data){
+        int index = findIndex(data);
+        Node<T> node = getNodeAtIndex(index);
+        if(node.checkIfNextExists()){return true;}
+        else{return false;}
+    }
+
     /**
      * Retrieves the Node stored in the tail segment of the list
      * @return
      */
-    public Node getLast(){
+    public Node<T> getLast(){
         return tail;
     }
 }
