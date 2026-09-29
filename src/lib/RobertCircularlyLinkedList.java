@@ -6,7 +6,7 @@ package lib;
  * this implementation is tailored to the needs of my current project.
  * Author: Robert Poley
  */
-public class CustomCircularlyLinkedList<T>{
+public class RobertCircularlyLinkedList<T>{
     Node<T> head;
     Node<T> tail;
 
