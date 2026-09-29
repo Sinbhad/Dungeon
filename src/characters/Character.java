@@ -18,7 +18,7 @@ public class Character {
     private double health, maxHealth, armorDefense, perkDefense;
     private Item weapon, armor;
     private final RobertHolder<Item> inventory;
-    private Node currentRoom;
+    private Node<Room> currentRoom;
 
     //Point tracking
     private int roomsTraversed, enemiesDefeated, potionsConsumed;
@@ -133,11 +133,11 @@ public class Character {
         return weapon;
     }
 
-    public void setCurrentRoom(Node currentRoom){
+    public void setCurrentRoom(Node<Room> currentRoom){
         this.currentRoom = currentRoom;
     }
 
-    public Node getCurrentRoom(){
+    public Node<Room> getCurrentRoom(){
         return currentRoom;
     }
 
@@ -281,8 +281,8 @@ public class Character {
      * @param keyboard keyboard input
      */
     public void move(int levelCount, Scanner keyboard) {
-        Node currentDungeonRoom = this.getCurrentRoom();
-        Room currentRoom = (Room) currentDungeonRoom.getValue();
+        Node<Room> currentDungeonRoom = this.getCurrentRoom();
+        Room currentRoom = currentDungeonRoom.getValue();
 
         gameUI.prettyPrintln("[BLD]" + currentRoom.getName() + ": Level " + levelCount);
         this.displayStats();
@@ -315,8 +315,8 @@ public class Character {
      * @param keyboard keyboard input
      */
     public void openChest(Scanner keyboard){
-        Node currentDungeonRoom = this.getCurrentRoom();
-        Room currentRoom = (Room) currentDungeonRoom.getValue();
+        Node<Room> currentDungeonRoom = this.getCurrentRoom();
+        Room currentRoom = currentDungeonRoom.getValue();
 
         //Prompt the user
         gameUI.prettyPrint("\n\nWould you like to open the chest? [C](Y/N)[BRK]: ");

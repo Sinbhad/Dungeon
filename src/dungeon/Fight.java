@@ -247,7 +247,7 @@ public class Fight {
             character.setCurrentRoom(character.getCurrentRoom().getLastNode());
             gameUI.prettyPrintln("[G]The room you once knew has disappeared!\nYou have been moved to the left.[BRK]\n");
         }
-        Node enemyRoomNode = enemy.getCurrentRoom();
-        dungeon.remove((Room)enemyRoomNode.getValue());
+        Node<Room> enemyRoomNode = enemy.getCurrentRoom();
+        dungeon.remove(enemyRoomNode.getValue());
     }
 }

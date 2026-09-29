@@ -35,11 +35,11 @@ public class DungeonGenerator {
         Random chanceNum = new Random();
         int size = dungeon.getSize();
 
-        Node tempNode = dungeon.getHead();
-        Room tempRoom = (Room)tempNode.getValue();
+        Node<Room> tempNode = dungeon.getHead();
+        Room tempRoom = tempNode.getValue();
         for (int i = 0; i < size; i++) {
             tempRoom.setCertain(null, null, null, false);
-            tempRoom = (Room)tempNode.getNextNode().getValue();
+            tempRoom = tempNode.getNextNode().getValue();
         }
 
 
@@ -189,8 +189,8 @@ public class DungeonGenerator {
      */
     void setEnemies(Random chanceNum, int size, CustomCircularlyLinkedList<Room> dungeon, ArrayList<Enemy> enemyRoster) {
         int enemyRoomIndex = chanceNum.nextInt(size);
-        Node enemyRoomNode = dungeon.getNodeAtIndex(enemyRoomIndex);
-        Room enemyRoom = (Room) enemyRoomNode.getValue();
+        Node<Room> enemyRoomNode = dungeon.getNodeAtIndex(enemyRoomIndex);
+        Room enemyRoom = enemyRoomNode.getValue();
         Enemy enemy = enemyRoster.get(chanceNum.nextInt(enemyRoster.size()));
         enemyRoom.setEnemyCharacter(enemy);
         enemy.setCurrentRoom(enemyRoomNode);

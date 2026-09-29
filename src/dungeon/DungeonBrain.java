@@ -81,8 +81,8 @@ public class DungeonBrain {
      * @return int value of the current dungeon level
      */
     int conditionCheck(CustomCircularlyLinkedList<Room> dungeon, Character character, int levelCount, Scanner keyboard, ArrayList<Enemy> enemyRoster){
-        Node currentRoomNode = character.getCurrentRoom();
-        Room currentRoom = (Room) currentRoomNode.getValue();
+        Node<Room> currentRoomNode = character.getCurrentRoom();
+        Room currentRoom = currentRoomNode.getValue();
         Fight fight = new Fight();
 
         //Force the user into a bathroom break state, has the potential to cause damage and lets enemies move
@@ -92,7 +92,7 @@ public class DungeonBrain {
 
         //Check for loot
         currentRoomNode = character.getCurrentRoom();
-        currentRoom = (Room) currentRoomNode.getValue();
+        currentRoom = currentRoomNode.getValue();
         if(currentRoom.getItem() != null && character.getHealth() > 0){
             gameUI.prettyPrintln("[G]You found a chest![BRK]");
             character.openChest(keyboard);
@@ -149,8 +149,8 @@ public class DungeonBrain {
      * @return int value of the current dungeon level
      */
     int exitRoom(CustomCircularlyLinkedList<Room> dungeon, Character character, int levelCount, ArrayList<Enemy> enemyRoster){
-        Node currentRoomNode = character.getCurrentRoom();
-        Room currentRoom = (Room) currentRoomNode.getValue();
+        Node<Room> currentRoomNode = character.getCurrentRoom();
+        Room currentRoom = currentRoomNode.getValue();
         DungeonGenerator generator = new DungeonGenerator();
         int coinsPerLevel = 100 * levelCount;
         int enemyScaling = (levelCount * 5);
