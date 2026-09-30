@@ -120,15 +120,13 @@ public class CustomArrayList<T> implements Iterable<T>{
      * is held in the ArrayList or not.
      * @param data - value for the ArrayList to search for.
      */
-    public boolean find(T data){
-        //Flag holder set to false as this is the base case.
-        boolean found = false;
-
-        //Loop through the ArrayList and update the flag based on a check at each step
-        for(int i = 0; i < size; i++){
-            found = storage[i].equals(data);
+    public boolean find(T data) {
+        for (int i = 0; i < size; i++) {
+            if (storage[i].equals(data)) {
+                return true;
+            }
         }
-        return found;
+        return false;
     }
 
     /**

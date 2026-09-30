@@ -2,12 +2,11 @@ package dungeon;
 
 import characters.Character;
 import characters.Enemy;
+import lib.CustomArrayList;
 import lib.CustomCircularlyLinkedList;
 import lib.Node;
 import characters.*;
 import ui.*;
-
-import java.util.ArrayList;
 import java.util.Random;
 import java.util.Scanner;
 
@@ -28,7 +27,7 @@ public class DungeonBrain {
         int levelCount = 1;
 
         Player player = new Player();
-        ArrayList<Enemy> enemyRoster = new ArrayList<>();
+        CustomArrayList<Enemy> enemyRoster = new CustomArrayList<>();
 
         generator.createLevel(dungeon, roomCount);
         generator.setRooms(dungeon);
@@ -80,7 +79,7 @@ public class DungeonBrain {
      * @param enemyRoster arraylist of enemies in the current dungeon
      * @return int value of the current dungeon level
      */
-    int conditionCheck(CustomCircularlyLinkedList<Room> dungeon, Character character, int levelCount, Scanner keyboard, ArrayList<Enemy> enemyRoster){
+    int conditionCheck(CustomCircularlyLinkedList<Room> dungeon, Character character, int levelCount, Scanner keyboard, CustomArrayList<Enemy> enemyRoster){
         Node<Room> currentRoomNode;
         Room currentRoom;
         Fight fight = new Fight();
@@ -116,7 +115,7 @@ public class DungeonBrain {
      * Moves all existing enemies throughout the dungeon randomly
      * @param enemyRoster arraylist of enemies in the current dungeon
      */
-    void moveEnemies(ArrayList<Enemy> enemyRoster){
+    void moveEnemies(CustomArrayList<Enemy> enemyRoster){
         for (Enemy enemy : enemyRoster) {
             enemy.move();
         }
@@ -129,7 +128,7 @@ public class DungeonBrain {
      * @param character player character
      * @param enemyRoster arraylist of enemies in the current dungeon
      */
-    void tinkleBreak(Character character, ArrayList<Enemy> enemyRoster){
+    void tinkleBreak(Character character, CustomArrayList<Enemy> enemyRoster){
         gameUI.prettyPrintln(character.getName() + " had to tinkle, stopping for a break...\n");
         moveEnemies(enemyRoster);
         if(character.getPotionsConsumed() > 3){
@@ -148,7 +147,7 @@ public class DungeonBrain {
      * @param enemyRoster arraylist of enemies in the current dungeon
      * @return int value of the current dungeon level
      */
-    int exitRoom(CustomCircularlyLinkedList<Room> dungeon, Character character, int levelCount, ArrayList<Enemy> enemyRoster){
+    int exitRoom(CustomCircularlyLinkedList<Room> dungeon, Character character, int levelCount, CustomArrayList<Enemy> enemyRoster){
         Node<Room> currentRoomNode = character.getCurrentRoom();
         Room currentRoom = currentRoomNode.getValue();
         DungeonGenerator generator = new DungeonGenerator();
