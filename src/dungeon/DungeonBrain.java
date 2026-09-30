@@ -16,7 +16,7 @@ public class DungeonBrain {
     /**
      * Essentially the heart of the entire game, creating the objects and database for use throughout
      */
-    GameUI gameUI = new GameUI();
+    private final GameUI gameUI = new GameUI();
     public void dungeonOperator(){
         DungeonGenerator generator = new DungeonGenerator();
         Scanner keyboard = new Scanner(System.in);
@@ -81,8 +81,8 @@ public class DungeonBrain {
      * @return int value of the current dungeon level
      */
     int conditionCheck(CustomCircularlyLinkedList<Room> dungeon, Character character, int levelCount, Scanner keyboard, ArrayList<Enemy> enemyRoster){
-        Node<Room> currentRoomNode = character.getCurrentRoom();
-        Room currentRoom = currentRoomNode.getValue();
+        Node<Room> currentRoomNode;
+        Room currentRoom;
         Fight fight = new Fight();
 
         //Force the user into a bathroom break state, has the potential to cause damage and lets enemies move

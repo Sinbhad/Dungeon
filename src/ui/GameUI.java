@@ -1,23 +1,22 @@
 package ui;
 
-public class GameUI <T>{
+public class GameUI{
     /**
      * Used to provide a better UX with customizable styling options pulled from the GameFormatter Library
      * @param value Passed in string to be manipulated
      */
-    public void prettyPrint(T value){
+    public void prettyPrint(String value){
         String prettyString = prettyStringFormatter(value);
         System.out.print(prettyString);
     }
 
-    public void prettyPrintln(T value){
+    public void prettyPrintln(String value){
         String prettyString = prettyStringFormatter(value);
         System.out.println(prettyString);
     }
 
-    public String prettyStringFormatter(T value){
-        String coloredString;
-        coloredString = value.toString()
+    public String prettyStringFormatter(String value){
+        return value
                 .replace("[R]", GameFormatter.RED)
                 .replace("[G]", GameFormatter.GREEN)
                 .replace("[Y]", GameFormatter.YELLOW)
@@ -33,7 +32,5 @@ public class GameUI <T>{
 
                 .replace("[BRK]", GameFormatter.RESET)
                 .replace("[CLR]", GameFormatter.CLEAR_TERMINAL);
-
-        return coloredString;
     }
 }
