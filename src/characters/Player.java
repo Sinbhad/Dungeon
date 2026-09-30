@@ -2,11 +2,11 @@ package characters;
 
 import items.Armor;
 import items.Weapon;
-import lib.RobertHolder;
+import lib.CustomArrayList;
 import items.Item;
 
 public class Player extends Character {
-    private static final RobertHolder<Item> inventory = new  RobertHolder<>();
+    private static final CustomArrayList<Item> inventory = new CustomArrayList<>();
 
     public Player() {
         super("Rob", 40, 100, 500, 100, 100, 0, inventory);

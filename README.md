@@ -47,7 +47,7 @@ Javadoc : https://sinbhad.github.io/Dungeon/index.html
 * **Zero-Bound Navigation**: Allows cyclic traversal through dungeon rooms in either direction (`Forward` or `Backward`) without boundary exceptions.
 * **Dynamic Mutation**: Supports index-based insertion (`addAtIndex`), removal, and linear array conversion.
 ### 2. `RobertHolder<T>` (`src/lib/`)
-* **Dynamic Generic Array**: Custom auto-expanding array container with dynamic array doubling (`doubleBucketSize`) when capacity is saturated.
+* **Dynamic Generic Array**: Custom auto-expanding array container with dynamic array doubling (`doubleStorageSize`) when capacity is saturated.
 * **Inventory Backing**: Powers character inventory manipulation, item lookups, and deep cloning.
 ---
 ## Gameplay & Systems Breakdown

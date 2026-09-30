@@ -4,6 +4,7 @@ import items.ItemLibrary;
 import characters.*;
 import items.Weapon;
 import items.weapons.*;
+import lib.CustomArrayList;
 import lib.Node;
 import lib.CustomCircularlyLinkedList;
 
@@ -29,8 +30,8 @@ public class DungeonGenerator {
      * @param dungeon currently used dungeon
      */
     void setRooms(CustomCircularlyLinkedList<Room> dungeon) {
-        ArrayList<Enemy> enemyRoster = new ArrayList<>();
-        ArrayList<Weapon> weaponRoster = weaponRosterGenerator();
+        CustomArrayList<Enemy> enemyRoster = new CustomArrayList<>();
+        CustomArrayList<Weapon> weaponRoster = weaponRosterGenerator();
 
         Random chanceNum = new Random();
         int size = dungeon.getSize();
@@ -69,7 +70,7 @@ public class DungeonGenerator {
      * Creates an enemy roster for lower levels
      * @param enemyRoster ArrayList of enemies to be spawned
      */
-    void lowEnemyRosterGenerator(ArrayList<Enemy> enemyRoster) {
+    void lowEnemyRosterGenerator(CustomArrayList<Enemy> enemyRoster) {
         enemyRoster.add(new Slime());
         enemyRoster.add(new Jared());
         enemyRoster.add(new Samir());
@@ -79,7 +80,7 @@ public class DungeonGenerator {
      * Creates an enemy roster for mid-levels
      * @param enemyRoster ArrayList of enemies to be spawned
      */
-    void midEnemyRosterGenerator(ArrayList<Enemy> enemyRoster){
+    void midEnemyRosterGenerator(CustomArrayList<Enemy> enemyRoster){
         enemyRoster.add(new Jenna());
         enemyRoster.add(new Marc());
         enemyRoster.add(new Joe());
@@ -90,7 +91,7 @@ public class DungeonGenerator {
      * Creates a roster of the strongest enemies for later levels
      * @param enemyRoster ArrayList of enemies to be spawned
      */
-    void highEnemyRosterGenerator(ArrayList<Enemy> enemyRoster){
+    void highEnemyRosterGenerator(CustomArrayList<Enemy> enemyRoster){
         enemyRoster.add(new Patrick());
         enemyRoster.add(new Andrew());
         enemyRoster.add(new Byron());
@@ -101,8 +102,8 @@ public class DungeonGenerator {
      * to be used with setRooms to ensure each floor contains a weapon chest
      * @return ArrayList of weapons
      */
-    ArrayList<Weapon> weaponRosterGenerator(){
-        ArrayList<Weapon> weaponRoster = new ArrayList<>();
+    CustomArrayList<Weapon> weaponRosterGenerator(){
+        CustomArrayList<Weapon> weaponRoster = new CustomArrayList<>();
         weaponRoster.add(new Dagger());
         weaponRoster.add(new ShortSword());
         weaponRoster.add(new BroadSword());
@@ -120,10 +121,10 @@ public class DungeonGenerator {
      * @param size number of rooms in the dungeon
      * @param dungeon currently used dungeon
      */
-    void setWeapon(Random chanceNum, int size, CustomCircularlyLinkedList<Room> dungeon, ArrayList<Weapon> weaponRoster) {
+    void setWeapon(Random chanceNum, int size, CustomCircularlyLinkedList<Room> dungeon, CustomArrayList<Weapon> weaponRoster) {
         int weaponRoomIndex = chanceNum.nextInt(size);
         Room weaponRoom = dungeon.getValAtIndex(weaponRoomIndex);
-        Weapon weapon = weaponRoster.get(chanceNum.nextInt(weaponRoster.size()));
+        Weapon weapon = weaponRoster.getAtIndex(chanceNum.nextInt(weaponRoster.size()));
         weaponRoom.setItem(weapon);
     }
 
@@ -187,11 +188,11 @@ public class DungeonGenerator {
      * @param dungeon currently used dungeon
      * @param enemyRoster arraylist of enemies in the current dungeon
      */
-    void setEnemies(Random chanceNum, int size, CustomCircularlyLinkedList<Room> dungeon, ArrayList<Enemy> enemyRoster) {
+    void setEnemies(Random chanceNum, int size, CustomCircularlyLinkedList<Room> dungeon, CustomArrayList<Enemy> enemyRoster) {
         int enemyRoomIndex = chanceNum.nextInt(size);
         Node<Room> enemyRoomNode = dungeon.getNodeAtIndex(enemyRoomIndex);
         Room enemyRoom = enemyRoomNode.getValue();
-        Enemy enemy = enemyRoster.get(chanceNum.nextInt(enemyRoster.size()));
+        Enemy enemy = enemyRoster.getAtIndex(chanceNum.nextInt(enemyRoster.size()));
         enemyRoom.setEnemyCharacter(enemy);
         enemy.setCurrentRoom(enemyRoomNode);
     }
@@ -203,7 +204,7 @@ public class DungeonGenerator {
      * @param dungeon currently used dungeon
      * @param enemyRoster arraylist of enemies in the current dungeon
      */
-    void enemyLevelCheck(Random chanceNum, int size, CustomCircularlyLinkedList<Room> dungeon, ArrayList<Enemy> enemyRoster){
+    void enemyLevelCheck(Random chanceNum, int size, CustomCircularlyLinkedList<Room> dungeon, CustomArrayList<Enemy> enemyRoster){
         int levelCount = size / 7;
         if (levelCount == 1) {
             setEnemies(chanceNum, size, dungeon, enemyRoster);

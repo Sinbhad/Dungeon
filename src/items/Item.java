@@ -1,12 +1,12 @@
 package items;
 
-import lib.RobertHolder;
+import lib.CustomArrayList;
 
 public class Item{
     String name, type, description;
     int hpValue, attackValue, speedValue, staminaValue;
     double defenseValue;
-    RobertHolder moves = new RobertHolder();
+    CustomArrayList moves = new CustomArrayList();
 
     /**
      * Default item constructor
@@ -97,7 +97,7 @@ public class Item{
         return defenseValue;
     }
 
-    public RobertHolder getMoves(){
+    public CustomArrayList getMoves(){
         return moves;
     }
 

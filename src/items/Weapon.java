@@ -1,10 +1,10 @@
 package items;
 
 import characters.Move;
-import lib.RobertHolder;
+import lib.CustomArrayList;
 
 public class Weapon extends Item {
-    private final RobertHolder<Move> moves = new RobertHolder<>();
+    private final CustomArrayList<Move> moves = new CustomArrayList<>();
 
     /**
      * Constructor for weapon items
@@ -19,10 +19,10 @@ public class Weapon extends Item {
     }
 
     public void setMoves(Move move){
-        this.moves.addToBucket(move);
+        this.moves.add(move);
     }
 
-    public RobertHolder getMoves(){
+    public CustomArrayList getMoves(){
         return moves;
     }
 }

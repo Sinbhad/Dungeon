@@ -3,7 +3,7 @@ package characters;
 import dungeon.*;
 import items.*;
 import lib.Node;
-import lib.RobertHolder;
+import lib.CustomArrayList;
 import ui.*;
 
 import java.util.Objects;
@@ -18,7 +18,7 @@ public class Character {
     private double health, maxHealth, armorDefense, perkDefense;
     private Weapon weapon;
     private Item armor;
-    private final RobertHolder<Item> inventory;
+    private final CustomArrayList<Item> inventory;
     private Node<Room> currentRoom;
 
     //Point tracking
@@ -54,7 +54,7 @@ public class Character {
      * @param coinsHad Coins the character has
      * @param inventory Inventory of the character
      */
-    public Character(String name, int attack, double health, int stamina,  int speed, int coinsHad, RobertHolder<Item> inventory){
+    public Character(String name, int attack, double health, int stamina,  int speed, int coinsHad, CustomArrayList<Item> inventory){
         this.name = name;
         this.attack = attack;
         this.health = health;
@@ -78,7 +78,7 @@ public class Character {
      * @param coinsHad Coins the character has
      * @param inventory Inventory of the character
      */
-    public Character(String name, int attack, double health, double maxHealth, int stamina , int speed, int coinsHad, RobertHolder<Item> inventory){
+    public Character(String name, int attack, double health, double maxHealth, int stamina , int speed, int coinsHad, CustomArrayList<Item> inventory){
         this.name = name;
         this.attack = attack;
         this.health = health;
@@ -396,7 +396,7 @@ public class Character {
         } else if(this.getHealth() == this.getMaxHealth() && willUsePotion){
             gameUI.prettyPrintln("[BLD][R]You have already reached maximum health, no effect[BRK]\n+" +
                                    "You have not consumed the potion, adding to inventory instead\n");
-            Objects.requireNonNull(inventory).addToBucket(currentRoom.getItem());
+            Objects.requireNonNull(inventory).add(currentRoom.getItem());
             currentRoom.setItem(null);
         }
 
@@ -413,7 +413,7 @@ public class Character {
     boolean consumePotionChoice(String choice, Room currentRoom, Scanner keyboard){
         //Prompt user for storage, used now otherwise
         if(choice.trim().equalsIgnoreCase("y")){
-            Objects.requireNonNull(inventory).addToBucket(currentRoom.getItem());
+            Objects.requireNonNull(inventory).add(currentRoom.getItem());
             currentRoom.setItem(null);
             return false;
         }else if(choice.trim().equalsIgnoreCase("n")){
@@ -536,7 +536,7 @@ public class Character {
         }else{
             //Displays all moves associated with current weapon
             gameUI.prettyPrintln("Choose a move from the following list:");
-            RobertHolder<Move> currentMoves = weapon.getMoves();
+            CustomArrayList<Move> currentMoves = weapon.getMoves();
             for (int i = 0; i < currentMoves.size(); i++) {
                 Move m = currentMoves.getAtIndex(i);
                 gameUI.prettyPrintln("[C]" + (i + 1) + "[BRK][BLD]: " + m.getMoveName() + " [BRK][Y]Sp[BRK]: " + m.getStaminaCost() +
@@ -556,7 +556,7 @@ public class Character {
         return move;
     }
 
-    Move returnSelectedMoveFormatted(RobertHolder<Move> moves, int choice, Scanner keyboard) {
+    Move returnSelectedMoveFormatted(CustomArrayList<Move> moves, int choice, Scanner keyboard) {
         //Default move if no moves are available
         Move punch = new Move("Punch", "Bam! you hit them right in the face ", 10, 0);
 

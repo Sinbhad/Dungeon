@@ -3,10 +3,10 @@ package characters;
 import dungeon.Room;
 import lib.Node;
 import java.util.Random;
-import lib.RobertHolder;
+import lib.CustomArrayList;
 
 public class Enemy extends Character {
-   private final RobertHolder<Move> moves = new RobertHolder<>();
+   private final CustomArrayList<Move> moves = new CustomArrayList<>();
    //Used to store the values used for fleeing probability in battle
    int[] fleeNums = new int[10];
 
@@ -19,7 +19,7 @@ public class Enemy extends Character {
      * @param coinsHad coins enemy has for player to collect
      */
    public Enemy(String name, int attackValue, int healthValue, int staminaValue, int speedValue, int coinsHad, int[] fleeNums){
-       super(name, attackValue, healthValue, staminaValue, speedValue, coinsHad, new RobertHolder<>());
+       super(name, attackValue, healthValue, staminaValue, speedValue, coinsHad, new CustomArrayList<>());
        this.fleeNums = fleeNums;
    }
 
@@ -28,10 +28,10 @@ public class Enemy extends Character {
    }
 
    public void setMoves(Move move){
-       this.moves.addToBucket(move);
+       this.moves.add(move);
    }
 
-   public RobertHolder getMoves(){
+   public CustomArrayList getMoves(){
       return moves;
    }
 

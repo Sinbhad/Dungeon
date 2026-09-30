@@ -4,8 +4,7 @@ import characters.Character;
 import items.Weapon;
 import lib.Node;
 import lib.CustomCircularlyLinkedList;
-import lib.RobertHolder;
-import ui.GameFormatter;
+import lib.CustomArrayList;
 import ui.GameUI;
 
 import java.util.Random;
@@ -198,7 +197,7 @@ public class Fight {
      * @return Move object to be used in with enemyAttackOutput
      */
     Move enemyAttackChoice(Enemy enemy){
-        RobertHolder currentMoves = enemy.getMoves();
+        CustomArrayList currentMoves = enemy.getMoves();
         Random moveIndex = new Random();
         int i = moveIndex.nextInt(currentMoves.size());
         return (Move) currentMoves.getAtIndex(i);
