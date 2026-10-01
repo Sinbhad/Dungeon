@@ -10,7 +10,7 @@ import java.util.NoSuchElementException;
  * based on project needs.
  * Author: Robert Poley
  *
- * @param <T> - Generic Type
+ * @param <T> Generic Type
  */
 public class CustomArrayList<T> implements Iterable<T>{
     private Object[] storage;
@@ -40,7 +40,7 @@ public class CustomArrayList<T> implements Iterable<T>{
 
     /**
      * Adds data to the ArrayList and expands if necessary.
-     * @param data - generic value passed into the ArrayList.
+     * @param data generic value passed into the ArrayList.
      */
     public void add(T data){
         //Checks size of storage against amount of stored values before adding more
@@ -57,8 +57,8 @@ public class CustomArrayList<T> implements Iterable<T>{
     /**
      * Allows a user to add a value to the list at a given index,
      * this does not remove values at the location, they are moved to make room.
-     * @param index - the spot your data will sit in the list.
-     * @param data - object to be added to the list.
+     * @param index the spot your data will sit in the list.
+     * @param data object to be added to the list.
      */
     public void addAtIndex(int index, T data) {
         //Checks size of storage against amount of stored values before adding more
@@ -79,8 +79,8 @@ public class CustomArrayList<T> implements Iterable<T>{
 
     /**
      * Adds a value to the ArrayList but removes the value at the target index.
-     * @param index - target location to store new value.
-     * @param data - data to be added to the ArrayList.
+     * @param index target location to store new value.
+     * @param data data to be added to the ArrayList.
      */
     public void replaceAtIndex(int index, T data){
         if (size == storage.length){
@@ -91,7 +91,7 @@ public class CustomArrayList<T> implements Iterable<T>{
 
     /**
      * Checks size of ArrayList.
-     * @return - the amount of values currently stored returned as an int.
+     * @return the amount of values currently stored returned as an int.
      */
     public int size(){
         return size;
@@ -118,7 +118,7 @@ public class CustomArrayList<T> implements Iterable<T>{
     /**
      * Returns a boolean signaling whether a specific value
      * is held in the ArrayList or not.
-     * @param data - value for the ArrayList to search for.
+     * @param data value for the ArrayList to search for.
      */
     public boolean find(T data) {
         for (int i = 0; i < size; i++) {
@@ -131,7 +131,7 @@ public class CustomArrayList<T> implements Iterable<T>{
 
     /**
      * Counts the number of times an element occurs in an ArrayList.
-     * @param data - target value to count sightings.
+     * @param data target value to count sightings.
      * @return count returned as an int;
      */
     public int findCount(T data){
@@ -148,7 +148,7 @@ public class CustomArrayList<T> implements Iterable<T>{
 
     /**
      * Removes a value at a given index and shifts remaining values to the left.
-     * @param index - target index to be removed.
+     * @param index target index to be removed.
      */
     public void removeAtIndex(int index){
         //Clear data at index
@@ -174,7 +174,7 @@ public class CustomArrayList<T> implements Iterable<T>{
 
     /**
      * Creates a copy of the entire ArrayList.
-     * @return - copy of ArrayList.
+     * @return copy of ArrayList.
      */
     public CustomArrayList<T> cloneClass(){
         CustomArrayList<T> arrayListCopy = new CustomArrayList<>();
@@ -199,7 +199,7 @@ public class CustomArrayList<T> implements Iterable<T>{
 
     /**
      * Overridden Iterator interface, provides access to the advanced for loop
-     * @return - returns iterator object.
+     * @return returns iterator object.
      */
     @Override
     public Iterator<T> iterator() {
