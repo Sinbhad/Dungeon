@@ -17,20 +17,18 @@ public class DungeonBrain {
      */
     private final GameUI gameUI = new GameUI();
     private final Scanner keyboard = new Scanner(System.in);
+    DungeonGenerator generator = new DungeonGenerator();
+
+
     public void dungeonOperator(){
         GameState gameState = new GameState();
-        DungeonGenerator generator = new DungeonGenerator();
-        Scanner keyboard = new Scanner(System.in);
-        CustomCircularlyLinkedList<Room> dungeon = new CustomCircularlyLinkedList<>();
         HighScoreDB highScoreDB = new HighScoreDB();
+        Player player = gameState.getPlayer();
         highScoreDB.initializeDatabase();
-
-        Player player = new Player();
-        CustomArrayList<Enemy> enemyRoster = new CustomArrayList<>();
 
         generator.createLevel(gameState);
         generator.setRooms(gameState);
-        player.setCurrentRoom(dungeon.getHead());
+        player.setCurrentRoom(gameState.getDungeon().getHead());
 
         //Intro output
         gameUI.prettyPrint("\n\nYou have entered the dungeon \nEnter your name challenger : ");
@@ -42,7 +40,7 @@ public class DungeonBrain {
             conditionCheck(gameState);
             if(player.getHealth() > 0){
                 player.move(gameState.getLevelCount(), keyboard);
-                moveEnemies(enemyRoster);
+                moveEnemies(gameState);
             }
         }
 
@@ -105,10 +103,10 @@ public class DungeonBrain {
 
     /**
      * Moves all existing enemies throughout the dungeon randomly
-     * @param enemyRoster arraylist of enemies in the current dungeon
+     * @param gameState GameState object used to pass in various values
      */
-    void moveEnemies(CustomArrayList<Enemy> enemyRoster){
-        for (Enemy enemy : enemyRoster) {
+    void moveEnemies(GameState gameState){
+        for (Enemy enemy : gameState.getEnemyRoster()) {
             enemy.move();
         }
     }
@@ -122,7 +120,7 @@ public class DungeonBrain {
     void tinkleBreak(GameState gameState){
         Player player = gameState.getPlayer();
         gameUI.prettyPrintln(player.getName() + " had to tinkle, stopping for a break...\n");
-        moveEnemies(gameState.getEnemyRoster());
+        moveEnemies(gameState);
         if(player.getPotionsConsumed() > 3){
             player.setPotionsConsumed(0);
             gameUI.prettyPrintln("[BLD]Wow, that hurt![BRK] \nYou just passed a kidney stone, [R]you have lost 10 health points :([BRK]\n");
@@ -138,7 +136,6 @@ public class DungeonBrain {
     void exitRoomHandler(GameState gameState){
         Node<Room> currentRoomNode = gameState.getPlayer().getCurrentRoom();
         Room currentRoom = currentRoomNode.getValue();
-        DungeonGenerator generator = new DungeonGenerator();
         int coinsPerLevel = 100 * gameState.getLevelCount();
         int enemyScaling = (gameState.getLevelCount() * 5);
 
@@ -177,7 +174,6 @@ public class DungeonBrain {
         if(gameState.getLevelCount() % 5 == 0){
             choosePerk(gameState);
         }
-        gameState.advanceLevel();
     }
 
     /**
@@ -282,7 +278,6 @@ public class DungeonBrain {
      * Helper class to determine if the player has enough coins to complete their current selection in the perk menu
      * @param character player character
      * @param perk perk object
-     * @return boolean value of whether the player has enough coins to buy the perk or not
      */
     boolean checkBread(Character character, Perks perk){
         if(character.getCoins() >= perk.getCost()){
