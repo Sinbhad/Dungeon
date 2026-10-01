@@ -14,18 +14,32 @@ public class DungeonBrain {
     /**
      * Essentially the heart of the entire game, creating the objects and database for use throughout
      */
-    private final GameUI gameUI = new GameUI();
-    private final Scanner keyboard = new Scanner(System.in);
-    private final DungeonGenerator generator = new DungeonGenerator();
-    private final GameState gameState = new GameState();
-    private final HighScoreDB highScoreDB = new HighScoreDB();
-    private final PlayerFunctions playerFunctions = new PlayerFunctions();
+    private final DungeonGenerator generator;
+    private final Fight fight;
+    private final GameState gameState;
+    private final GameUI gameUI;
+    private final HighScoreDB highScoreDB;
+    private final PlayerFunctions playerFunctions;
+    private final Scanner keyboard;
 
-    //------------------Create constructor that passes in gameState
+
+
+    public DungeonBrain(){
+        this(new GameState());
+    }
+
+    public DungeonBrain(GameState gameState){
+        this.generator = new DungeonGenerator();
+        this.fight = new Fight(gameState);
+        this.gameState = gameState;
+        this.gameUI = new GameUI();
+        this.highScoreDB = new HighScoreDB();
+        this.playerFunctions = new PlayerFunctions(gameState);
+        this.keyboard = new Scanner(System.in);
+    }
 
     public void dungeonOperator(){
         Player player = gameState.getPlayer();
-        Fight fight = new Fight(gameState);
         highScoreDB.initializeDatabase();
 
         generator.createLevel(gameState);
@@ -73,8 +87,7 @@ public class DungeonBrain {
      * Checks various conditions to move the game along, calls methods needed for certain conditions met
      */
     void conditionCheck(){
-        Node<Room> currentRoomNode;
-        Room currentRoom;
+        Room currentRoom = gameState.getCurrentRoom();
         Player player = gameState.getPlayer();
 
         //Force the user into a bathroom break state, has the potential to cause damage and lets enemies move
@@ -83,8 +96,6 @@ public class DungeonBrain {
         }
 
         //Check for loot
-        currentRoomNode = player.getCurrentRoom();
-        currentRoom = currentRoomNode.getValue();
         if(currentRoom.getItem() != null && player.getHealth() > 0){
             gameUI.prettyPrintln("[G]You found a chest![BRK]");
             playerFunctions.openChest();
@@ -131,8 +142,7 @@ public class DungeonBrain {
      * Enemy health and damage is increased, the player is rewarded with coins for clearing a level.
      */
     void exitRoomHandler(){
-        Node<Room> currentRoomNode = gameState.getPlayer().getCurrentRoom();
-        Room currentRoom = currentRoomNode.getValue();
+        Room currentRoom = gameState.getCurrentRoom();
         int coinsPerLevel = 100 * gameState.getLevelCount();
         int enemyScaling = (gameState.getLevelCount() * 5);
 
@@ -157,10 +167,8 @@ public class DungeonBrain {
             CustomArrayList<Enemy> enemyRoster = gameState.getEnemyRoster();
 
             //Set enemy scaling
-            for(Enemy enemy : enemyRoster){
+            for (Enemy enemy : gameState.getEnemyRoster()) {
                 enemy.setHealth(enemy.getHealthValue() + enemyScaling);
-            }
-            for(Enemy enemy: enemyRoster){
                 enemy.setAttackValue(enemy.getAttackValue() + enemyScaling);
             }
 
@@ -190,9 +198,10 @@ public class DungeonBrain {
     void playAgain(){
         gameUI.prettyPrint("\n\nWould you like to play again? [C](Y/N)[BRK]: ");
         String playAgain = keyboard.nextLine();
-        if(playAgain.trim().equalsIgnoreCase("y")){
-            gameUI.prettyPrintln("\n\n\n\nLet's play again!");
-            dungeonOperator();
+        if (playAgain.trim().equalsIgnoreCase("y")) {
+            gameUI.prettyPrintln("\nLet's play again!");
+            DungeonBrain newGame = new DungeonBrain();
+            newGame.dungeonOperator();
         }else if(playAgain.trim().equalsIgnoreCase("n")){
             gameUI.prettyPrintln("[BLD][ITL]Thanks for playing![BRK]");
             System.exit(0);
@@ -234,7 +243,6 @@ public class DungeonBrain {
                 "\nYou have [BLD][Y]" + player.getCoins() + "[BRK] coins");
 
         gameUI.prettyPrint("Enter your choice: [C](1-6)[BRK] [R][BLD]'0 to exit'[BRK]: ");
-        Scanner keyboard = new Scanner(System.in);
         int choice = keyboard.nextInt();
 
         //Update stats based on user entry or reroll perks
