@@ -6,10 +6,10 @@ import items.Weapon;
 import items.weapons.*;
 import lib.CustomArrayList;
 import lib.Node;
-import lib.CustomCircularlyLinkedList;
 import java.util.Random;
 
 public class DungeonGenerator {
+    private final Random chanceNum = new Random();
 
     /**
      * Creates a dungeon with the same number of rooms as the value passed into roomCount
@@ -27,28 +27,32 @@ public class DungeonGenerator {
      * @param gameState GameState object used to pass in various values
      */
     void setRooms(GameState gameState) {
-        Random chanceNum = new Random();
-
+        //Make sure the rooms are empty
         clearRooms(gameState);
 
+        //Generate necessary rosters
         generateEnemyRoster(gameState);
         weaponRosterGenerator(gameState);
 
-        enemyLevelCheck(chanceNum, gameState);
+        //Make sure proper amount of enemies is added
+        enemyLevelCheck(gameState);
 
-        setWeapon(chanceNum, gameState);
-        setPotion(chanceNum, gameState);
-        setTrap(chanceNum, gameState);
-        setArmor(chanceNum, gameState);
-        setExit(chanceNum, gameState);
+        //Set in game items in level
+        setWeapon(gameState);
+        setPotion(gameState);
+        setTrap(gameState);
+        setArmor(gameState);
+        setExit(gameState);
     }
 
-    void clearRooms(GameState gameState){
+    void clearRooms(GameState gameState) {
         Node<Room> tempNode = gameState.getDungeon().getHead();
-        Room tempRoom = tempNode.getValue();
+
+        //Clear the values in each room of the dungeon
         for (int i = 0; i < gameState.getRoomCount(); i++) {
+            Room tempRoom = tempNode.getValue();
             tempRoom.setCertain(null, null, null, false);
-            tempRoom = tempNode.getNextNode().getValue();
+            tempNode = tempNode.getNextNode();
         }
     }
 
@@ -87,20 +91,22 @@ public class DungeonGenerator {
      * Creates a roster of enemies based on current progression
      * @param gameState GameState object used to pass in various values
      */
-    void generateEnemyRoster(GameState gameState){
+    void generateEnemyRoster(GameState gameState) {
+        //Empty the roster
+        gameState.clearEnemyRoster();
+
+        //Store the levelCount
         int levelCount = gameState.getLevelCount();
-        //Set difficulty based on level count
-        if (levelCount == 1) {
-            gameState.clearEnemyRoster();
-            lowEnemyRosterGenerator(gameState);
-        } else if (levelCount > 1 && levelCount <= 4) {
-            gameState.clearEnemyRoster();
-            lowEnemyRosterGenerator(gameState);
+
+
+        //Set difficulty based on level
+        lowEnemyRosterGenerator(gameState);
+
+        if (levelCount > 1) {
             midEnemyRosterGenerator(gameState);
-        } else{
-            gameState.clearEnemyRoster();
-            lowEnemyRosterGenerator(gameState);
-            midEnemyRosterGenerator(gameState);
+        }
+
+        if (levelCount > 4) {
             highEnemyRosterGenerator(gameState);
         }
     }
@@ -125,10 +131,9 @@ public class DungeonGenerator {
 
     /**
      * Gets a random weapon from the weapon section of the item library to add to the dungeon on each new level
-     * @param chanceNum random number generator
      * @param gameState GameState object used to pass various values
      */
-    void setWeapon(Random chanceNum, GameState gameState) {
+    void setWeapon(GameState gameState) {
         //Store weapon roster for easier work and location of room to place weapon in
         CustomArrayList<Weapon> weaponRoster = gameState.getWeaponRoster();
         int weaponRoomIndex = chanceNum.nextInt(gameState.getRoomCount());
@@ -136,7 +141,7 @@ public class DungeonGenerator {
         //Prepare the room and the weapon
         Room weaponRoom = gameState.getDungeon().getValAtIndex(weaponRoomIndex);
         int weaponIndex = chanceNum.nextInt(weaponRoster.size());
-        Weapon weapon = weaponRoster.getAtIndex(chanceNum.nextInt(weaponIndex));
+        Weapon weapon = weaponRoster.getAtIndex(weaponIndex);
 
         //Place the weapon into the room
         weaponRoom.setItem(weapon);
@@ -144,10 +149,9 @@ public class DungeonGenerator {
 
     /**
      * Gets a random potion from the potion section of the item library to add to the dungeon on each new level
-     * @param chanceNum random number generator
      * @param gameState GameState object used to pass various values
      */
-    void setPotion(Random chanceNum, GameState gameState) {
+    void setPotion(GameState gameState) {
         //Prepare the item library and grab an index for a random room to place it in
         ItemLibrary itemLibrary = new ItemLibrary();
         int healthPotionRoomIndex = chanceNum.nextInt(gameState.getRoomCount());
@@ -160,10 +164,9 @@ public class DungeonGenerator {
 
     /**
      * Gets a random trap from the trap section of the item library to add to the dungeon on each new level
-     * @param chanceNum random number generator
      * @param gameState GameState object used to pass various values
      */
-    void setTrap(Random chanceNum, GameState gameState) {
+    void setTrap(GameState gameState) {
         //Prepare the item library and grab an index for a random room to place it in
         ItemLibrary itemLibrary = new ItemLibrary();
         int trapRoomIndex = chanceNum.nextInt(gameState.getRoomCount());
@@ -176,10 +179,9 @@ public class DungeonGenerator {
 
     /**
      * Gets a random armor set from the armor section of the item library to add to the dungeon on each new level
-     * @param chanceNum random number generator
      * @param gameState GameState object used to pass various values
      */
-    void setArmor(Random chanceNum, GameState gameState) {
+    void setArmor(GameState gameState) {
         //Prepare the item library and grab an index for a random room to place it in
         ItemLibrary itemLibrary = new ItemLibrary();
         int armorRoomIndex = chanceNum.nextInt(gameState.getRoomCount());
@@ -192,10 +194,9 @@ public class DungeonGenerator {
 
     /**
      * Randomly chooses a room number that will be assigned as the exit
-     * @param chanceNum random number generator
      * @param gameState GameState object used to pass various values
      */
-    void setExit(Random chanceNum, GameState gameState) {
+    void setExit(GameState gameState) {
         //Grab a random location to choose as the exit
         int exitRoomIndex = chanceNum.nextInt(gameState.getRoomCount());
 
@@ -208,10 +209,9 @@ public class DungeonGenerator {
      * Randomly chooses the room for an enemy to be placed in.
      * This is called for each enemy in the current roster when the setRooms
      * method is called
-     * @param chanceNum random number generator
      * @param gameState GameState object used to pass in other values
      */
-    void setEnemies(Random chanceNum, GameState gameState) {
+    void setEnemies(GameState gameState) {
         //Stores a value to use as the location to place a new enemy and prepares the enemy roster
         int enemyRoomIndex = chanceNum.nextInt(gameState.getRoomCount());
         CustomArrayList<Enemy> enemyRoster = gameState.getEnemyRoster();
@@ -230,25 +230,24 @@ public class DungeonGenerator {
 
     /**
      * Determines how many enemies will be added to the current floor based on the level count
-     * @param chanceNum random number generator
      * @param gameState used to gather various points of data about the current run
      */
-    void enemyLevelCheck(Random chanceNum, GameState gameState){
+    void enemyLevelCheck(GameState gameState){
         int levelCount = gameState.getLevelCount();
 
         if (levelCount == 1) {
-            setEnemies(chanceNum, gameState);
+            setEnemies(gameState);
         } else if (levelCount > 1 && levelCount < 4) {
             for (int i = 0; i < 2; i++) {
-                setEnemies(chanceNum, gameState);
+                setEnemies(gameState);
             }
         } else if(levelCount >= 4 && levelCount <= 7){
             for(int i = 0; i < 4; i++){
-                setEnemies(chanceNum, gameState);
+                setEnemies(gameState);
             }
         }else {
             for (int i = 0; i < gameState.getEnemyRoster().size(); i++) {
-                setEnemies(chanceNum, gameState);
+                setEnemies(gameState);
             }
         }
     }
