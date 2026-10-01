@@ -175,7 +175,7 @@ public class DungeonBrain {
 
         //If the level count is a multiple of five, display the perk selection screen
         if(gameState.getLevelCount() % 5 == 0){
-            choosePerk(gameState.getPlayer());
+            choosePerk(gameState);
         }
         gameState.advanceLevel();
     }
@@ -213,11 +213,12 @@ public class DungeonBrain {
     /**
      * Perk screen handler
      * Displays random perks from the perk library
-     * @param character player character
+     * @param gameState GameState object used for passing various values
      */
-    void choosePerk(Character character){
+    void choosePerk(GameState gameState){
         Random random = new Random();
         PerkLibrary perkLibrary = new PerkLibrary();
+        Player player = gameState.getPlayer();
 
         //Determine which perks will be available
         int speedIndex = random.nextInt(perkLibrary.SPEED_PERKS.length);
@@ -240,39 +241,39 @@ public class DungeonBrain {
                 "\n[C]4.[BRK] :[BLD]" + damagePerk.getPerkName() + "[BRK] - [ITL]" + damagePerk.getDescription() + "[BRK]" +
                 "\n[C]5.[BRK] :[BLD]" + staminaPerk.getPerkName() + "[BRK] - [ITL]" + staminaPerk.getDescription() + "[BRK]" +
                 "\n[C]6.[BRK] :[BLD]Reroll for [C]100[BRK][BLD] coins[BRK]\n\n [ITL]" +
-                "\nYou have [BLD][Y]" + character.getCoins() + "[BRK] coins");
+                "\nYou have [BLD][Y]" + player.getCoins() + "[BRK] coins");
 
         gameUI.prettyPrint("Enter your choice: [C](1-6)[BRK] [R][BLD]'0 to exit'[BRK]: ");
         Scanner keyboard = new Scanner(System.in);
         int choice = keyboard.nextInt();
 
         //Update stats based on user entry or reroll perks
-        if(choice == 1 && checkBread(character, speedPerk)){
-            character.setSpeedValue((int) (character.getSpeed() + speedPerk.getValue()));
-        }else if(choice == 2 && checkBread(character, defensePerk)){
-            if(character.getTotalDefense() == 0.8){
+        if(choice == 1 && checkBread(player, speedPerk)){
+            player.setSpeedValue((int) (player.getSpeed() + speedPerk.getValue()));
+        }else if(choice == 2 && checkBread(player, defensePerk)){
+            if(player.getTotalDefense() == 0.8){
                 gameUI.prettyPrintln("[BLD][R]You have already reached maximum defense, choose a different perk or move on[BRK]");
-                choosePerk(character);
+                choosePerk(gameState);
             }
-            character.setTotalDefense(character.getArmorDefense() , (character.getPerkDefense() + defensePerk.getValue()));
-            if(character.getTotalDefense() > 0.8){
-                character.setTotalDefense(0.8, 0);
+            player.setTotalDefense(player.getArmorDefense() , (player.getPerkDefense() + defensePerk.getValue()));
+            if(player.getTotalDefense() > 0.8){
+                player.setTotalDefense(0.8, 0);
                 gameUI.prettyPrintln("[BLD][C]Your defense value would exceed 80%, you have been set to 80% :([BRK]");
             }
-        }else if(choice == 3 && checkBread(character, healthPerk)){
-            character.setMaxHealth((character.getMaxHealth() + healthPerk.getValue()));
-        }else if(choice == 4 && checkBread(character, damagePerk)) {
-            character.setAttackValue((int) (character.getAttack() + damagePerk.getValue()));
-        }else if(choice == 5 && checkBread(character, staminaPerk)){
-            character.setStamina((int) (character.getStamina() + staminaPerk.getValue()));
-        }else if(choice == 6 && character.getCoins() >= 100){
-            character.setCoins(character.getCoins() - 100);
-            choosePerk(character);
+        }else if(choice == 3 && checkBread(player, healthPerk)){
+            player.setMaxHealth((player.getMaxHealth() + healthPerk.getValue()));
+        }else if(choice == 4 && checkBread(player, damagePerk)) {
+            player.setAttackValue((int) (player.getAttack() + damagePerk.getValue()));
+        }else if(choice == 5 && checkBread(player, staminaPerk)){
+            player.setStamina((int) (player.getStamina() + staminaPerk.getValue()));
+        }else if(choice == 6 && player.getCoins() >= 100){
+            player.setCoins(player.getCoins() - 100);
+            choosePerk(gameState);
         }else if(choice == 0){
             gameUI.prettyPrintln("Moving on then, good luck!\n\n");
         }else{
             gameUI.prettyPrintln("[INVALID]");
-            choosePerk(character);
+            choosePerk(gameState);
         }
 
     }
