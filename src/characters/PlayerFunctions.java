@@ -36,7 +36,7 @@ public class PlayerFunctions {
         Room currentRoom = currentDungeonRoom.getValue();
 
         gameUI.prettyPrintln("[BLD]" + currentRoom.getName() + ": Level " + gameState.getLevelCount());
-        gameUI.displayStats(gameState);
+        gameUI.displayStats();
 
         gameUI.prettyPrint("\n\nEnter [C]I[BRK] to display inventory \nWould you like to move left or right? [C](L/R)[BRK]: ");
         String choice = keyboard.nextLine();
@@ -117,7 +117,7 @@ public class PlayerFunctions {
         if(weapon == null || weapon.getMoves() == null || weapon.getMoves().size() == 0){
             gameUI.prettyPrintln("[BLD][R]You have no moves to choose from![BRK]\n");
             //Default move (punch)
-            move = gameUI.returnSelectedMoveFormatted(gameState, 12);
+            move = gameUI.returnSelectedMoveFormatted(12);
         }else{
             //Displays all moves associated with current weapon
             gameUI.prettyPrintln("Choose a move from the following list:");
@@ -136,7 +136,7 @@ public class PlayerFunctions {
             } catch (NumberFormatException e) {
                 choiceNum = -1;
             }
-            move = gameUI.returnSelectedMoveFormatted(gameState, choiceNum);
+            move = gameUI.returnSelectedMoveFormatted(choiceNum);
         }
         return move;
     }
