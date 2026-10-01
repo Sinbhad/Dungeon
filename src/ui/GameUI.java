@@ -12,7 +12,18 @@ import java.util.Scanner;
  * Used to provide a better UX with customizable styling options pulled from the GameFormatter Library
  */
 public class GameUI{
-    private final Scanner keyboard = new Scanner(System.in);
+    private final Scanner keyboard;
+    private final GameState gameState;
+
+    public GameUI(){
+        this.keyboard = new Scanner(System.in);
+        this.gameState = new GameState();
+    }
+
+    public GameUI(GameState gameState){
+        this.keyboard = new Scanner(System.in);
+        this.gameState = gameState;
+    }
 
     public void prettyPrint(String value){
         String prettyString = prettyStringFormatter(value);
@@ -46,7 +57,7 @@ public class GameUI{
     /**
      * Method used throughout the game to display equipment and other stats on each turn
      */
-    public void displayStats(GameState gameState){
+    public void displayStats(){
         String healthFormatString = "[G]";
         Player player = gameState.getPlayer();
 
@@ -72,7 +83,7 @@ public class GameUI{
         prettyPrintln("\n\n");
     }
 
-    public Move returnSelectedMoveFormatted(GameState gameState, int choice) {
+    public Move returnSelectedMoveFormatted(int choice) {
         //Default move if no moves are available
         Move punch = new Move("Punch", "Bam! you hit them right in the face ", 10, 0);
         Player player = gameState.getPlayer();

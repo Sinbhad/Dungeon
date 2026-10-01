@@ -16,13 +16,16 @@ public class DungeonBrain {
      */
     private final GameUI gameUI = new GameUI();
     private final Scanner keyboard = new Scanner(System.in);
-    DungeonGenerator generator = new DungeonGenerator();
+    private final DungeonGenerator generator = new DungeonGenerator();
+    private final GameState gameState = new GameState();
+    private final HighScoreDB highScoreDB = new HighScoreDB();
+    private final PlayerFunctions playerFunctions = new PlayerFunctions();
 
+    //------------------Create constructor that passes in gameState
 
     public void dungeonOperator(){
-        GameState gameState = new GameState();
-        HighScoreDB highScoreDB = new HighScoreDB();
         Player player = gameState.getPlayer();
+        Fight fight = new Fight(gameState);
         highScoreDB.initializeDatabase();
 
         generator.createLevel(gameState);
@@ -36,16 +39,16 @@ public class DungeonBrain {
 
         //Loop input methods until the player has died
         while(player.getHealth() > 0){
-            conditionCheck(gameState);
+            conditionCheck();
             if(player.getHealth() > 0){
-                player.move(gameState.getLevelCount(), keyboard);
-                moveEnemies(gameState);
+                playerFunctions.move();
+                moveEnemies();
             }
         }
 
 
         //Calculate the player's final score
-        int finalPoints = pointsCount(gameState);
+        int finalPoints = pointsCount();
 
         //Output for game completion
         gameUI.prettyPrintln(
@@ -68,17 +71,15 @@ public class DungeonBrain {
 
     /**
      * Checks various conditions to move the game along, calls methods needed for certain conditions met
-     * @param gameState GameState object used to pass in various value
      */
-    void conditionCheck(GameState gameState){
+    void conditionCheck(){
         Node<Room> currentRoomNode;
         Room currentRoom;
-        Fight fight = new Fight();
         Player player = gameState.getPlayer();
 
         //Force the user into a bathroom break state, has the potential to cause damage and lets enemies move
         if(player.getRoomsTraversed() % 15 == 0 && player.getRoomsTraversed() != 0){
-            tinkleBreak(gameState);
+            tinkleBreak();
         }
 
         //Check for loot
@@ -86,25 +87,24 @@ public class DungeonBrain {
         currentRoom = currentRoomNode.getValue();
         if(currentRoom.getItem() != null && player.getHealth() > 0){
             gameUI.prettyPrintln("[G]You found a chest![BRK]");
-            player.openChest(keyboard);
+            playerFunctions.openChest();
         }
 
         //Handle exit room
         if(currentRoom.getIsExit()){
-            exitRoomHandler(gameState);
+            exitRoomHandler();
         }
 
         //Begin battle if an enemy is encountered
         if (currentRoom.getEnemyCharacter() != null && !currentRoom.getIsExit()) {
-            fight.battle(gameState.getDungeon(), player, currentRoom.getEnemyCharacter(), gameState.getLevelCount());
+            fight.battle();
         }
     }
 
     /**
      * Moves all existing enemies throughout the dungeon randomly
-     * @param gameState GameState object used to pass in various values
      */
-    void moveEnemies(GameState gameState){
+    void moveEnemies(){
         for (Enemy enemy : gameState.getEnemyRoster()) {
             enemy.move();
         }
@@ -114,12 +114,11 @@ public class DungeonBrain {
      * Forces the user into a bathroom break.
      * This allows enemies to move while the player is stuck, and if the user
      * has consumed more than three potions by this break, they will take ten points of damage
-     * @param gameState GameState object used to pass in various values
      */
-    void tinkleBreak(GameState gameState){
+    void tinkleBreak(){
         Player player = gameState.getPlayer();
         gameUI.prettyPrintln(player.getName() + " had to tinkle, stopping for a break...\n");
-        moveEnemies(gameState);
+        moveEnemies();
         if(player.getPotionsConsumed() > 3){
             player.setPotionsConsumed(0);
             gameUI.prettyPrintln("[BLD]Wow, that hurt![BRK] \nYou just passed a kidney stone, [R]you have lost 10 health points :([BRK]\n");
@@ -130,9 +129,8 @@ public class DungeonBrain {
     /**
      * Clears the current dungeon and generates a new one based on the level the player has reached.
      * Enemy health and damage is increased, the player is rewarded with coins for clearing a level.
-     * @param gameState GameState object used to pass in various values
      */
-    void exitRoomHandler(GameState gameState){
+    void exitRoomHandler(){
         Node<Room> currentRoomNode = gameState.getPlayer().getCurrentRoom();
         Room currentRoom = currentRoomNode.getValue();
         int coinsPerLevel = 100 * gameState.getLevelCount();
@@ -171,16 +169,14 @@ public class DungeonBrain {
 
         //If the level count is a multiple of five, display the perk selection screen
         if(gameState.getLevelCount() % 5 == 0){
-            choosePerk(gameState);
+            choosePerk();
         }
     }
 
     /**
      * Point calculator for a completed run
-     * @param gameState GameState object used to pass in various values
-     * @return int value of the player's total points
      */
-    int pointsCount(GameState gameState){
+    int pointsCount(){
         int points = 0;
         points += gameState.getLevelCount() * 100;
         points += gameState.getPlayer().getEnemiesDefeated() * 1000;
@@ -208,9 +204,8 @@ public class DungeonBrain {
     /**
      * Perk screen handler
      * Displays random perks from the perk library
-     * @param gameState GameState object used for passing various values
      */
-    void choosePerk(GameState gameState){
+    void choosePerk(){
         Random random = new Random();
         PerkLibrary perkLibrary = new PerkLibrary();
         Player player = gameState.getPlayer();
@@ -248,7 +243,7 @@ public class DungeonBrain {
         }else if(choice == 2 && checkBread(player, defensePerk)){
             if(player.getTotalDefense() == 0.8){
                 gameUI.prettyPrintln("[BLD][R]You have already reached maximum defense, choose a different perk or move on[BRK]");
-                choosePerk(gameState);
+                choosePerk();
             }
             player.setTotalDefense(player.getArmorDefense() , (player.getPerkDefense() + defensePerk.getValue()));
             if(player.getTotalDefense() > 0.8){
@@ -263,12 +258,12 @@ public class DungeonBrain {
             player.setStamina((int) (player.getStamina() + staminaPerk.getValue()));
         }else if(choice == 6 && player.getCoins() >= 100){
             player.setCoins(player.getCoins() - 100);
-            choosePerk(gameState);
+            choosePerk();
         }else if(choice == 0){
             gameUI.prettyPrintln("Moving on then, good luck!\n\n");
         }else{
             gameUI.prettyPrintln("[INVALID]");
-            choosePerk(gameState);
+            choosePerk();
         }
 
     }

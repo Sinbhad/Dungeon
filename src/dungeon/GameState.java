@@ -97,6 +97,10 @@ public class GameState {
         enemyCount++;
     }
 
+    public Enemy getCurrentRoomEnemy(){
+        return getCurrentRoom().getEnemyCharacter();
+    }
+
     public int getEnemyCount(){
         return enemyCount;
     }
