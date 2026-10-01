@@ -22,7 +22,7 @@ public class Weapon extends Item {
         this.moves.add(move);
     }
 
-    public CustomArrayList getMoves(){
+    public CustomArrayList<Move> getMoves(){
         return moves;
     }
 }
