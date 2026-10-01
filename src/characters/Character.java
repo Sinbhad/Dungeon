@@ -10,9 +10,6 @@ import java.util.Objects;
 import java.util.Scanner;
 
 public class Character {
-    GameUI gameUI = new GameUI();
-    GameState gameState = new GameState();
-    Scanner keyboard = new Scanner(System.in);
     private String name;
 
     //Player state
