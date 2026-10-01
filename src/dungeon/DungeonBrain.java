@@ -16,21 +16,20 @@ public class DungeonBrain {
      * Essentially the heart of the entire game, creating the objects and database for use throughout
      */
     private final GameUI gameUI = new GameUI();
+    private final Scanner keyboard = new Scanner(System.in);
     public void dungeonOperator(){
+        GameState gameState = new GameState();
         DungeonGenerator generator = new DungeonGenerator();
         Scanner keyboard = new Scanner(System.in);
         CustomCircularlyLinkedList<Room> dungeon = new CustomCircularlyLinkedList<>();
         HighScoreDB highScoreDB = new HighScoreDB();
         highScoreDB.initializeDatabase();
 
-        int roomCount = 7;
-        int levelCount = 1;
-
         Player player = new Player();
         CustomArrayList<Enemy> enemyRoster = new CustomArrayList<>();
 
-        generator.createLevel(dungeon, roomCount);
-        generator.setRooms(dungeon);
+        generator.createLevel(gameState);
+        generator.setRooms(gameState);
         player.setCurrentRoom(dungeon.getHead());
 
         //Intro output
@@ -40,22 +39,22 @@ public class DungeonBrain {
 
         //Loop input methods until the player has died
         while(player.getHealth() > 0){
-            levelCount = conditionCheck(dungeon, player, levelCount, keyboard, enemyRoster);
+            conditionCheck(gameState);
             if(player.getHealth() > 0){
-                player.move(levelCount, keyboard);
+                player.move(gameState.getLevelCount(), keyboard);
                 moveEnemies(enemyRoster);
             }
         }
 
 
         //Calculate the player's final score
-        int finalPoints = pointsCount(levelCount, player);
+        int finalPoints = pointsCount(gameState);
 
         //Output for game completion
         gameUI.prettyPrintln(
                 "[BLD][R]You have died...[BRK]\n" +
                  "You have defeated [BLD][P]" + player.getEnemiesDefeated() + "[BRK] enemies\n" +
-                 "You have survived for [BLD][P]" + levelCount + "[BRK] levels\n" +
+                 "You have survived for [BLD][P]" + gameState.getLevelCount() + "[BRK] levels\n" +
                  "You have traveled [BLD][P]" + player.getRoomsTraversed() + "[BRK] rooms\n" +
                  "You have earned [BLD][P]" + finalPoints + "[BRK] points\n" +
                  "[ITL]Better luck next time![BRK]\n\n"
@@ -66,49 +65,42 @@ public class DungeonBrain {
         highScoreDB.saveStats(player.getName(), finalPoints);
         highScoreDB.printHighScores();
 
-        playAgain(keyboard);
+        playAgain();
     }
 
 
     /**
      * Checks various conditions to move the game along, calls methods needed for certain conditions met
-     * @param dungeon the current dungeon being used
-     * @param character player character
-     * @param levelCount current dungeon level
-     * @param keyboard scanner object for user input
-     * @param enemyRoster arraylist of enemies in the current dungeon
-     * @return int value of the current dungeon level
+     * @param gameState GameState object used to pass in various value
      */
-    int conditionCheck(CustomCircularlyLinkedList<Room> dungeon, Character character, int levelCount, Scanner keyboard, CustomArrayList<Enemy> enemyRoster){
+    void conditionCheck(GameState gameState){
         Node<Room> currentRoomNode;
         Room currentRoom;
         Fight fight = new Fight();
+        Player player = gameState.getPlayer();
 
         //Force the user into a bathroom break state, has the potential to cause damage and lets enemies move
-        if(character.getRoomsTraversed() % 15 == 0 && character.getRoomsTraversed() != 0){
-            tinkleBreak(character, enemyRoster);
+        if(player.getRoomsTraversed() % 15 == 0 && player.getRoomsTraversed() != 0){
+            tinkleBreak(gameState);
         }
 
         //Check for loot
-        currentRoomNode = character.getCurrentRoom();
+        currentRoomNode = player.getCurrentRoom();
         currentRoom = currentRoomNode.getValue();
-        if(currentRoom.getItem() != null && character.getHealth() > 0){
+        if(currentRoom.getItem() != null && player.getHealth() > 0){
             gameUI.prettyPrintln("[G]You found a chest![BRK]");
-            character.openChest(keyboard);
+            player.openChest(keyboard);
         }
 
         //Handle exit room
         if(currentRoom.getIsExit()){
-            levelCount = exitRoom(dungeon, character, levelCount, enemyRoster);
-            return levelCount;
+            exitRoomHandler(gameState);
         }
 
         //Begin battle if an enemy is encountered
         if (currentRoom.getEnemyCharacter() != null && !currentRoom.getIsExit()) {
-            fight.battle(dungeon, character, currentRoom.getEnemyCharacter(), levelCount);
+            fight.battle(gameState.getDungeon(), player, currentRoom.getEnemyCharacter(), gameState.getLevelCount());
         }
-
-        return levelCount;
     }
 
     /**
@@ -125,34 +117,30 @@ public class DungeonBrain {
      * Forces the user into a bathroom break.
      * This allows enemies to move while the player is stuck, and if the user
      * has consumed more than three potions by this break, they will take ten points of damage
-     * @param character player character
-     * @param enemyRoster arraylist of enemies in the current dungeon
+     * @param gameState GameState object used to pass in various values
      */
-    void tinkleBreak(Character character, CustomArrayList<Enemy> enemyRoster){
-        gameUI.prettyPrintln(character.getName() + " had to tinkle, stopping for a break...\n");
-        moveEnemies(enemyRoster);
-        if(character.getPotionsConsumed() > 3){
-            character.setPotionsConsumed(0);
+    void tinkleBreak(GameState gameState){
+        Player player = gameState.getPlayer();
+        gameUI.prettyPrintln(player.getName() + " had to tinkle, stopping for a break...\n");
+        moveEnemies(gameState.getEnemyRoster());
+        if(player.getPotionsConsumed() > 3){
+            player.setPotionsConsumed(0);
             gameUI.prettyPrintln("[BLD]Wow, that hurt![BRK] \nYou just passed a kidney stone, [R]you have lost 10 health points :([BRK]\n");
-            character.setHealth(character.getHealth() - 10);
+            player.setHealth(player.getHealth() - 10);
         }
     }
 
     /**
      * Clears the current dungeon and generates a new one based on the level the player has reached.
      * Enemy health and damage is increased, the player is rewarded with coins for clearing a level.
-     * @param dungeon the current dungeon being used
-     * @param character player character
-     * @param levelCount current dungeon level
-     * @param enemyRoster arraylist of enemies in the current dungeon
-     * @return int value of the current dungeon level
+     * @param gameState GameState object used to pass in various values
      */
-    int exitRoom(CustomCircularlyLinkedList<Room> dungeon, Character character, int levelCount, CustomArrayList<Enemy> enemyRoster){
-        Node<Room> currentRoomNode = character.getCurrentRoom();
+    void exitRoomHandler(GameState gameState){
+        Node<Room> currentRoomNode = gameState.getPlayer().getCurrentRoom();
         Room currentRoom = currentRoomNode.getValue();
         DungeonGenerator generator = new DungeonGenerator();
-        int coinsPerLevel = 100 * levelCount;
-        int enemyScaling = (levelCount * 5);
+        int coinsPerLevel = 100 * gameState.getLevelCount();
+        int enemyScaling = (gameState.getLevelCount() * 5);
 
         if(currentRoom.getIsExit()){
             gameUI.prettyPrintln(
@@ -161,52 +149,54 @@ public class DungeonBrain {
                     "\nYou have gained [BLD][Y]" + coinsPerLevel + "[BRK] coins and your opponents are now stronger!");
 
             //Increase level count for score keeping and logic such as enemy count, enemy damage and enemy health.
-            levelCount++;
-            character.setCoins(character.getCoins() + coinsPerLevel);
+            gameState.advanceLevel();
+            gameState.getPlayer().addCoins(coinsPerLevel);
 
             //Display enemy buffs
             gameUI.prettyPrintln("The enemy has gained " + (enemyScaling) + " health points\n" +
                                   "...and " + (enemyScaling) + " attack points!\n");
 
             //Create a new dungeon level and set enemy buffs
-            generator.createLevel(dungeon, (7 + enemyScaling));
-            generator.setRooms(dungeon);
+            generator.createLevel(gameState);
+            generator.setRooms(gameState);
+
+            CustomArrayList<Enemy> enemyRoster = gameState.getEnemyRoster();
+
+            //Set enemy scaling
             for(Enemy enemy : enemyRoster){
                 enemy.setHealth(enemy.getHealthValue() + enemyScaling);
             }
             for(Enemy enemy: enemyRoster){
                 enemy.setAttackValue(enemy.getAttackValue() + enemyScaling);
             }
-            character.setCurrentRoom(dungeon.getHead());
+
+            gameState.getPlayer().setCurrentRoom(gameState.getDungeon().getHead());
         }
 
         //If the level count is a multiple of five, display the perk selection screen
-        if(levelCount % 5 == 0){
-            choosePerk(character);
+        if(gameState.getLevelCount() % 5 == 0){
+            choosePerk(gameState.getPlayer());
         }
-
-        return levelCount;
+        gameState.advanceLevel();
     }
 
     /**
      * Point calculator for a completed run
-     * @param levelCount current dungeon level
-     * @param character player character
+     * @param gameState GameState object used to pass in various values
      * @return int value of the player's total points
      */
-    int pointsCount(int levelCount, Character character){
+    int pointsCount(GameState gameState){
         int points = 0;
-        points += levelCount * 100;
-        points += character.getEnemiesDefeated() * 1000;
-        points += character.getRoomsTraversed() * 50;
+        points += gameState.getLevelCount() * 100;
+        points += gameState.getPlayer().getEnemiesDefeated() * 1000;
+        points += gameState.getPlayer().getRoomsTraversed() * 50;
         return points;
     }
 
     /**
      * Gives the player the choice to start over or end the program
-     * @param keyboard scanner object for user input
      */
-    void playAgain(Scanner keyboard){
+    void playAgain(){
         gameUI.prettyPrint("\n\nWould you like to play again? [C](Y/N)[BRK]: ");
         String playAgain = keyboard.nextLine();
         if(playAgain.trim().equalsIgnoreCase("y")){
