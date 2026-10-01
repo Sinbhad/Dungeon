@@ -18,16 +18,17 @@ public class PlayerFunctions {
     public PlayerFunctions(){
         this.gameState = new GameState();
         this.gameUI = new GameUI();
+        this.inventoryManager = new InventoryManager();
     }
 
     public PlayerFunctions(GameState gameState){
         this.gameState = gameState;
         this.gameUI = new GameUI();
+        this.inventoryManager = new InventoryManager();
     }
 
     /**
      * Output prompt and logic for player dungeon traversal
-     * @param gameState GameState object used to pass several values into the method
      */
     public void move() {
         Player player = gameState.getPlayer();
@@ -53,7 +54,7 @@ public class PlayerFunctions {
 
         }else if(choice.trim().equalsIgnoreCase("i")){
             gameUI.prettyPrintln("[CLR]-=Inventory=-\n");
-            player.displayInventory(keyboard);
+            inventoryManager.displayInventory();
         } else {
             gameUI.prettyPrintln("[INVALID]");
         }
@@ -62,7 +63,6 @@ public class PlayerFunctions {
     /**
      * Chest opening handler. Provides players with the choice to open a chest or not.
      * Updates stats according to item type and attributes.
-     * @param gameState GameState object used to pass several values into the method
      */
     public void openChest(){
         Player player = gameState.getPlayer();
