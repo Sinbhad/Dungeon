@@ -80,7 +80,7 @@ public class PlayerFunctions {
                     "[ITL]this " + currentRoom.getItem().getDescription() + "[BRK]\n\n\n");
 
             //Set stats based on item attributes
-            if (currentRoom.getItem() != null && currentRoom.getItem().getHpValue() < 0) {
+            if (currentRoom.getItem() != null && currentRoom.getItem().getHpValue() > 0) {
                 inventoryManager.healingItemHandler();
             }
             if (currentRoom.getItem() != null && currentRoom.getItem().getSpeedValue() != 0) {

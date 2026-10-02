@@ -201,7 +201,7 @@ public class Character {
     }
 
     public void increaseRoomsTraversed(){
-        this.setRoomsTraversed(roomsTraversed++);
+        this.roomsTraversed++;
     }
 
     public int getRoomsTraversed(){
@@ -238,7 +238,7 @@ public class Character {
     }
 
     public void increasePotionsConsumed(){
-        setPotionsConsumed(potionsConsumed++);
+        this.potionsConsumed++;
     }
 
     public int getPotionsConsumed(){
@@ -250,7 +250,7 @@ public class Character {
     }
 
     public void increaseMaxHealth(double maxHealthIncrease){
-        setMaxHealth(maxHealth + maxHealthIncrease);
+        this.maxHealth += maxHealthIncrease;
     }
 
     public double getMaxHealth() {
