@@ -114,7 +114,14 @@ public class Character {
     }
 
     public void increaseHealth(double healthIncrease){
-        setHealth(health + healthIncrease);
+        this.health += healthIncrease;
+    }
+
+    public void decreaseHealth(double healthDecrease){
+        this.health -= healthDecrease;
+        if(this.health < 0){
+            health = 0;
+        }
     }
 
     public double getHealth(){

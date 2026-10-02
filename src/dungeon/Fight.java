@@ -1,9 +1,5 @@
 package dungeon;
 import characters.*;
-import characters.Character;
-import items.Weapon;
-import lib.Node;
-import lib.CustomCircularlyLinkedList;
 import lib.CustomArrayList;
 import ui.GameUI;
 
@@ -126,12 +122,11 @@ public class Fight {
             enemyAttackOutput();
             if(isPlayerAlive()){
                 gameUI.prettyPrintln("You hit [BLD][R]" + enemy.getName() + "[BRK] dealing " + player.getTotalAttack() + " damage\n");
-                enemy.setHealth(enemy.getHealth() - player.getTotalAttack());
+                enemy.decreaseHealth(player.getTotalAttack());
             }
         }
-        zeroHealth(player);
+
         gameUI.prettyPrintln("You have [G]" + player.getHealth() + "[BRK] health remaining");
-        zeroHealth(enemy);
         gameUI.prettyPrintln("[R]" + enemy.getName() + "[BRK] has [R]" + enemy.getHealth() + "[BRK] health remaining\n");
     }
 
@@ -146,8 +141,7 @@ public class Fight {
         gameUI.prettyPrintln("You used [BLD][C]" + move.getMoveName() + "[BRK][ITL] " + move.getDescription() +
                                 "[BRK]dealing [R]" + (player.getTotalAttack() + move.getDamage()) + "[BRK] damage\n");
 
-        enemy.setHealth(enemy.getHealth() - (player.getTotalAttack() + move.getDamage()));
-        if(enemy.getHealth() > 0) zeroHealth(enemy);
+        enemy.decreaseHealth((player.getTotalAttack() + move.getDamage()));
         gameUI.prettyPrintln("[R]" + enemy.getName() + "[BRK] has [R]" + enemy.getHealth() + "[BRK] health remaining");
 
     }
@@ -193,13 +187,6 @@ public class Fight {
     }
 
     /**
-     * Helper method, mainly for formatting to prevent negative values from being displayed in outputs
-     */
-    void zeroHealth(Character character){
-        if(character.getHealth() < 0){character.setHealth(0);}
-    }
-
-    /**
      * Randomly selects a move for the enemy for use in battles
      */
     Move enemyAttackChoice(){
@@ -220,7 +207,7 @@ public class Fight {
                                 "[BRK][ITL] " + currentMove.getDescription());
         double damage = calculateDamageAfterDefense(currentMove.getDamage());
         gameUI.prettyPrintln("[R]" + enemy.getName() + "[BRK] dealt [R]" + damage + "[BRK] damage\n\n");
-        player.setHealth(player.getHealth() - damage);
+        player.decreaseHealth(damage);
     }
 
     /**
