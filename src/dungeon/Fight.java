@@ -239,6 +239,9 @@ public class Fight {
         int random = new Random().nextInt(2);
         Player player = gameState.getPlayer();
 
+        //Store the original room
+        Room enemyRoom = gameState.getCurrentRoom();
+
         //Move the character randomly to the left or right before removing the room
         if(random == 0){
             player.setCurrentRoom(player.getCurrentRoom().getNextNode());
@@ -247,7 +250,6 @@ public class Fight {
             player.setCurrentRoom(player.getCurrentRoom().getLastNode());
             gameUI.prettyPrintln("[G]The room you once knew has disappeared!\nYou have been moved to the left.[BRK]\n");
         }
-        Node<Room> enemyRoomNode = gameState.getCurrentRoomEnemy().getCurrentRoom();
-        gameState.getDungeon().remove(enemyRoomNode.getValue());
+        gameState.getDungeon().remove(enemyRoom);
     }
 }

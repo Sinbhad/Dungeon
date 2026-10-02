@@ -24,7 +24,7 @@ public class PlayerFunctions {
     public PlayerFunctions(GameState gameState){
         this.gameState = gameState;
         this.gameUI = new GameUI();
-        this.inventoryManager = new InventoryManager();
+        this.inventoryManager = new InventoryManager(gameState);
     }
 
     /**
