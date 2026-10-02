@@ -22,7 +22,7 @@ public class Fight {
     }
 
     public Fight(GameState gameState){
-        this.gameUI = new GameUI();
+        this.gameUI = new GameUI(gameState);
         this.gameState = gameState;
         this.keyboard = new Scanner(System.in);
         this.playerFunctions = new PlayerFunctions(gameState);
@@ -163,8 +163,11 @@ public class Fight {
             //Increase player enemies defeated counter for score keeping
             player.setEnemiesDefeated(player.getEnemiesDefeated() + 1);
 
+            //Remove enemy from room
+            gameState.getEnemyRoster().remove(enemy);
+
             //Check room for loot before removing it from the dungeon
-            Room currentRoom = (Room)player.getCurrentRoom().getValue();
+            Room currentRoom = player.getCurrentRoom().getValue();
             if(currentRoom.getItem() != null){
                 playerFunctions.openChest();
             }

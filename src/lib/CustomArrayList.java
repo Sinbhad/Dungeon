@@ -105,6 +105,15 @@ public class CustomArrayList<T> implements Iterable<T> {
         return count;
     }
 
+    public void remove(T data){
+        for (int i = 0; i < size; i++) {
+            if (Objects.equals(storage[i], data)) {
+                removeAtIndex(i);
+                return;
+            }
+        }
+    }
+
     public void removeAtIndex(int index) {
         if (index < 0 || index >= size) {
             throw new IndexOutOfBoundsException("Index: " + index + ", Size: " + size);

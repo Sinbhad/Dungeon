@@ -32,7 +32,7 @@ public class DungeonBrain {
         this.generator = new DungeonGenerator();
         this.fight = new Fight(gameState);
         this.gameState = gameState;
-        this.gameUI = new GameUI();
+        this.gameUI = new GameUI(gameState);
         this.highScoreDB = new HighScoreDB();
         this.playerFunctions = new PlayerFunctions(gameState);
         this.keyboard = new Scanner(System.in);

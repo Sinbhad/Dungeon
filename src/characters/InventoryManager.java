@@ -20,15 +20,15 @@ public class InventoryManager {
 
     public InventoryManager(GameState gameState){
         this.gameState = gameState;
-        this.gameUI = new GameUI();
+        this.gameUI = new GameUI(gameState);
     }
 
     void badLuckHandler(){
         Item item = gameState.getCurrentRoomItem();
         Player player = gameState.getPlayer();
 
-        player.decreaseHealth(item.getHpValue());
-        player.decreaseSpeed(item.getSpeedValue());
+        player.decreaseHealth(item.getHpValue() * -1);
+        player.decreaseSpeed(item.getSpeedValue() * -1);
         if(player.getHealth() < 0) player.setHealth(0);
         if(player.getSpeed() < 0) player.setSpeedValue(0);
     }
