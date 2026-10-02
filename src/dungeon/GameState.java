@@ -101,6 +101,10 @@ public class GameState {
         return getCurrentRoom().getEnemyCharacter();
     }
 
+    public boolean isEnemyInRoom(){
+        return getCurrentRoomEnemy() != null;
+    }
+
     public int getEnemyCount(){
         return enemyCount;
     }

@@ -48,7 +48,7 @@ public class Fight {
     void startBattleSelection(){
         String choice = "A";
         Player player = gameState.getPlayer();
-        while ((gameState.getCurrentRoomEnemy().getHealth() > 0 && player.getHealth() > 0) && !choice.equalsIgnoreCase("F")) {
+        while ((gameState.isEnemyInRoom() && player.getHealth() > 0) && !choice.equalsIgnoreCase("F")) {
             gameUI.prettyPrintln("Enter [C]I[BRK] to display inventory");
             gameUI.prettyPrint("Would you like to attack or flee? [C](A/F)[BRK]: ");
             choice = keyboard.nextLine();
