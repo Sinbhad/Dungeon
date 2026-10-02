@@ -65,9 +65,7 @@ public class PlayerFunctions {
      * Updates stats according to item type and attributes.
      */
     public void openChest(){
-        Player player = gameState.getPlayer();
-        Node<Room> currentDungeonRoom = player.getCurrentRoom();
-        Room currentRoom = currentDungeonRoom.getValue();
+        Room currentRoom = gameState.getCurrentRoom();
 
         //Prompt the user
         gameUI.prettyPrint("\n\nWould you like to open the chest? [C](Y/N)[BRK]: ");
