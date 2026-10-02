@@ -2,6 +2,7 @@ package dungeon;
 
 import characters.Enemy;
 import characters.Player;
+import items.Item;
 import items.Weapon;
 import lib.CustomArrayList;
 import lib.CustomCircularlyLinkedList;
@@ -116,6 +117,10 @@ public class GameState {
     public void clearEnemyRoster(){
         enemyRoster.clear();
         enemyCount = 0;
+    }
+
+    public Item getCurrentRoomItem(){
+        return getCurrentRoom().getItem();
     }
 
     public void addWeapon(Weapon weapon){

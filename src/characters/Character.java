@@ -119,9 +119,7 @@ public class Character {
 
     public void decreaseHealth(double healthDecrease){
         this.health -= healthDecrease;
-        if(this.health < 0){
-            health = 0;
-        }
+        if(this.health < 0) health = 0;
     }
 
     public double getHealth(){
@@ -130,6 +128,11 @@ public class Character {
 
     public void setSpeedValue(int speed){
         this.speed = speed;
+    }
+
+    public void decreaseSpeed(int speedDecrease){
+        this.speed -= speedDecrease;
+        if(this.speed < 0) this.speed = 0;
     }
 
     public int getSpeed(){

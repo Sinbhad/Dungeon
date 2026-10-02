@@ -23,24 +23,24 @@ public class InventoryManager {
         this.gameUI = new GameUI();
     }
 
+    void badLuckHandler(){
+        Item item = gameState.getCurrentRoomItem();
+        Player player = gameState.getPlayer();
+
+        player.decreaseHealth(item.getHpValue());
+        player.decreaseSpeed(item.getSpeedValue());
+        if(player.getHealth() < 0) player.setHealth(0);
+        if(player.getSpeed() < 0) player.setSpeedValue(0);
+    }
+
     /**
      * Helper method for healing items (potions with positive effects).
      * The user may decide to add the item to their inventory rather than using it immediately.
      */
     void healingItemHandler(){
         Player player = gameState.getPlayer();
-        double hp = player.getHealth();
-        boolean willUsePotion = true;
-        Room currentRoom = gameState.getCurrentRoom();
-        int itemHp = currentRoom.getItem().getHpValue();
-        int itemSpeed = currentRoom.getItem().getSpeedValue();
+        boolean willUsePotion;
 
-
-        if (itemHp < 0) {
-            // It's a trap: always apply damage
-            player.setHealth(hp + itemHp);
-            return;
-        }
 
         gameUI.prettyPrint("Would you like to add this to your inventory? [C](Y/N)[BRK]: ");
         String choice = keyboard.nextLine();
@@ -51,7 +51,7 @@ public class InventoryManager {
         if (willUsePotion && player.getHealth() < player.getMaxHealth()) {
             String healthString = String.valueOf(player.getHealth());
             // It's a healing item, and player is below max health: apply healing
-            player.setHealth(hp + itemHp);
+            player.increaseHealth(gameState.getCurrentRoomItem().getHpValue());
 
             // Cap health at maxHealth
             if (player.getHealth() > player.getMaxHealth()) {
@@ -60,12 +60,12 @@ public class InventoryManager {
 
             //Add to the kidney stone meter
             player.increasePotionsConsumed();
-            if(itemSpeed > 0){speedItemHandler();}
+            if(gameState.getCurrentRoomItem().getSpeedValue() > 0){speedItemHandler();}
         } else if(player.getHealth() == player.getMaxHealth() && willUsePotion){
             gameUI.prettyPrintln("[BLD][R]You have already reached maximum health, no effect[BRK]\n+" +
                     "You have not consumed the potion, adding to inventory instead\n");
-            player.getInventory().add(currentRoom.getItem());
-            currentRoom.setItem(null);
+            player.getInventory().add(gameState.getCurrentRoomItem());
+            gameState.getCurrentRoom().setItem(null);
         }
     }
 

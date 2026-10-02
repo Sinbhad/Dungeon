@@ -80,7 +80,7 @@ public class PlayerFunctions {
                     "[ITL]this " + currentRoom.getItem().getDescription() + "[BRK]\n\n\n");
 
             //Set stats based on item attributes
-            if (currentRoom.getItem() != null && currentRoom.getItem().getHpValue() != 0) {
+            if (currentRoom.getItem() != null && currentRoom.getItem().getHpValue() < 0) {
                 inventoryManager.healingItemHandler();
             }
             if (currentRoom.getItem() != null && currentRoom.getItem().getSpeedValue() != 0) {
@@ -92,8 +92,11 @@ public class PlayerFunctions {
             if (currentRoom.getItem() != null && currentRoom.getItem() instanceof Armor) {
                 inventoryManager.armorItemHandler();
             }
-            if (currentRoom.getItem() != null && currentRoom.getItem().getStaminaValue() != 0) {
+            if (currentRoom.getItem() != null && currentRoom.getItem().getStaminaValue() < 0) {
                 inventoryManager.staminaItemHandler();
+            }
+            if(currentRoom.getItem() != null && (currentRoom.getItem().getStaminaValue() < 0 || currentRoom.getItem().getHpValue() < 0)){
+                inventoryManager.badLuckHandler();
             }
             currentRoom.setItem(null);
 
