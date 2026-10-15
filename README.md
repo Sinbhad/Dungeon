@@ -116,30 +116,31 @@ Dungeon/
 ```
 
 ## Prerequisites
-Java Development Kit (JDK): JDK 21 or higher (JDK 25 compatible).
-SQLite JDBC: Located at src/lib/sqlite-jdbc-3.51.3.0.jar.
+- Java Development Kit (JDK) 21 or newer.
+- Python 3.8 or newer (standard library only; no packages to install).
+- SQLite JDBC is bundled at `src/lib/sqlite-jdbc-3.51.3.0.jar`.
 
-How to Run
-Running via IntelliJ IDEA
-Open the project in IntelliJ IDEA.
-Ensure the Project SDK is set to JDK 21+ (File > Project Structure > Project).
-Verify that src/lib/sqlite-jdbc-3.51.3.0.jar is marked as a project library (File > Project Structure > Libraries).
-Run src/Main.java.
+## How to Run
+### Running via IntelliJ IDEA
+Open the project in IntelliJ IDEA, set the Project SDK to JDK 21 or newer, and run `main.Main` in `src/main/Main.java`.
 
+### Running via Command Line
+Run the complete automated verification from the repository root on Linux, macOS, or Windows:
+```text
+python verify_all.py
+```
+This compiles all Java sources against Java 21, runs the regression and SQLite integration tests in a temporary directory, and generates Javadocs. GitHub Actions runs it on Ubuntu, macOS, and Windows with JDK 21 and 25.
 
-
-Running via Command Line
-bash
-
-
-# 1. Compile
-javac --enable-preview --release 25 -cp "src/lib/sqlite-jdbc-3.51.3.0.jar:src" -d out/production/Dungeon src/Main.java src/Characters/*.java src/Dungeon/*.java src/Items/*.java src/Items/Weapons/*.java src/lib/*.java
-# 2. Execute
-java --enable-preview -cp "out/production/Dungeon:src/lib/sqlite-jdbc-3.51.3.0.jar" Main
-
-
-
-
+To compile the game, run the following from the repository root. The runtime classpath separator is `:` on Linux/macOS and `;` on Windows.
+```sh
+mkdir -p out/production/Dungeon
+javac --release 21 -encoding UTF-8 -classpath "src/lib/sqlite-jdbc-3.51.3.0.jar" -sourcepath src -d out/production/Dungeon src/main/Main.java
+java -classpath "out/production/Dungeon:src/lib/sqlite-jdbc-3.51.3.0.jar" main.Main
+```
+In Windows PowerShell, use the same `javac` command and run:
+```powershell
+java -classpath "out/production/Dungeon;src/lib/sqlite-jdbc-3.51.3.0.jar" main.Main
+```
 ---
 ### Packaging Guide & Database Resolution
 #### 1. Why the Database Gives a Cryptic Message

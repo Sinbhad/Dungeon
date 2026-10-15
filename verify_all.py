@@ -17,7 +17,7 @@ TEST_RUNNER = "VerificationTests"
 
 
 def run(command, *, cwd, label, timeout=180):
-    print(f"\n== {label} ==")
+    print(f"\n== {label} ==", flush=True)
     try:
         result = subprocess.run(command, cwd=cwd, check=False, timeout=timeout)
     except subprocess.TimeoutExpired:
@@ -69,7 +69,11 @@ def main():
     runtime_version = tool_major_version(java, ["-version"])
     if compiler_version is None or runtime_version is None:
         return 1
-    print(f"Python {sys.version_info.major}.{sys.version_info.minor}; javac {compiler_version}; java {runtime_version}")
+    print(
+        f"Python {sys.version_info.major}.{sys.version_info.minor}; "
+        f"javac {compiler_version}; java {runtime_version}",
+        flush=True,
+    )
     if compiler_version < MINIMUM_JAVA_VERSION or runtime_version < MINIMUM_JAVA_VERSION:
         print(
             f"FAILED: Java {MINIMUM_JAVA_VERSION} or newer is required "
@@ -117,6 +121,7 @@ def main():
         docs_command = [
             javadoc,
             "-quiet",
+            "-Xdoclint:all,-missing",
             "--release",
             str(MINIMUM_JAVA_VERSION),
             "-encoding",
@@ -126,7 +131,7 @@ def main():
             "-sourcepath",
             str(ROOT / "src"),
             "-subpackages",
-            "characters:dungeon:items:lib",
+            os.pathsep.join(("characters", "dungeon", "items", "lib")),
             "-classpath",
             str(JDBC_JAR),
         ]
