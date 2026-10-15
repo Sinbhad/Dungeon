@@ -1,5 +1,7 @@
 package lib;
 
+import java.util.Objects;
+
 /**
  * Custom generic implementation of a Circular Linked List
  * Many methods may deviate from the expected implementation,
@@ -220,7 +222,7 @@ public class CustomCircularlyLinkedList<T>{
 
         //Checks each nodes value against the target until it has been found or the head is reached
         do{
-            if(currentNode.getValue().equals(data))
+            if (Objects.equals(currentNode.getValue(), data))
             {
                 return true;
             }
@@ -235,12 +237,13 @@ public class CustomCircularlyLinkedList<T>{
      * @return returns the index of the found value
      */
     public int findIndex(T data){
+        if (head == null) return -1;
         int index = 0;
 
         Node <T> currentNode = head;
         //Checks each nodes value against the target until it has been found or the head is reached
         do{
-            if(currentNode.getValue().equals(data))
+            if (Objects.equals(currentNode.getValue(), data))
             {
                 return index;
             }
@@ -262,7 +265,7 @@ public class CustomCircularlyLinkedList<T>{
         boolean found = false;
 
         do {
-            if (tempNode.getValue().equals(value)) {
+            if (Objects.equals(tempNode.getValue(), value)) {
                 found = true;
 
                 //Edge case, node in the list
