@@ -11,6 +11,7 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.Iterator;
+import java.util.NoSuchElementException;
 
 public class VerificationTests {
     private static int checks;
@@ -40,12 +41,12 @@ public class VerificationTests {
         check(values.getAtIndex(5) == 99, "insert in the middle");
         check(values.getAtIndex(values.size() - 1) == 25, "insert at the end");
 
-        values.replaceAtIndex(5, 5);
-        check(values.find(5), "find existing value");
-        check(values.findCount(5) == 1, "count occurrences");
-        values.remove(5);
+        values.replaceAtIndex(5, 500);
+        check(values.find(500), "find existing value");
+        check(values.findCount(500) == 1, "count occurrences");
+        values.remove(500);
         values.removeAtIndex(0);
-        check(!values.find(5), "remove by value");
+        check(!values.find(500), "remove by value");
         check(values.getAtIndex(0) == 0, "remove by index shifts values");
 
         CustomArrayList<Integer> copy = values.cloneClass();
@@ -61,7 +62,7 @@ public class VerificationTests {
             iterated++;
         }
         check(iterated == copy.size(), "iterator visits each element");
-        expectThrows(IndexOutOfBoundsException.class, iterator::next, "iterator rejects exhausted reads");
+        expectThrows(NoSuchElementException.class, iterator::next, "iterator rejects exhausted reads");
         expectThrows(IndexOutOfBoundsException.class, () -> copy.getAtIndex(-1), "negative index rejected");
         expectThrows(IndexOutOfBoundsException.class, () -> copy.getAtIndex(copy.size()), "index past end rejected");
     }
