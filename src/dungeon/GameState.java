@@ -144,4 +144,8 @@ public class GameState {
     public void removeEnemyFromCurrentRoom(){
         getCurrentRoom().setEnemyCharacter(null);
     }
+
+    public void movePlayerToStart(){
+        getPlayer().setCurrentRoom(gameState.getDungeon().getHead());
+    }
 }

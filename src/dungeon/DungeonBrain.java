@@ -44,7 +44,7 @@ public class DungeonBrain {
 
         generator.createLevel(gameState);
         generator.setRooms(gameState);
-        player.setCurrentRoom(gameState.getDungeon().getHead());
+        gameState.movePlayerToStart();
 
         //Intro output
         gameUI.prettyPrint("\n\nYou have entered the dungeon \nEnter your name challenger : ");

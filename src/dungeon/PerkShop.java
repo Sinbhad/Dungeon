@@ -37,7 +37,11 @@ public class PerkShop {
         Perk staminaPerk = perkLibrary.STAMINA_PERKS[staminaIndex];
     }
 
-
+    /**
+     * Applies the stat boosts to the current player based on the selected perk
+     * @param choice the players selected perk number
+     * @return uses a helper method to inform the user why their choice was invalid and returns a flag a loop depends on
+     */
     public boolean applyChoice(int choice) {
         if (choice == 0) {
             gameUI.prettyPrintln("Moving on then, good luck!\n\n");
