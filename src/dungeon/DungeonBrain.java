@@ -215,79 +215,14 @@ public class DungeonBrain {
      * Displays random perks from the perk library
      */
     void choosePerk(){
-        Random random = new Random();
-        PerkLibrary perkLibrary = new PerkLibrary();
-        Player player = gameState.getPlayer();
+        boolean correct choice = false;
+        PerkShop perkShop = new PerkShop(gameState);
 
-        //Determine which perks will be available
-        int speedIndex = random.nextInt(perkLibrary.SPEED_PERKS.length);
-        Perks speedPerk = perkLibrary.SPEED_PERKS[speedIndex];
-        int defenseIndex = random.nextInt(perkLibrary.DEFENSE_PERKS.length);
-        Perks defensePerk = perkLibrary.DEFENSE_PERKS[defenseIndex];
-        int healthIndex = random.nextInt(perkLibrary.HEALTH_PERKS.length);
-        Perks healthPerk = perkLibrary.HEALTH_PERKS[healthIndex];
-        int damageIndex = random.nextInt(perkLibrary.DAMAGE_PERKS.length);
-        Perks damagePerk = perkLibrary.DAMAGE_PERKS[damageIndex];
-        int staminaIndex = random.nextInt(perkLibrary.STAMINA_PERKS.length);
-        Perks staminaPerk = perkLibrary.STAMINA_PERKS[staminaIndex];
-
-        //Output for player to aid in selection
-        gameUI.prettyPrintln(
-                "[BLD][C]Choose a perk[BRK]" +
-                "\n[C]1.[BRK] :[BLD]" + speedPerk.getPerkName() + "[BRK] - [ITL]" + speedPerk.getDescription() + "[BRK]" +
-                "\n[C]2.[BRK] :[BLD]" + defensePerk.getPerkName() + "[BRK] - [ITL]" + defensePerk.getDescription() + "[BRK]" +
-                "\n[C]3.[BRK] :[BLD]" + healthPerk.getPerkName() + "[BRK] - [ITL]" + healthPerk.getDescription() + "[BRK]" +
-                "\n[C]4.[BRK] :[BLD]" + damagePerk.getPerkName() + "[BRK] - [ITL]" + damagePerk.getDescription() + "[BRK]" +
-                "\n[C]5.[BRK] :[BLD]" + staminaPerk.getPerkName() + "[BRK] - [ITL]" + staminaPerk.getDescription() + "[BRK]" +
-                "\n[C]6.[BRK] :[BLD]Reroll for [C]100[BRK][BLD] coins[BRK]\n\n [ITL]" +
-                "\nYou have [BLD][Y]" + player.getCoins() + "[BRK] coins");
-
-        gameUI.prettyPrint("Enter your choice: [C](1-6)[BRK] [R][BLD]'0 to exit'[BRK]: ");
-        int choice = keyboard.nextInt();
-
-        //Update stats based on user entry or reroll perks
-        if(choice == 1 && checkBread(player, speedPerk)){
-            player.setSpeedValue((int) (player.getSpeed() + speedPerk.getValue()));
-        }else if(choice == 2 && checkBread(player, defensePerk)){
-            if(player.getTotalDefense() == 0.8){
-                gameUI.prettyPrintln("[BLD][R]You have already reached maximum defense, choose a different perk or move on[BRK]");
-                choosePerk();
-            }
-            player.setTotalDefense(player.getArmorDefense() , (player.getPerkDefense() + defensePerk.getValue()));
-            if(player.getTotalDefense() > 0.8){
-                player.setTotalDefense(0.8, 0);
-                gameUI.prettyPrintln("[BLD][C]Your defense value would exceed 80%, you have been set to 80% :([BRK]");
-            }
-        }else if(choice == 3 && checkBread(player, healthPerk)){
-            player.setMaxHealth((player.getMaxHealth() + healthPerk.getValue()));
-        }else if(choice == 4 && checkBread(player, damagePerk)) {
-            player.setAttackValue((int) (player.getAttack() + damagePerk.getValue()));
-        }else if(choice == 5 && checkBread(player, staminaPerk)){
-            player.setStamina((int) (player.getStamina() + staminaPerk.getValue()));
-        }else if(choice == 6 && player.getCoins() >= 100){
-            player.setCoins(player.getCoins() - 100);
-            choosePerk();
-        }else if(choice == 0){
-            gameUI.prettyPrintln("Moving on then, good luck!\n\n");
-        }else{
-            gameUI.prettyPrintln("[INVALID]");
-            choosePerk();
-        }
-
-    }
-
-    /**
-     * Helper class to determine if the player has enough coins to complete their current selection in the perk menu
-     * @param character player character
-     * @param perk perk object
-     */
-    boolean checkBread(Character character, Perks perk){
-        if(character.getCoins() >= perk.getCost()){
-            character.setCoins(character.getCoins() - perk.getCost());
-            return true;
-        }else{
-            gameUI.prettyPrintln("[BLD][R]You do not have enough coins to buy this perk![BRK]");
-            return false;
+        //Keeps the player in a loop until they select a valid input, then applies changes if any.
+        while(correctChoice == false){
+            perkShop.displayChoices();
+            String choice = keyboard.nextLine(System.in);
+            correctChoice = perkShop.applyChoice((int) choice.trim());
         }
     }
 
