@@ -133,7 +133,7 @@ public class DungeonBrain {
 
         //Reduce players health if they have drank more than three potions before passing a kidney stone
         if(player.getPotionsConsumed() > 3){
-            player.clearPotionsConsumed;
+            player.clearPotionsConsumed();
             gameUI.prettyPrintln("[BLD]Wow, that hurt![BRK] \nYou just passed a kidney stone, [R]you have lost 10 health points :([BRK]\n");
             player.reduceHealthByStone();
         }
@@ -217,7 +217,7 @@ public class DungeonBrain {
      * Displays random perks from the perk library
      */
     void choosePerk(){
-        boolean correct choice = false;
+        boolean correctChoice = false;
         PerkShop perkShop = new PerkShop(gameState);
 
         //Keeps the player in a loop until they select a valid input, then applies changes if any.

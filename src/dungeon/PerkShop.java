@@ -9,8 +9,8 @@ public class PerkShop {
 
 
     public PerkShop(){
-        this.gameState = new GameState;
-        this.player = new Player;
+        this.gameState = new GameState();
+        this.player = new Player();
         setPerks();
     }
 

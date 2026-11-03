@@ -94,7 +94,7 @@ public class Player extends Character {
     }
 
     public void clearPotionsConsumed(){
-        this.setPotionsConsumed(0)
+        this.setPotionsConsumed(0);
     }
 
     public void setRoomsTraversed(int roomsTraversed){
