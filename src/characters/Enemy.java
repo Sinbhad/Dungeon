@@ -27,7 +27,24 @@ public class Enemy extends Character {
       super();
    }
 
-   public void setMoves(Move move){
+   //Mutators and Accessors set/get A-Z
+   public int getAttackValue(){
+      return super.getAttack();
+   }
+
+   public int getCoins(){
+      return super.getCoins();
+   }
+
+   public int[] getFleeNum(){
+      return fleeNums;
+   }
+
+   public double getHealthValue(){
+      return super.getHealth();
+   }
+
+   public void setMove(Move move){
        this.moves.add(move);
    }
 
@@ -39,29 +56,11 @@ public class Enemy extends Character {
       return super.getName();
    }
 
-   public int getAttackValue(){
-      return super.getAttack();
-   }
-
-   public double getHealthValue(){
-      return super.getHealth();
-   }
-
    public int getSpeed(){
       return super.getSpeed();
    }
 
-   public int getCoins(){
-      return super.getCoins();
-   }
-
-   public int[] getFleeNum(){
-      return fleeNums;
-   }
-
-   /**
-    * Moves the enemy to a random adjacent room
-    */
+   //Moves the enemy to a random adjacent room
    public void move() {
       Node enemyRoomNode = this.getCurrentRoom();
 
