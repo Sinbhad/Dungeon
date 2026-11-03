@@ -1,5 +1,9 @@
 package dungeon;
 
+import characters.Character;
+import characters.Player;
+import java.util.Random;
+
 public class PerkShop {
     GameState gameState;
     int damageIndex, defenseIndex, healthIndex, speedIndex, staminaIndex;
