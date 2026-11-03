@@ -1,6 +1,6 @@
 package dungeon;
 
-public class Perks {
+public class Perk {
     String name, type, description;
     int cost;
     double value;
@@ -24,7 +24,7 @@ public class Perks {
      * @param value value of perk in terms of how much it increases the player's stats
      * @param cost cost of perk
      */
-    public Perks(String name, String type, String description, double value, int cost){
+    public Perk(String name, String type, String description, double value, int cost){
         this.name = name;
         this.type = type;
         this.description = description;
