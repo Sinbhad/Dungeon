@@ -113,6 +113,10 @@ public class Character {
         this.health = health;
     }
 
+    public double getHealth(){
+        return health;
+    }
+
     public void increaseHealth(double healthIncrease){
         this.health += healthIncrease;
     }
@@ -120,10 +124,6 @@ public class Character {
     public void decreaseHealth(double healthDecrease){
         this.health -= healthDecrease;
         if(this.health < 0) health = 0;
-    }
-
-    public double getHealth(){
-        return health;
     }
 
     public void setSpeedValue(int speed){
@@ -154,7 +154,6 @@ public class Character {
     public Node<Room> getCurrentRoom(){
         return currentRoom;
     }
-
 
     public void setCoins(int coins){
         this.coins = coins;

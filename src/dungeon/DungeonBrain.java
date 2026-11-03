@@ -130,10 +130,12 @@ public class DungeonBrain {
         Player player = gameState.getPlayer();
         gameUI.prettyPrintln(player.getName() + " had to tinkle, stopping for a break...\n");
         moveEnemies();
+
+        //Reduce players health if they have drank more than three potions before passing a kidney stone
         if(player.getPotionsConsumed() > 3){
-            player.setPotionsConsumed(0);
+            player.clearPotionsConsumed;
             gameUI.prettyPrintln("[BLD]Wow, that hurt![BRK] \nYou just passed a kidney stone, [R]you have lost 10 health points :([BRK]\n");
-            player.setHealth(player.getHealth() - 10);
+            player.reduceHealthByStone();
         }
     }
 
@@ -172,7 +174,7 @@ public class DungeonBrain {
                 enemy.setAttackValue(enemy.getAttackValue() + enemyScaling);
             }
 
-            gameState.getPlayer().setCurrentRoom(gameState.getDungeon().getHead());
+            gameState.movePlayerToStart();
         }
 
         //If the level count is a multiple of five, display the perk selection screen
@@ -221,7 +223,7 @@ public class DungeonBrain {
         //Keeps the player in a loop until they select a valid input, then applies changes if any.
         while(correctChoice == false){
             perkShop.displayChoices();
-            String choice = keyboard.nextLine(System.in);
+            String choice = keyboard.nextLine();
             correctChoice = perkShop.applyChoice((int) choice.trim());
         }
     }

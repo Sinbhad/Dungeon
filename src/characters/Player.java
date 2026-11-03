@@ -61,6 +61,10 @@ public class Player extends Character {
         return maxHealth;
     }
 
+    public void reduceHealthByStone(){
+        this.setHealth(this.getHealth() - 10);
+    }
+
     public void setMaxStamina(int maxStamina) {
         this.maxStamina = maxStamina;
     }
@@ -87,6 +91,10 @@ public class Player extends Character {
 
     public int getPotionsConsumed(){
         return potionsConsumed;
+    }
+
+    public void clearPotionsConsumed(){
+        this.setPotionsConsumed(0)
     }
 
     public void setRoomsTraversed(int roomsTraversed){

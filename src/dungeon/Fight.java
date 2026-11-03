@@ -12,6 +12,7 @@ public class Fight {
     private final Scanner keyboard;
     private final PlayerFunctions playerFunctions;
     private final InventoryManager inventoryManager;
+    private final double enemyStartHealth;
 
     public Fight(){
         this.gameUI = new GameUI();
@@ -19,6 +20,7 @@ public class Fight {
         this.keyboard = new Scanner(System.in);
         this.playerFunctions = new PlayerFunctions();
         this.inventoryManager = new InventoryManager();
+        this.enemyStartHealth = 0;
     }
 
     public Fight(GameState gameState){
@@ -27,6 +29,7 @@ public class Fight {
         this.keyboard = new Scanner(System.in);
         this.playerFunctions = new PlayerFunctions(gameState);
         this.inventoryManager = new InventoryManager(gameState);
+        this.enemyStartHealth = gameState.getCurrentRoomEnemy.getHealth();
     }
 
     /**
@@ -190,10 +193,29 @@ public class Fight {
     }
 
     /**
-     * Randomly selects a move for the enemy for use in battles
+     * Selects a move for the enemy in battle.
+     * Picks the highest-damage move if health is below 50%; otherwise picks randomly.
      */
-    Move enemyAttackChoice(){
-        CustomArrayList currentMoves = gameState.getCurrentRoomEnemy().getMoves();
+    Move enemyAttackChoice() {
+        Enemy enemy = gameState.getCurrentRoomEnemy();
+        CustomArrayList currentMoves = enemy.getMoves();
+
+        // If below 50% health, find and return the highest-damage move
+        if (enemy.getHealth() < enemyStartHealth / 2) {
+            Move selectedMove = (Move) currentMoves.getAtIndex(0);
+            int maxDamage = selectedMove.getDamage();
+
+            for (int j = 1; j < currentMoves.size(); j++) {
+                Move move = (Move) currentMoves.getAtIndex(j);
+                if (move.getDamage() > maxDamage) {
+                    maxDamage = move.getDamage();
+                    selectedMove = move;
+                }
+            }
+            return selectedMove;
+        }
+
+        // Otherwise, return a random move
         Random moveIndex = new Random();
         int i = moveIndex.nextInt(currentMoves.size());
         return (Move) currentMoves.getAtIndex(i);
