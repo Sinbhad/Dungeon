@@ -1,5 +1,6 @@
 # Dungeon Crawler
 
+(Small note, some of the info here may fall out of line before I have a chance to update these details as I overhaul the backend 11/3/26)
 A modular, text based, arcade style Roguelike dungeon crawler created in Java. The game features dynamic scaling, procedurally generated dungeons, turn based combat, an item and perk system, 
 autonomous enemy movement and actions, interesting survival mechanics, and persistent leaderboard tracking via SQLite.
 
