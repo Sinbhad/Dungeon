@@ -44,12 +44,12 @@ public class PlayerFunctions {
         if (choice.trim().equalsIgnoreCase("l")) {
 
             gameUI.prettyPrintln("\n[CLR][G]You have moved left[BRK]\n");
-            player.setCurrentRoom(currentDungeonRoom.getLastNode());
+            moveLeft();
             player.increaseRoomsTraversed();
 
         } else if (choice.trim().equalsIgnoreCase("r")) {
             gameUI.prettyPrintln("\n[CLR]You have moved right\n");
-            player.setCurrentRoom(currentDungeonRoom.getNextNode());
+            moveRight();
             player.increaseRoomsTraversed();
 
         }else if(choice.trim().equalsIgnoreCase("i")){
@@ -58,6 +58,14 @@ public class PlayerFunctions {
         } else {
             gameUI.prettyPrintln("[INVALID]");
         }
+    }
+
+    public void moveLeft(){
+        player.setCurrentRoom(currentDungeonRoom.getLastNode());
+    }
+
+    public void moveRight(){
+        player.setCurrentRoom(currentDungeonRoom.getLastNode());
     }
 
     /**

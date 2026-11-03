@@ -155,58 +155,6 @@ public class Character {
         return currentRoom;
     }
 
-    public void setArmor(Item armor){
-        this.armor = armor;
-    }
-
-    public Item getArmor(){
-        return armor;
-    }
-
-    public void setArmorDefenseValue(double defense){
-        this.armorDefense = defense;
-    }
-
-    public double getArmorDefense(){
-        return armorDefense;
-    }
-
-    public void setPerkDefenseValue(double defense){
-        this.perkDefense = defense;
-    }
-
-    public double getPerkDefense(){
-        return perkDefense;
-    }
-
-    public void setTotalDefense(double armorDefense, double perkDefense){
-        this.armorDefense = armorDefense;
-        this.perkDefense = perkDefense;
-    }
-
-    public double getTotalDefense(){
-        return armorDefense + perkDefense;
-    }
-
-    public void setEnemiesDefeated(int enemiesDefeated){
-        this.enemiesDefeated = enemiesDefeated;
-    }
-
-    public int getEnemiesDefeated(){
-        return enemiesDefeated;
-    }
-
-    public void setRoomsTraversed(int roomsTraversed){
-        this.roomsTraversed = roomsTraversed;
-    }
-
-    public void increaseRoomsTraversed(){
-        this.roomsTraversed++;
-    }
-
-    public int getRoomsTraversed(){
-        return roomsTraversed;
-    }
 
     public void setCoins(int coins){
         this.coins = coins;
@@ -216,64 +164,11 @@ public class Character {
         return coins;
     }
 
-    public void setWeaponAttack(int weaponAttack){
-        this.weaponAttack = weaponAttack;
-    }
-
-    public int getWeaponAttack(){
-        return this.weapon.getAttackValue();
-    }
-
-    public void setTotalAttack(int attack, int weaponAttack){
-        this.attack = attack;
-        this.weaponAttack = weaponAttack;
-    }
-
-    public int getTotalAttack(){
-        return attack + weaponAttack;
-    }    
-
-    public void setPotionsConsumed(int potionsConsumed){
-        this.potionsConsumed = potionsConsumed;
-    }
-
-    public void increasePotionsConsumed(){
-        this.potionsConsumed++;
-    }
-
-    public int getPotionsConsumed(){
-        return potionsConsumed;
-    }
-
-    public void setMaxHealth(double maxHealth) {
-        this.maxHealth = maxHealth;
-    }
-
-    public void increaseMaxHealth(double maxHealthIncrease){
-        this.maxHealth += maxHealthIncrease;
-    }
-
-    public double getMaxHealth() {
-        return maxHealth;
-    }
-
     public void setStamina(int stamina) {
         this.stamina = stamina;
     }
 
     public int getStamina() {
         return stamina;
-    }
-
-    public void setMaxStamina(int maxStamina) {
-        this.maxStamina = maxStamina;
-    }
-
-    public int getMaxStamina() {
-        return maxStamina;
-    }
-
-    public CustomArrayList<Item> getInventory(){
-        return inventory;
     }
 }

@@ -234,10 +234,10 @@ public class Fight {
 
         //Move the character randomly to the left or right before removing the room
         if(random == 0){
-            player.setCurrentRoom(player.getCurrentRoom().getNextNode());
+            player.moveRight();
             gameUI.prettyPrintln("[G]The room you once knew has disappeared!\nYou have been moved to the right.[BRK]\n");
         }else{
-            player.setCurrentRoom(player.getCurrentRoom().getLastNode());
+            player.moveLeft();
             gameUI.prettyPrintln("[G]The room you once knew has disappeared!\nYou have been moved to the left.[BRK]\n");
         }
         gameState.getDungeon().remove(enemyRoom);

@@ -140,4 +140,8 @@ public class GameState {
         weaponRoster.clear();
         weaponCount = 0;
     }
+
+    public void removeEnemyFromCurrentRoom(){
+        getCurrentRoom().setEnemyCharacter(null);
+    }
 }
