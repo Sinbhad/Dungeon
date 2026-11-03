@@ -8,7 +8,7 @@ public class Perk {
     /**
      * default constructor for perks
      */
-    public Perks(){
+    public Perk(){
         this.name = "";
         this.type = "";
         this.description = "";
