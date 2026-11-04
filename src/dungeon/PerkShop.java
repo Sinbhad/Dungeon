@@ -7,25 +7,24 @@ import ui.GameUI;
 import java.util.Random;
 
 public class PerkShop {
-    private final GameState gameState;
     private final Player player;
-    private GameUI gameUI;
+    private final GameUI gameUI;
 
-    public PerkLibrary perkLibrary;
     public int damageIndex, defenseIndex, healthIndex, speedIndex, staminaIndex;
     public Perk damagePerk, defensePerk, healthPerk, speedPerk, staminaPerk;
     public Random random = new Random();
+    public PerkLibrary perkLibrary = new PerkLibrary();
 
 
     public PerkShop(){
-        this.gameState = new GameState();
+        this.gameUI = new GameUI();
         this.player = new Player();
         setPerks();
     }
 
     public PerkShop(GameState gameState){
-        this.gameState = gameState;
         this.player = gameState.getPlayer();
+        this.gameUI = new GameUI();
         setPerks();
     }
 
@@ -34,16 +33,16 @@ public class PerkShop {
      */
     public void setPerks(){
         //Determine which perks will be available
-        speedIndex = random.nextInt(perkLibrary.SPEED_PERKS.length);
-        Perk speedPerk = perkLibrary.SPEED_PERKS[speedIndex];
-        defenseIndex = random.nextInt(perkLibrary.DEFENSE_PERKS.length);
-        Perk defensePerk = perkLibrary.DEFENSE_PERKS[defenseIndex];
-        healthIndex = random.nextInt(perkLibrary.HEALTH_PERKS.length);
-        Perk healthPerk = perkLibrary.HEALTH_PERKS[healthIndex];
-        damageIndex = random.nextInt(perkLibrary.DAMAGE_PERKS.length);
-        Perk damagePerk = perkLibrary.DAMAGE_PERKS[damageIndex];
-        staminaIndex = random.nextInt(perkLibrary.STAMINA_PERKS.length);
-        Perk staminaPerk = perkLibrary.STAMINA_PERKS[staminaIndex];
+        this.speedIndex = random.nextInt(perkLibrary.SPEED_PERKS.length);
+        this.speedPerk = perkLibrary.SPEED_PERKS[speedIndex];
+        this.defenseIndex = random.nextInt(perkLibrary.DEFENSE_PERKS.length);
+        this.defensePerk = perkLibrary.DEFENSE_PERKS[defenseIndex];
+        this.healthIndex = random.nextInt(perkLibrary.HEALTH_PERKS.length);
+        this.healthPerk = perkLibrary.HEALTH_PERKS[healthIndex];
+        this.damageIndex = random.nextInt(perkLibrary.DAMAGE_PERKS.length);
+        this.damagePerk = perkLibrary.DAMAGE_PERKS[damageIndex];
+        this.staminaIndex = random.nextInt(perkLibrary.STAMINA_PERKS.length);
+        this.staminaPerk = perkLibrary.STAMINA_PERKS[staminaIndex];
     }
 
     /**
@@ -81,6 +80,8 @@ public class PerkShop {
             case 6 -> {
                 if (player.getCoins() < 100) return handleInvalid();
                 player.setCoins(player.getCoins() - 100);
+                setPerks();
+                return false;
             }
             default -> {
                 return handleInvalid();

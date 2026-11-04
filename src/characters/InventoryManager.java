@@ -50,7 +50,7 @@ public class InventoryManager {
 
         //Make sure the player's health value stays below the max
         if (willUsePotion && player.getHealth() < player.getMaxHealth()) {
-            String healthString = String.valueOf(player.getHealth());
+
             // It's a healing item, and player is below max health: apply healing
             player.increaseHealth(gameState.getCurrentRoomItem().getHpValue());
 
@@ -63,8 +63,10 @@ public class InventoryManager {
             player.increasePotionsConsumed();
             if(gameState.getCurrentRoomItem().getSpeedValue() > 0){speedItemHandler();}
         } else if(player.getHealth() == player.getMaxHealth() && willUsePotion){
-            gameUI.prettyPrintln("[BLD][R]You have already reached maximum health, no effect[BRK]\n" +
-                    "You have not consumed the potion, adding to inventory instead\n");
+            gameUI.prettyPrintln("""
+                    [BLD][R]You have already reached maximum health, no effect[BRK]
+                    You have not consumed the potion, adding to inventory instead
+                    """);
             player.getInventory().add(gameState.getCurrentRoomItem());
             gameState.getCurrentRoom().setItem(null);
         }
@@ -129,8 +131,12 @@ public class InventoryManager {
         //Maintain max defense stat
         if(player.getTotalDefense() > 0.8){
             player.setTotalDefense(0.8 , 0.0);
-            gameUI.prettyPrintln("\n[BLD][R]Total defense value has reached or exceeded the maximum value[BRK]\n\n" +
-                    "Total defense value has been reduced to max (80%)\n");
+            gameUI.prettyPrintln("""
+                    
+                    [BLD][R]Total defense value has reached or exceeded the maximum value[BRK]
+                    
+                    Total defense value has been reduced to max (80%)
+                    """);
         }
 
     }
@@ -140,7 +146,8 @@ public class InventoryManager {
      */
     public void displayInventory(){
         CustomArrayList<Item> inventory = gameState.getPlayer().getInventory();
-        int inventorySize = 0;
+        int inventorySize;
+
         if(inventory != null && inventory.size() >= 0){
             inventorySize = inventory.size();
         }else{

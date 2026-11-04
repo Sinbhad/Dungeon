@@ -15,6 +15,7 @@ public class GameState {
     private final CustomArrayList<Enemy> enemyRoster;
     private final CustomArrayList<Weapon> weaponRoster;
 
+    private CustomArrayList<String> messageLog;
     private int levelCount, enemyCount, weaponCount, roomCount;
     private boolean gameOver;
 
@@ -23,6 +24,7 @@ public class GameState {
         dungeon = new CustomCircularlyLinkedList<>();
         enemyRoster = new CustomArrayList<>();
         weaponRoster = new CustomArrayList<>();
+        messageLog = new CustomArrayList<>();
 
         levelCount = 1;
         roomCount = 7;
@@ -37,6 +39,7 @@ public class GameState {
         this.levelCount = levelCount;
         this.roomCount = roomCount;
         this.gameOver = false;
+        this.messageLog = new CustomArrayList<>();
     }
 
     public Player getPlayer() {
@@ -155,5 +158,17 @@ public class GameState {
 
     public void movePlayerToStart(){
         getPlayer().setCurrentRoom(getDungeon().getHead());
+    }
+
+    public CustomArrayList<String> getMessageLog() {
+        return messageLog;
+    }
+
+    public void setMessageLog(CustomArrayList<String> messageLog){
+        this.messageLog = messageLog;
+    }
+
+    public void clearMessageLog() {
+        this.messageLog.clear();
     }
 }

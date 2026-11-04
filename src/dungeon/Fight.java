@@ -37,7 +37,7 @@ public class Fight {
      */
     void battle(){
         this.enemyStartHealth = gameState.getCurrentRoomEnemy().getHealth();
-        gameUI.prettyPrintln("[BLD]You have encountered [R]" + gameState.getCurrentRoomEnemy().getName() + "[BRK][BLD], hit them with all you got![BRK]\n");
+        gameUI.logMessage("[BLD]You have encountered [R]" + gameState.getCurrentRoomEnemy().getName() + "[BRK][BLD], hit them with all you got![BRK]");
         startBattleSelection();
     }
 
@@ -48,27 +48,27 @@ public class Fight {
         String choice = "A";
         Player player = gameState.getPlayer();
         while ((gameState.isEnemyInRoom() && player.getHealth() > 0) && !choice.equalsIgnoreCase("F")) {
+            gameUI.renderScreen();
             gameUI.prettyPrintln("Enter [C]I[BRK] to display inventory");
             gameUI.prettyPrint("Would you like to attack or flee? [C](A/F)[BRK]: ");
-            choice = keyboard.nextLine();
+            choice = keyboard.nextLine().trim();
 
-            if (choice.trim().equalsIgnoreCase("A")) {
+            if (choice.equalsIgnoreCase("A")) {
                 Move move = playerFunctions.chooseMove();
                 if (staminaCheck(move)) {
                     speedCheck(move);
-                }else if (!staminaCheck(move)){
-                    gameUI.prettyPrintln("[R]You do not currently have enough [BLD][Y]stamina[BRK] [R]to use that move,\nplease select another[BRK]");
-                }else {
-                    gameUI.prettyPrintln("[INVALID]");
+                } else {
+                    gameUI.logMessage("[R]You do not currently have enough [BLD][Y]stamina[BRK] [R]to use that move, please select another[BRK]");
                 }
-            } else if (choice.trim().equalsIgnoreCase("F")) {
-                gameUI.prettyPrintln("[R]Get out of here!\n");
+            } else if (choice.equalsIgnoreCase("F")) {
+                gameUI.logMessage("[R]Get out of here![BRK]");
+                Enemy currentEnemy = gameState.getCurrentRoomEnemy();
                 fleeCheck();
-                gameState.getCurrentRoomEnemy().move();
-            } else if (choice.trim().equalsIgnoreCase("I")) {
+                currentEnemy.move();
+            } else if (choice.equalsIgnoreCase("I")) {
                 inventoryManager.displayInventory();
             } else {
-                gameUI.prettyPrintln("[INVALID]");
+                gameUI.logMessage("[INVALID]");
             }
         }
     }
@@ -97,11 +97,9 @@ public class Fight {
         int random = new Random().nextInt(9);
         int[] enemyFleeNums = gameState.getCurrentRoomEnemy().getFleeNum();
         if(checkFleeNums(random, enemyFleeNums)){
-            gameUI.prettyPrintln("[G]You got away safely![BRK]");
-            playerFunctions.move();
+            gameUI.logMessage("[G]You got away safely![BRK]");
         }else{
-            gameUI.prettyPrintln("[R]You got away but you got hurt in the process![BRK]");
-            enemyAttackChoice();
+            gameUI.logMessage("[R]You got away but you got hurt in the process![BRK]");
             enemyAttackOutput();
         }
         gameState.getPlayer().setStamina(gameState.getPlayer().getMaxStamina());
@@ -119,18 +117,14 @@ public class Fight {
             if(isEnemyAlive()){
                 enemyAttackOutput();
             }
-
         } else {
-            gameUI.prettyPrintln("\n[BLD][R]" + enemy.getName() + "[BRK] is faster than you and attacks first\n");
+            gameUI.logMessage("[BLD][R]" + enemy.getName() + "[BRK] is faster than you and attacks first");
             enemyAttackOutput();
             if(isPlayerAlive()){
-                gameUI.prettyPrintln("You hit [BLD][R]" + enemy.getName() + "[BRK] dealing " + player.getTotalAttack() + " damage\n");
-                enemy.decreaseHealth(player.getTotalAttack());
+                attackOutput(move);
+                isEnemyAlive();
             }
         }
-
-        gameUI.prettyPrintln("You have [G]" + player.getHealth() + "[BRK] health remaining");
-        gameUI.prettyPrintln("[R]" + enemy.getName() + "[BRK] has [R]" + enemy.getHealth() + "[BRK] health remaining\n");
     }
 
     /**
@@ -141,12 +135,11 @@ public class Fight {
         Player player = gameState.getPlayer();
         Enemy enemy = gameState.getCurrentRoomEnemy();
 
-        gameUI.prettyPrintln("You used [BLD][C]" + move.getMoveName() + "[BRK][ITL] " + move.getDescription() +
-                                "[BRK]dealing [R]" + (player.getTotalAttack() + move.getDamage()) + "[BRK] damage\n");
+        gameUI.logMessage("You used [BLD][C]" + move.getMoveName() + "[BRK][ITL] " + move.getDescription() +
+                                "[BRK]dealing [R]" + (player.getTotalAttack() + move.getDamage()) + "[BRK] damage");
 
+        player.setStamina(player.getStamina() - move.getStaminaCost());
         enemy.decreaseHealth((player.getTotalAttack() + move.getDamage()));
-        gameUI.prettyPrintln("[R]" + enemy.getName() + "[BRK] has [R]" + enemy.getHealth() + "[BRK] health remaining");
-
     }
 
     /**
@@ -157,8 +150,8 @@ public class Fight {
         Enemy enemy = gameState.getCurrentRoomEnemy();
 
         if(enemy.getHealth() <= 0){
-            gameUI.prettyPrintln("[BLD][G]Success! [BRK]You have beaten [R]" + enemy.getName() +
-                                    "[BRK]\nFor defeating [R]" + enemy.getName() + "[BRK] you have gained [Y]" + enemy.getCoins() + "[BRK] coins\n");
+            gameUI.logMessage("[BLD][G]Success! [BRK]You have beaten [R]" + enemy.getName() +
+                                    "[BRK] and gained [Y]" + enemy.getCoins() + "[BRK] coins");
 
             //Reward player with coins for defeating an enemy
             player.setCoins(player.getCoins() + enemy.getCoins());
@@ -168,6 +161,7 @@ public class Fight {
 
             //Remove enemy from room
             gameState.getEnemyRoster().remove(enemy);
+            gameState.removeEnemyFromCurrentRoom();
 
             //Check room for loot before removing it from the dungeon
             Room currentRoom = player.getCurrentRoom().getValue();
@@ -187,7 +181,7 @@ public class Fight {
      */
     Boolean isPlayerAlive(){
         if(gameState.getPlayer().getHealth() <= 0){
-            gameUI.prettyPrintln("[R]oh no...[BRK]");
+            gameUI.logMessage("[R]oh no...[BRK]");
             return false;
         }else{return true;}
     }
@@ -226,12 +220,12 @@ public class Fight {
      */
     void enemyAttackOutput(){
         Player player = gameState.getPlayer();
-        Enemy enemy= gameState.getCurrentRoomEnemy();
+        Enemy enemy = gameState.getCurrentRoomEnemy();
         Move currentMove = enemyAttackChoice();
-        gameUI.prettyPrintln("[R]" + enemy.getName() + "[BRK] used [C]" + currentMove.getMoveName() +
-                                "[BRK][ITL] " + currentMove.getDescription());
+        gameUI.logMessage("[R]" + enemy.getName() + "[BRK] used [C]" + currentMove.getMoveName() +
+                                "[BRK][ITL] " + currentMove.getDescription().trim());
         double damage = calculateDamageAfterDefense(currentMove.getDamage());
-        gameUI.prettyPrintln("[R]" + enemy.getName() + "[BRK] dealt [R]" + damage + "[BRK] damage\n\n");
+        gameUI.logMessage("[R]" + enemy.getName() + "[BRK] dealt [R]" + damage + "[BRK] damage");
         player.decreaseHealth(damage);
     }
 
@@ -249,7 +243,6 @@ public class Fight {
      */
     void removeRoom(){
         int random = new Random().nextInt(2);
-        Player player = gameState.getPlayer();
 
         //Store the original room
         Room enemyRoom = gameState.getCurrentRoom();
@@ -257,10 +250,10 @@ public class Fight {
         //Move the character randomly to the left or right before removing the room
         if(random == 0){
             playerFunctions.moveRight();
-            gameUI.prettyPrintln("[G]The room you once knew has disappeared!\nYou have been moved to the right.[BRK]\n");
+            gameUI.logMessage("[G]The room you once knew has disappeared! You have been moved to the right.[BRK]");
         }else{
             playerFunctions.moveLeft();
-            gameUI.prettyPrintln("[G]The room you once knew has disappeared!\nYou have been moved to the left.[BRK]\n");
+            gameUI.logMessage("[G]The room you once knew has disappeared! You have been moved to the left.[BRK]");
         }
         gameState.getDungeon().remove(enemyRoom);
     }

@@ -17,6 +17,7 @@ public class Player extends Character {
         setWeapon(new Weapon("Fists", null, null, 0,0));
         setArmor(new Armor("Naked", null, null, 0,0,0));
         setMaxHealth(this.getHealth());
+        setMaxStamina(this.getStamina());
     }
 
     //Inventory Mutators and Accessors set/get A-Z

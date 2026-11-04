@@ -224,6 +224,7 @@ public class DungeonBrain {
         while(!correctChoice){
             perkShop.displayChoices();
             int choice = keyboard.nextInt();
+            keyboard.nextLine();
             correctChoice = perkShop.applyChoice(choice);
         }
     }

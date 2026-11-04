@@ -1,27 +1,25 @@
 package ui;
 
+import characters.Enemy;
 import characters.Move;
 import characters.Player;
 import characters.PlayerFunctions;
 import dungeon.GameState;
+import dungeon.Room;
 import items.Weapon;
 import lib.CustomArrayList;
 
-import java.util.Scanner;
 /**
  * Used to provide a better UX with customizable styling options pulled from the GameFormatter Library
  */
 public class GameUI{
-    private final Scanner keyboard;
     private final GameState gameState;
 
     public GameUI(){
-        this.keyboard = new Scanner(System.in);
         this.gameState = new GameState();
     }
 
     public GameUI(GameState gameState){
-        this.keyboard = new Scanner(System.in);
         this.gameState = gameState;
     }
 
@@ -57,30 +55,30 @@ public class GameUI{
     /**
      * Method used throughout the game to display equipment and other stats on each turn
      */
-    public void displayStats(){
+    public void displayStats() {
         String healthFormatString = "[G]";
         Player player = gameState.getPlayer();
 
-        //if a weapon has not yet been acquired, the game wil build a default placeholder
         String weaponName = (player.getWeapon() != null) ? player.getWeapon().getName() : "Fists";
-        //if armor has not yet been acquired, the game wil build a default placeholder
         String armorName = (player.getArmor() != null) ? player.getArmor().getName() : "Naked";
 
-        //Color of health points determined by player health < 50% == red || > 50% == green
-        if(player.getMaxHealth() / player.getHealth() < 0.5){
+        // Fixed division so < 50% max health turns red
+        if (player.getHealth() / player.getMaxHealth() < 0.5) {
             healthFormatString = "[R]";
         }
 
         prettyPrintln(
-                "\n[ITL][P]" + player.getName() + "[BRK]" +
-                        "\n[BLD]Health Points: " + healthFormatString + player.getHealth() + "[BRK]" +
-                        "\n[BLD]Total Attack: [BRK][P]" + player.getTotalAttack() + "[BRK]" +
-                        "\n[BLD]Weapon: [ITL][C]" + weaponName + "[BRK]" +
-                        "\n[BLD]Armor: [ITL][C]" + armorName + "[BRK]" +
-                        "\n[BLD]Coins: [Y]" + player.getCoins() + "[BRK]");
-
-
-        prettyPrintln("\n\n");
+                "========================================================================\n" +
+                        "[BLD][P]" + player.getName() + "[BRK]  |  " +
+                        "[BLD]HP:[BRK] " + healthFormatString + player.getHealth() + "/" + player.getMaxHealth() + "[BRK]  |  " +
+                        "[BLD]SP:[BRK] [Y]" + player.getStamina() + "/" + player.getMaxStamina() + "[BRK]  |  " +
+                        "[BLD]ATK:[BRK] [P]" + player.getTotalAttack() + "[BRK]  |  " +
+                        "[BLD]Coins:[BRK] [Y]" + player.getCoins() + "[BRK]\n" +
+                        "[BLD]Weapon:[BRK] [ITL][C]" + weaponName + "[BRK]  |  " +
+                        "[BLD]Armor:[BRK] [ITL][C]" + armorName + "[BRK]  |  " +
+                        "[BLD]DEF:[BRK] [C]" + (int)(player.getTotalDefense() * 100) + "%[BRK]\n" +
+                        "========================================================================"
+        );
     }
 
     public Move returnSelectedMoveFormatted(int choice) {
@@ -115,5 +113,38 @@ public class GameUI{
         }
 
         return selectedMove;
+    }
+
+    public void logMessage(String message){
+        CustomArrayList<String> messageLog = gameState.getMessageLog();
+        messageLog.add(message);
+        gameState.setMessageLog(messageLog);
+    }
+
+    public void renderScreen() {
+        prettyPrint("[CLR]");
+
+        //Top Banner: Current Room & Level
+        Room currentRoom = gameState.getCurrentRoom();
+        prettyPrintln("========================================");
+        prettyPrintln("[BLD]" + currentRoom.getName() + " | Level " + gameState.getLevelCount() + "[BRK]");
+        prettyPrintln("========================================");
+
+        displayStats();
+
+        //If an enemy is in the room, show Enemy HUD right below Player HUD
+        if (gameState.isEnemyInRoom() && !currentRoom.getIsExit()) {
+            Enemy enemy = gameState.getCurrentRoomEnemy();
+            prettyPrintln("----------------------------------------");
+            prettyPrintln("[BLD][R]VS: " + enemy.getName() + " | HP: " + enemy.getHealth() + "[BRK]");
+        }
+        prettyPrintln("----------------------------------------");
+
+        //Print the players messages
+        for (String msg : gameState.getMessageLog()) {
+            prettyPrintln(" > " + msg);
+        }
+        gameState.clearMessageLog();
+        prettyPrintln("----------------------------------------");
     }
 }

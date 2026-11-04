@@ -22,12 +22,14 @@ public class PlayerFunctions {
         this.gameState = new GameState();
         this.gameUI = new GameUI();
         this.inventoryManager = new InventoryManager();
+        this.player = gameState.getPlayer();
     }
 
     public PlayerFunctions(GameState gameState){
         this.gameState = gameState;
         this.gameUI = new GameUI(gameState);
         this.inventoryManager = new InventoryManager(gameState);
+        this.player = gameState.getPlayer();
     }
 
     /**
@@ -35,31 +37,27 @@ public class PlayerFunctions {
      */
     public void move() {
         player = gameState.getPlayer();
-        Node<Room> currentDungeonRoom = player.getCurrentRoom();
-        Room currentRoom = currentDungeonRoom.getValue();
 
-        gameUI.prettyPrintln("[BLD]" + currentRoom.getName() + ": Level " + gameState.getLevelCount());
-        gameUI.displayStats();
+        gameUI.renderScreen();
 
-        gameUI.prettyPrint("\n\nEnter [C]I[BRK] to display inventory \nWould you like to move left or right? [C](L/R)[BRK]: ");
+        gameUI.prettyPrint("Enter [C]I[BRK] to display inventory \nWould you like to move left or right? [C](L/R)[BRK]: ");
         String choice = keyboard.nextLine();
 
         if (choice.trim().equalsIgnoreCase("l")) {
-
-            gameUI.prettyPrintln("\n[CLR][G]You have moved left[BRK]\n");
+            gameUI.logMessage("[G]You have moved left[BRK]");
             moveLeft();
             player.increaseRoomsTraversed();
 
         } else if (choice.trim().equalsIgnoreCase("r")) {
-            gameUI.prettyPrintln("\n[CLR]You have moved right\n");
+            gameUI.logMessage("[G]You have moved right[BRK]");
             moveRight();
             player.increaseRoomsTraversed();
 
-        }else if(choice.trim().equalsIgnoreCase("i")){
-            gameUI.prettyPrintln("[CLR]-=Inventory=-\n");
+        } else if (choice.trim().equalsIgnoreCase("i")) {
+            gameUI.prettyPrintln("\n-=Inventory=-");
             inventoryManager.displayInventory();
         } else {
-            gameUI.prettyPrintln("[INVALID]");
+            gameUI.logMessage("[INVALID]");
         }
     }
 
@@ -78,18 +76,21 @@ public class PlayerFunctions {
     public void openChest(){
         Room currentRoom = gameState.getCurrentRoom();
 
+        gameUI.renderScreen();
+
         //Prompt the user
-        gameUI.prettyPrint("\n\nWould you like to open the chest? [C](Y/N)[BRK]: ");
+        gameUI.prettyPrint("Would you like to open the chest? [C](Y/N)[BRK]: ");
         String choice = keyboard.nextLine();
 
         //Evaluate input
         if(choice.trim().equalsIgnoreCase("y")){
-            gameUI.prettyPrintln("\n[G]You have opened the chest[BRK]\n" +
+            gameUI.logMessage("[G]You have opened the chest![BRK] " +
                     "You have found a [BLD][B]" + currentRoom.getItem().getName() + "[BRK], " +
-                    "[ITL]this " + currentRoom.getItem().getDescription() + "[BRK]\n\n\n");
+                    "[ITL]this " + currentRoom.getItem().getDescription() + "[BRK]");
 
             //Set stats based on item attributes
             if (currentRoom.getItem() != null && currentRoom.getItem().getHpValue() > 0) {
+                gameUI.renderScreen();
                 inventoryManager.healingItemHandler();
             }
             if (currentRoom.getItem() != null && currentRoom.getItem().getSpeedValue() != 0) {
@@ -110,9 +111,9 @@ public class PlayerFunctions {
             currentRoom.setItem(null);
 
         }else if(choice.trim().equalsIgnoreCase("n")){
-            gameUI.prettyPrintln("[G]You have not opened the chest[BRK]");
+            gameUI.logMessage("[G]You have not opened the chest[BRK]");
         }else{
-            gameUI.prettyPrintln("[INVALID]");
+            gameUI.logMessage("[INVALID]");
             openChest();
         }
     }
@@ -128,19 +129,19 @@ public class PlayerFunctions {
 
         //If a user has no weapon, they have no moves to choose from
         if(weapon == null || weapon.getMoves() == null || weapon.getMoves().size() == 0){
-            gameUI.prettyPrintln("[BLD][R]You have no moves to choose from![BRK]\n");
+            gameUI.logMessage("[BLD][R]You have no moves to choose from![BRK]");
             //Default move (punch)
             move = gameUI.returnSelectedMoveFormatted(12);
         }else{
             //Displays all moves associated with current weapon
-            gameUI.prettyPrintln("Choose a move from the following list:");
+            gameUI.prettyPrintln("\nChoose a move from the following list:");
             CustomArrayList<Move> currentMoves = weapon.getMoves();
             for (int i = 0; i < currentMoves.size(); i++) {
                 Move m = currentMoves.getAtIndex(i);
                 gameUI.prettyPrintln("[C]" + (i + 1) + "[BRK][BLD]: " + m.getMoveName() + " [BRK][Y]Sp[BRK]: " + m.getStaminaCost() +
                         " [R]DMG[BRK]: " + (m.getDamage() + player.getTotalAttack()));
             }
-            gameUI.prettyPrintln("Sp available [Y]" + player.getStamina() + "[BRK]\n");
+            gameUI.prettyPrintln("Sp available [Y]" + player.getStamina() + "[BRK]");
             gameUI.prettyPrint("Enter your choice: ");
             String choice = keyboard.nextLine();
             int choiceNum;
