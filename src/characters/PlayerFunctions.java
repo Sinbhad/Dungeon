@@ -15,6 +15,9 @@ public class PlayerFunctions {
     private final InventoryManager inventoryManager;
     private final Scanner keyboard = new Scanner(System.in);
 
+    private Player player;
+
+
     public PlayerFunctions(){
         this.gameState = new GameState();
         this.gameUI = new GameUI();
@@ -31,7 +34,7 @@ public class PlayerFunctions {
      * Output prompt and logic for player dungeon traversal
      */
     public void move() {
-        Player player = gameState.getPlayer();
+        player = gameState.getPlayer();
         Node<Room> currentDungeonRoom = player.getCurrentRoom();
         Room currentRoom = currentDungeonRoom.getValue();
 
@@ -61,11 +64,11 @@ public class PlayerFunctions {
     }
 
     public void moveLeft(){
-        player.setCurrentRoom(currentDungeonRoom.getLastNode());
+        player.setCurrentRoom(gameState.getLeftRoom());
     }
 
     public void moveRight(){
-        player.setCurrentRoom(currentDungeonRoom.getLastNode());
+        player.setCurrentRoom(gameState.getRightRoom());
     }
 
     /**
@@ -122,6 +125,7 @@ public class PlayerFunctions {
         Move move = null;
         Player player = gameState.getPlayer();
         Weapon weapon = player.getWeapon();
+
         //If a user has no weapon, they have no moves to choose from
         if(weapon == null || weapon.getMoves() == null || weapon.getMoves().size() == 0){
             gameUI.prettyPrintln("[BLD][R]You have no moves to choose from![BRK]\n");

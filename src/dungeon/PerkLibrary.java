@@ -4,8 +4,8 @@ public class PerkLibrary {
     //Defense
     public final Perk[] DEFENSE_PERKS = {
             new Perk("[BLD]Slight Defense Boost[BRK]", "Defense", " increases defense by 10: [BLD][Y]200[BRK] coins", .1, 200),
-            new Perks("[BLD]Decent Defense Boost[BRK]", "Defense", " increases defense by 20: [BLD][Y]400[BRK] coins", .2, 400),
-            new Perks("[BLD]Great Defense Boost[BRK]", "Defense", " increases defense by 30: [BLD][Y]600[BRK] coins", .3, 600),
+            new Perk("[BLD]Decent Defense Boost[BRK]", "Defense", " increases defense by 20: [BLD][Y]400[BRK] coins", .2, 400),
+            new Perk("[BLD]Great Defense Boost[BRK]", "Defense", " increases defense by 30: [BLD][Y]600[BRK] coins", .3, 600),
     };
 
     //Health
@@ -24,9 +24,9 @@ public class PerkLibrary {
 
     //Speed
     public final Perk[] SPEED_PERKS = {
-      new Perk("Running Shoes", "Speed", " increases speed by 10: 200 coins", 10, 200),
-      new Perk("Weight Loss Pill", "Speed", " increases speed by 20: 400 coins", 20, 400),
-      new Perk("Wings of Hermes", "Speed", " increases speed by 50: 600 coins", 50, 1000),
+            new Perk("Running Shoes", "Speed", " increases speed by 10: 200 coins", 10, 200),
+            new Perk("Weight Loss Pill", "Speed", " increases speed by 20: 400 coins", 20, 400),
+            new Perk("Wings of Hermes", "Speed", " increases speed by 50: 600 coins", 50, 1000),
     };
 
     //Stamina

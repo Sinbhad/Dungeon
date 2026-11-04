@@ -221,10 +221,10 @@ public class DungeonBrain {
         PerkShop perkShop = new PerkShop(gameState);
 
         //Keeps the player in a loop until they select a valid input, then applies changes if any.
-        while(correctChoice == false){
+        while(!correctChoice){
             perkShop.displayChoices();
-            String choice = keyboard.nextLine();
-            correctChoice = perkShop.applyChoice((int) choice.trim());
+            int choice = keyboard.nextInt();
+            correctChoice = perkShop.applyChoice(choice);
         }
     }
 

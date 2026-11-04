@@ -4,24 +4,15 @@ import dungeon.*;
 import items.*;
 import lib.Node;
 import lib.CustomArrayList;
-import ui.*;
-
-import java.util.Objects;
-import java.util.Scanner;
 
 public class Character {
     private String name;
 
     //Player state
-    private int attack, weaponAttack, speed, coins, stamina, maxStamina;
-    private double health, maxHealth, armorDefense, perkDefense;
-    private Weapon weapon;
-    private Item armor;
+    private int attack, speed, coins, stamina;
+    private double health;
     private final CustomArrayList<Item> inventory;
     private Node<Room> currentRoom;
-
-    //Point tracking
-    private int roomsTraversed, enemiesDefeated, potionsConsumed;
 
     /**
      * Default constructor
@@ -30,15 +21,9 @@ public class Character {
         this.name = "";
         this.attack = 0;
         this.health = 0;
-        this.maxHealth = 500;
         this.stamina = 0;
-        this.maxStamina = 0;
         this.speed = 0;
         this.coins = 0;
-        this.weapon = null;
-        this.setWeapon(new Weapon("Fists", null, null, 0, 0));
-        this.armor = null;
-        this.setArmor(new Armor("Naked", null, null, 0, 0, 0));
         this.currentRoom = null;
         this.inventory = null;
     }
@@ -60,35 +45,6 @@ public class Character {
         this.stamina = stamina;
         this.speed = speed;
         this.coins = coinsHad;
-        this.weapon = null;
-        this.setWeapon(new Weapon("Fists", null, null, 0, 0));
-        this.armor = null;
-        this.setArmor(new Armor("Naked", null, null, 0, 0, 0));
-        this.currentRoom = null;
-        this.inventory = inventory;
-    }
-
-    /**
-     * Constructor that allows for a character to have certain values preset
-     * @param name Name of the character
-     * @param attack Attack value of the character
-     * @param health Health value of the character
-     * @param speed Speed value of the character
-     * @param coinsHad Coins the character has
-     * @param inventory Inventory of the character
-     */
-    public Character(String name, int attack, double health, double maxHealth, int stamina , int speed, int coinsHad, CustomArrayList<Item> inventory){
-        this.name = name;
-        this.attack = attack;
-        this.health = health;
-        this.maxHealth = maxHealth;
-        this.stamina = stamina;
-        this.speed = speed;
-        this.coins = coinsHad;
-        this.weapon = null;
-        this.setWeapon(new Weapon("Fists", null, null, 0, 0));
-        this.armor = null;
-        this.setArmor(new Armor("Naked", null, null, 0, 0, 0));
         this.currentRoom = null;
         this.inventory = inventory;
     }
@@ -139,13 +95,6 @@ public class Character {
         return speed;
     }
 
-    public void setWeapon(Weapon weapon){
-        this.weapon = weapon;
-    }
-
-    public Weapon getWeapon(){
-        return weapon;
-    }
 
     public void setCurrentRoom(Node<Room> currentRoom){
         this.currentRoom = currentRoom;

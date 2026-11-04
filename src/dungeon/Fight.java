@@ -12,7 +12,8 @@ public class Fight {
     private final Scanner keyboard;
     private final PlayerFunctions playerFunctions;
     private final InventoryManager inventoryManager;
-    private final double enemyStartHealth;
+
+    private double enemyStartHealth;
 
     public Fight(){
         this.gameUI = new GameUI();
@@ -29,14 +30,13 @@ public class Fight {
         this.keyboard = new Scanner(System.in);
         this.playerFunctions = new PlayerFunctions(gameState);
         this.inventoryManager = new InventoryManager(gameState);
-        this.enemyStartHealth = gameState.getCurrentRoomEnemy.getHealth();
     }
 
     /**
      * Handles enemy encounters, sets the stage, and prompts the user
      */
     void battle(){
-        Scanner keyboard = new Scanner(System.in);
+        this.enemyStartHealth = gameState.getCurrentRoomEnemy().getHealth();
         gameUI.prettyPrintln("[BLD]You have encountered [R]" + gameState.getCurrentRoomEnemy().getName() + "[BRK][BLD], hit them with all you got![BRK]\n");
         startBattleSelection();
     }
@@ -256,10 +256,10 @@ public class Fight {
 
         //Move the character randomly to the left or right before removing the room
         if(random == 0){
-            player.moveRight();
+            playerFunctions.moveRight();
             gameUI.prettyPrintln("[G]The room you once knew has disappeared!\nYou have been moved to the right.[BRK]\n");
         }else{
-            player.moveLeft();
+            playerFunctions.moveLeft();
             gameUI.prettyPrintln("[G]The room you once knew has disappeared!\nYou have been moved to the left.[BRK]\n");
         }
         gameState.getDungeon().remove(enemyRoom);

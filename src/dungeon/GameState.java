@@ -65,6 +65,14 @@ public class GameState {
         return node.getValue();
     }
 
+    public Node<Room> getLeftRoom(){
+        return getCurrentRoomNode().getLastNode();
+    }
+
+    public Node<Room> getRightRoom(){
+        return getCurrentRoomNode().getNextNode();
+    }
+
     public void setLevelCount(int levelCount) {
         this.levelCount = levelCount;
     }
@@ -146,6 +154,6 @@ public class GameState {
     }
 
     public void movePlayerToStart(){
-        getPlayer().setCurrentRoom(gameState.getDungeon().getHead());
+        getPlayer().setCurrentRoom(getDungeon().getHead());
     }
 }

@@ -7,20 +7,34 @@ import items.Item;
 
 public class Player extends Character {
     private static final CustomArrayList<Item> inventory = new CustomArrayList<>();
+    private Armor armor;
+    private Weapon weapon;
+    private int weaponAttack, maxStamina, enemiesDefeated, roomsTraversed, potionsConsumed;
+    private double maxHealth, armorDefense, perkDefense;
 
     public Player() {
-        super("Rob", 40, 100, 500, 100, 100, 0, inventory);
+        super("Rob", 40, 500, 100, 100, 0, inventory);
         setWeapon(new Weapon("Fists", null, null, 0,0));
         setArmor(new Armor("Naked", null, null, 0,0,0));
+        setMaxHealth(this.getHealth());
     }
 
     //Inventory Mutators and Accessors set/get A-Z
-    public void setArmor(Item armor){
+    public void setArmor(Armor armor){
         this.armor = armor;
     }
 
     public Item getArmor(){
         return armor;
+    }
+
+
+    public void setWeapon(Weapon weapon){
+        this.weapon = weapon;
+    }
+
+    public Weapon getWeapon(){
+        return weapon;
     }
 
     public void addCoins(int coins){
@@ -110,12 +124,12 @@ public class Player extends Character {
     }
 
     public void setTotalAttack(int attack, int weaponAttack){
-        this.attack = attack;
+        this.setAttackValue(attack);
         this.weaponAttack = weaponAttack;
     }
 
     public int getTotalAttack(){
-        return attack + weaponAttack;
+        return this.getAttack() + weaponAttack;
     }
 
     public void setTotalDefense(double armorDefense, double perkDefense){

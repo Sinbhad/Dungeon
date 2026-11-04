@@ -2,6 +2,7 @@ package characters;
 
 import dungeon.GameState;
 import dungeon.Room;
+import items.Armor;
 import items.Item;
 import lib.CustomArrayList;
 import ui.GameUI;
@@ -62,7 +63,7 @@ public class InventoryManager {
             player.increasePotionsConsumed();
             if(gameState.getCurrentRoomItem().getSpeedValue() > 0){speedItemHandler();}
         } else if(player.getHealth() == player.getMaxHealth() && willUsePotion){
-            gameUI.prettyPrintln("[BLD][R]You have already reached maximum health, no effect[BRK]\n+" +
+            gameUI.prettyPrintln("[BLD][R]You have already reached maximum health, no effect[BRK]\n" +
                     "You have not consumed the potion, adding to inventory instead\n");
             player.getInventory().add(gameState.getCurrentRoomItem());
             gameState.getCurrentRoom().setItem(null);
@@ -122,7 +123,7 @@ public class InventoryManager {
         Player player = gameState.getPlayer();
         Room currentRoom = gameState.getCurrentRoom();
 
-        player.setArmor(currentRoom.getItem());
+        player.setArmor((Armor) currentRoom.getItem());
         player.setArmorDefenseValue(currentRoom.getItem().getDefenseValue() + player.getPerkDefense());
 
         //Maintain max defense stat

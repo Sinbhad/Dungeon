@@ -2,14 +2,19 @@ package dungeon;
 
 import characters.Character;
 import characters.Player;
+import ui.GameUI;
+
 import java.util.Random;
 
 public class PerkShop {
-    GameState gameState;
-    int damageIndex, defenseIndex, healthIndex, speedIndex, staminaIndex;
-    Perk damagePek, defensePerk, healthPerk, speedPerk, staminaPerk;
-    Player player;
-    Random random = new Random();
+    private final GameState gameState;
+    private final Player player;
+    private GameUI gameUI;
+
+    public PerkLibrary perkLibrary;
+    public int damageIndex, defenseIndex, healthIndex, speedIndex, staminaIndex;
+    public Perk damagePerk, defensePerk, healthPerk, speedPerk, staminaPerk;
+    public Random random = new Random();
 
 
     public PerkShop(){
@@ -20,7 +25,7 @@ public class PerkShop {
 
     public PerkShop(GameState gameState){
         this.gameState = gameState;
-        this.player = gameState.getPlayer;
+        this.player = gameState.getPlayer();
         setPerks();
     }
 
@@ -59,7 +64,7 @@ public class PerkShop {
             }
             case 2 -> {
                 if (!checkBread(player, defensePerk)) return handleInvalid();
-                applyDefensePerk();
+                if(!applyDefensePerk()) return false;
             }
             case 3 -> {
                 if (!checkBread(player, healthPerk)) return handleInvalid();
@@ -76,7 +81,6 @@ public class PerkShop {
             case 6 -> {
                 if (player.getCoins() < 100) return handleInvalid();
                 player.setCoins(player.getCoins() - 100);
-                choosePerk();
             }
             default -> {
                 return handleInvalid();
@@ -89,11 +93,10 @@ public class PerkShop {
     /**
      *Helper method to keep defense logic from cluttering the main switch
      */
-    private void applyDefensePerk() {
+    private boolean applyDefensePerk() {
         if (player.getTotalDefense() >= 0.8) {
             gameUI.prettyPrintln("[BLD][R]You have already reached maximum defense, choose a different perk or move on[BRK]");
-            choosePerk();
-            return;
+            return false;
         }
 
         player.setTotalDefense(player.getArmorDefense(), player.getPerkDefense() + defensePerk.getValue());
@@ -102,6 +105,7 @@ public class PerkShop {
             player.setTotalDefense(0.8, 0);
             gameUI.prettyPrintln("[BLD][C]Your defense value would exceed 80%, you have been set to 80% :([BRK]");
         }
+        return true;
     }
 
     /**
@@ -118,7 +122,7 @@ public class PerkShop {
      * @param character player character
      * @param perk perk object
      */
-    boolean checkBread(Character character, Perks perk){
+    boolean checkBread(Character character, Perk perk){
         if(character.getCoins() >= perk.getCost()){
             character.setCoins(character.getCoins() - perk.getCost());
             return true;
